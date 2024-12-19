@@ -8,5 +8,5 @@ api_key = os.getenv("GEMINI_API_KEY")
 
 genai.configure()
 model = genai.GenerativeModel("gemini-1.5-flash")
-response = model.generate_content("Explain how AI works")
+response = model.generate_content("7+14")
 print(response.text)
