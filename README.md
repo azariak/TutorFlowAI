@@ -7,6 +7,7 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 
 #### Dependencies
 - TLDRaw
+- Node.js
 - Vite with React
 - Gemini API
 import google.generativeai as genai
