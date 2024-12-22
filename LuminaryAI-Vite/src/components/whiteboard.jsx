@@ -6,7 +6,6 @@ export default function App() {
 	return (
 		<div style={{ position: 'fixed', inset: 0 }}>
 			<Tldraw inferDarkMode={true} />
-            editor.setCurrentTool('draw')
 		</div>
 	)
 }
