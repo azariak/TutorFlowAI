@@ -7,7 +7,7 @@ export default function App() {
     const marginLeft = 100 - whiteboardWidth;
 
     const whiteboardHeight = 80;
-    const marginTop = 95 - whiteboardHeight;
+    const marginTop = 92 - whiteboardHeight;
     
     return (
         <div style={{ 
