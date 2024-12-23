@@ -11,10 +11,9 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 - Vite with React
 - Gemini API
 - Python: os, dotenv, google.generativeai, PIL
-import google.generativeai as genai
-from dotenv import load_dotenv
-import os
-TODO: Create virutal environment, requirements.txt, auto select draw tool
+
+#### TODO: 
+Create virtual environment, requirements.txt, auto select draw tool, rounded corner, refactor 
 
 #### Color Scheme
 -  [Palette - Coolors](https://coolors.co/palette/001524-15616d-ffecd1-ff7d00-78290f)

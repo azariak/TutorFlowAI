@@ -17,7 +17,7 @@ export default function App() {
             height: `${whiteboardHeight}vh`,
             marginLeft: `${marginLeft}vw`, 
             marginTop: `${marginTop}vh`
-        }}>
+            }}>
             <Tldraw inferDarkMode={true} />
         </div>
     )
