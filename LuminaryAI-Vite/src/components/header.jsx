@@ -7,8 +7,9 @@ export default function Header() {
                 display: 'flex', 
                 justifyContent: 'space-between', 
                 alignItems: 'center', 
-                marginLeft: '2vw',
-                marginRight: '2vw',
+                marginLeft: '3vw',
+                marginRight: '10vw',
+                marginTop: '3vh',
                 fontSize: '22px'
             }}>
                 <h1 style={{ margin: 0 }}>
