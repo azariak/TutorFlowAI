@@ -14,9 +14,11 @@ api_key = os.getenv("GEMINI_API_KEY")
 image_path = "figma.png"
 image = Image.open(image_path)
 
+experimental_LearnLM = "learnlm-1.5-pro-experimental"
+
 def geminiAI(text: str, image = None) -> str:
     genai.configure()
-    model = genai.GenerativeModel("gemini-1.5-flash")
+    model = genai.GenerativeModel(experimental_LearnLM)
     if image:
         response = model.generate_content([text, image])
     else: 
@@ -25,4 +27,4 @@ def geminiAI(text: str, image = None) -> str:
     return response.text
 
 if __name__ == "__main__":
-    print(geminiAI("Whats in te picture", image))
+    print(geminiAI("Whats in the picture? Also, tell me a joke about React.", image))

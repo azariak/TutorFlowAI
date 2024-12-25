@@ -6,7 +6,7 @@ export default function App() {
     const whiteboardWidth = 55;
     const marginLeft = 100 - whiteboardWidth;
 
-    const whiteboardHeight = 80;
+    const whiteboardHeight = 77;
     const marginTop = 92 - whiteboardHeight;
     
     return (

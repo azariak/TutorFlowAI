@@ -13,7 +13,7 @@ export default function Header() {
                 fontSize: '22px'
             }}>
                 <h1 style={{ margin: 0 }}>
-                    TutorFlow
+                    TutorFlowAI
                 </h1>
                 <span style={{
                     fontSize: '22px', // Smaller font size for the latter half

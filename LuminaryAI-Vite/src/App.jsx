@@ -1,6 +1,7 @@
 import Whiteboard from './components/whiteboard';
 import Header from './components/header';
 import Footer from './components/footer';
+import Chat from './components/chat/chat'
 import './App.css';
 
 export default function App() {
@@ -9,6 +10,8 @@ export default function App() {
             <Header />
 
             <Whiteboard />
+
+            <Chat />
 
             <Footer />
         </div>
