@@ -1,24 +1,135 @@
-
 export default function App() {
+    // Layout constants
+    const LAYOUT = {
+        chatWidth: 35,
+        marginLeft: 2,
+        chatHeight: 77,
+        marginTop: 15,
+    };
 
-    const chatWidth = 35;
-    const marginLeft = 2;
+    // Style constants
+    const COLORS = {
+        primary: '#FFECD1',
+        secondary: '#FFE3BC',
+        accent: '#FFB74D',
+        border: '#E5D5B8',
+        text: '#4A4A4A',
+        white: '#FFFFFF'
+    };
 
-    const chatHeight = 77;
-    const marginTop = 92 - chatHeight;
-    
+    // Sample messages
+    const messages = [
+        { id: 1, text: "Hello! How can I help you today?", sender: "bot", timestamp: "10:00 AM" },
+        { id: 2, text: "I have a question about React.", sender: "user", timestamp: "10:01 AM" },
+        { id: 3, text: "Sure! What would you like to know?", sender: "bot", timestamp: "10:01 AM" },
+        { id: 4, text: "How do I manage state effectively?", sender: "user", timestamp: "10:02 AM" }
+    ];
+
+    const styles = {
+        container: {
+            position: 'fixed',
+            inset: 0,
+            width: `${LAYOUT.chatWidth}vw`,
+            height: `${LAYOUT.chatHeight}vh`,
+            marginLeft: `${LAYOUT.marginLeft}vw`,
+            marginTop: `${LAYOUT.marginTop}vh`,
+            backgroundColor: COLORS.primary,
+            borderRadius: '25px',
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+        },
+        header: {
+            padding: '1rem',
+            borderBottom: `1px solid ${COLORS.border}`,
+            backgroundColor: COLORS.secondary
+        },
+        messagesContainer: {
+            flex: 1,
+            overflow: 'auto',
+            padding: '1rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1rem'
+        },
+        messageWrapper: (sender) => ({
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: sender === 'user' ? 'flex-end' : 'flex-start',
+            width: '100%'
+        }),
+        message: (sender) => ({
+            backgroundColor: sender === 'user' ? COLORS.accent : COLORS.secondary,
+            padding: '0.75rem',
+            borderRadius: '15px',
+            maxWidth: '80%',
+            color: sender === 'user' ? COLORS.white : COLORS.text
+        }),
+        timestamp: {
+            fontSize: '0.75rem',
+            color: COLORS.text,
+            opacity: 0.7,
+            marginTop: '0.25rem'
+        },
+        inputArea: {
+            padding: '1rem',
+            borderTop: `1px solid ${COLORS.border}`,
+            backgroundColor: COLORS.secondary,
+            display: 'flex',
+            gap: '0.5rem'
+        },
+        input: {
+            flex: 1,
+            padding: '0.75rem',
+            borderRadius: '15px',
+            border: `1px solid ${COLORS.border}`,
+            outline: 'none',
+            backgroundColor: COLORS.white
+        },
+        sendButton: {
+            padding: '0.75rem 1.5rem',
+            borderRadius: '15px',
+            border: 'none',
+            backgroundColor: COLORS.accent,
+            color: COLORS.white,
+            cursor: 'pointer',
+            transition: 'opacity 0.2s',
+            ':hover': {
+                opacity: 0.9
+            }
+        }
+    };
+
     return (
-        <div style={{ 
-            position: 'fixed', 
-            inset: 0, 
-            width: `${chatWidth}vw`, 
-            height: `${chatHeight}vh`,
-            marginLeft: `${marginLeft}vw`, 
-            marginTop: `${marginTop}vh`,
-            backgroundColor: '#FFECD1',
-            borderRadius: '25px'
-            }}>
-            
+        <div style={styles.container}>
+            <div style={styles.header}>
+                <h3 style={{ margin: 0, color: COLORS.text }}>Ask TutorFlow</h3>
+            </div>
+
+            <div style={styles.messagesContainer}>
+                {messages.map((message) => (
+                    <div key={message.id} style={styles.messageWrapper(message.sender)}>
+                        <div style={styles.message(message.sender)}>
+                            {message.text}
+                        </div>
+                        <div style={styles.timestamp}>
+                            {message.timestamp}
+                        </div>
+                    </div>
+                ))}
+            </div>
+
+            <div style={styles.inputArea}>
+                <input
+                    type="text"
+                    placeholder="Type your message..."
+                    style={styles.input}
+                />
+                <button style={styles.sendButton}>
+                    Send
+                </button>
+            </div>
         </div>
     )
 }
