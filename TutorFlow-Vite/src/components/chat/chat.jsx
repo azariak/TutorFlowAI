@@ -4,7 +4,10 @@ import ReactMarkdown from 'react-markdown';
 
 export default function App() {
     const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", timestamp: new Date().toLocaleTimeString() }
+        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", timestamp: new Date().toLocaleTimeString([], {
+            hour: 'numeric',
+            minute: 'numeric',
+          }) }
     ]);
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +45,10 @@ export default function App() {
             id: messages.length + 1,
             text: prompt,
             sender: "user",
-            timestamp: new Date().toLocaleTimeString()
+            timestamp: new Date().toLocaleTimeString([], {
+                hour: 'numeric',
+                minute: 'numeric',
+              })
         };
 
         setMessages(prev => [...prev, userMessage]);
@@ -57,16 +63,20 @@ export default function App() {
             }
 
             const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
             
             const response = await model.generateContent(prompt);
             const botResponse = response.response.text();
+            console.log(botResponse)
 
             const botMessage = {
                 id: messages.length + 2,
                 text: botResponse,
                 sender: "bot",
-                timestamp: new Date().toLocaleTimeString()
+                timestamp: new Date().toLocaleTimeString([], {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })
             };
 
             setMessages(prev => [...prev, botMessage]);
@@ -76,7 +86,10 @@ export default function App() {
                 id: messages.length + 2,
                 text: error.message || "An error occurred. Please try again.",
                 sender: "bot",
-                timestamp: new Date().toLocaleTimeString()
+                timestamp: new Date().toLocaleTimeString([], {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                  })
             };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
