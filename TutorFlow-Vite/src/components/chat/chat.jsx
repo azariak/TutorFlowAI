@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import ReactMarkdown from 'react-markdown';
 
 export default function App() {
     const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I help you today?", sender: "bot", timestamp: new Date().toLocaleTimeString() }
+        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", timestamp: new Date().toLocaleTimeString() }
     ]);
-    const [inputText, setInputText] = useState("");
+    const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
 
@@ -34,30 +35,31 @@ export default function App() {
         black: 'black'
     };
 
-    const handleSendMessage = async () => {
-        if (!inputText.trim()) return;
+    const handleSubmit = async () => {
+        if (!prompt.trim()) return;
 
         const userMessage = {
             id: messages.length + 1,
-            text: inputText,
+            text: prompt,
             sender: "user",
             timestamp: new Date().toLocaleTimeString()
         };
 
         setMessages(prev => [...prev, userMessage]);
-        setInputText("");
+        setPrompt("");
         setIsLoading(true);
 
         try {
             const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
             
             if (!apiKey) {
-                throw new Error('API key not found. Please check your environment variables.');
+                throw new Error('API key not found');
             }
 
             const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" }); // Updated model name
-            const response = await model.generateContent(inputText);
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            
+            const response = await model.generateContent(prompt);
             const botResponse = response.response.text();
 
             const botMessage = {
@@ -72,7 +74,7 @@ export default function App() {
             console.error("Error:", error);
             const errorMessage = {
                 id: messages.length + 2,
-                text: error.message || "Sorry, I encountered an error. Please try again.",
+                text: error.message || "An error occurred. Please try again.",
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString()
             };
@@ -82,7 +84,6 @@ export default function App() {
         }
     };
 
-    // ... rest of your styles and return statement remain the same ...
     const styles = {
         container: {
             position: 'fixed',
@@ -111,10 +112,7 @@ export default function App() {
             flexDirection: 'column',
             gap: '1rem',
             scrollbarWidth: 'thin',
-            msOverflowStyle: 'none',
-            '&::-webkit-scrollbar': {
-                display: 'none'
-            }
+            msOverflowStyle: 'none'
         },
         messageWrapper: (sender) => ({
             display: 'flex',
@@ -127,30 +125,59 @@ export default function App() {
             padding: '0.75rem',
             borderRadius: '15px',
             maxWidth: '80%',
-            color: sender === 'user' ? COLORS.white : COLORS.text
+            color: sender === 'user' ? COLORS.white : COLORS.text,
+            wordBreak: 'break-word'
         }),
+        markdownContainer: {
+            '& code': {
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                padding: '2px 4px',
+                borderRadius: '4px',
+                fontFamily: 'monospace'
+            },
+            '& pre': {
+                backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                padding: '8px',
+                borderRadius: '4px',
+                overflow: 'auto'
+            },
+            '& ul, & ol': {
+                paddingLeft: '20px',
+                margin: '8px 0'
+            },
+            '& p': {
+                margin: '8px 0'
+            },
+            '& a': {
+                color: COLORS.text,
+                textDecoration: 'underline'
+            }
+        },
         timestamp: {
             fontSize: '0.75rem',
             color: COLORS.black,
             opacity: 0.7,
             marginTop: '0.25rem'
         },
-        inputArea: {
+        promptArea: {
             padding: '1rem',
             borderTop: `5px solid ${COLORS.border}`,
             backgroundColor: COLORS.white,
             display: 'flex',
             gap: '0.5rem'
         },
-        input: {
+        textArea: {
             flex: 1,
             padding: '0.75rem',
             borderRadius: '15px',
             border: `2px solid ${COLORS.border}`,
             outline: 'none',
-            backgroundColor: COLORS.white
+            backgroundColor: COLORS.white,
+            resize: 'none',
+            fontFamily: 'inherit',
+            fontSize: 'inherit'
         },
-        sendButton: {
+        button: {
             padding: '0.75rem 1.5rem',
             borderRadius: '15px',
             border: 'none',
@@ -169,16 +196,17 @@ export default function App() {
                 <h4 style={{ margin: 0, color: COLORS.accent }}>Ask TutorFlow</h4>
             </div>
 
-            <div style={{
-                ...styles.messagesContainer,
-                '&::-webkit-scrollbar': {
-                    display: 'none'
-                }
-            }}>
+            <div style={styles.messagesContainer}>
                 {messages.map((message) => (
                     <div key={message.id} style={styles.messageWrapper(message.sender)}>
                         <div style={styles.message(message.sender)}>
-                            {message.text}
+                            {message.sender === 'bot' ? (
+                                <div style={styles.markdownContainer}>
+                                    <ReactMarkdown>{message.text}</ReactMarkdown>
+                                </div>
+                            ) : (
+                                message.text
+                            )}
                         </div>
                         <div style={styles.timestamp}>
                             {message.timestamp}
@@ -188,21 +216,26 @@ export default function App() {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div style={styles.inputArea}>
-                <input
-                    type="text"
-                    placeholder="Type your message..."
-                    style={styles.input}
-                    value={inputText}
-                    onChange={(e) => setInputText(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            <div style={styles.promptArea}>
+                <textarea
+                    placeholder="Ask anything..."
+                    style={styles.textArea}
+                    value={prompt}
+                    onChange={(e) => setPrompt(e.target.value)}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter' && !e.shiftKey) {
+                            e.preventDefault();
+                            handleSubmit();
+                        }
+                    }}
+                    rows={1}
                 />
                 <button 
-                    style={styles.sendButton}
-                    onClick={handleSendMessage}
+                    style={styles.button}
+                    onClick={handleSubmit}
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Thinking...' : 'Send'}
+                    {isLoading ? 'Thinking...' : '→'}
                 </button>
             </div>
         </div>
