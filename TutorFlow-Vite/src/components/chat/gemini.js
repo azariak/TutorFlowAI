@@ -2,8 +2,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from "dotenv";
 import sharp from "sharp";
 
-dotenv.config();
-
+require('dotenv').config();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const model = genAI.getGenerativeModel({ model: "learnlm-1.5-pro-experimental" });
 
@@ -28,7 +27,6 @@ async function geminiAI(text, image = null) {
    return response.response.text();
  }
 }
-
 (async () => {
  try {
    const result = await geminiAI(
