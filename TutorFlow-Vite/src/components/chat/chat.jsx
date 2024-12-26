@@ -188,7 +188,8 @@ export default function App() {
             backgroundColor: COLORS.white,
             resize: 'none',
             fontFamily: 'inherit',
-            fontSize: 'inherit'
+            fontSize: 'inherit',
+            scrollbarWidth: 'None'
         },
         button: {
             padding: '0.75rem 1.5rem',
