@@ -41,9 +41,9 @@ export default function App() {
         setIsLoading(true);
 
         try {
-            console.log(process.env)
-            const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-            const genAI = new GoogleGenerativeAI({ apiKey: apiKey });
+            // console.log(process.env)
+            // const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            const genAI = new GoogleGenerativeAI("");
             const model = genAI.getGenerativeModel({ model: "learnlm-1.5-pro-experimental" });
             const response = await model.generateContent(inputText);
             const botResponse = response.response.text();
@@ -178,7 +178,7 @@ export default function App() {
                     onClick={handleSendMessage}
                     disabled={isLoading}
                 >
-                    {isLoading ? 'Sending...' : 'Send'}
+                    {isLoading ? 'Thinking...' : 'Send'}
                 </button>
             </div>
         </div>
