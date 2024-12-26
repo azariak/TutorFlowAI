@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
 
 export default function App() {
     const [messages, setMessages] = useState([
@@ -8,6 +7,15 @@ export default function App() {
     ]);
     const [inputText, setInputText] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     const LAYOUT = {
         chatWidth: 35,
@@ -41,10 +49,14 @@ export default function App() {
         setIsLoading(true);
 
         try {
-            // console.log(process.env)
-            // const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
-            const genAI = new GoogleGenerativeAI("");
-            const model = genAI.getGenerativeModel({ model: "learnlm-1.5-pro-experimental" });
+            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            
+            if (!apiKey) {
+                throw new Error('API key not found. Please check your environment variables.');
+            }
+
+            const genAI = new GoogleGenerativeAI(apiKey);
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" }); // Updated model name
             const response = await model.generateContent(inputText);
             const botResponse = response.response.text();
 
@@ -60,7 +72,7 @@ export default function App() {
             console.error("Error:", error);
             const errorMessage = {
                 id: messages.length + 2,
-                text: "Sorry, I encountered an error. Please try again.",
+                text: error.message || "Sorry, I encountered an error. Please try again.",
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString()
             };
@@ -70,6 +82,7 @@ export default function App() {
         }
     };
 
+    // ... rest of your styles and return statement remain the same ...
     const styles = {
         container: {
             position: 'fixed',
@@ -96,7 +109,12 @@ export default function App() {
             padding: '1rem',
             display: 'flex',
             flexDirection: 'column',
-            gap: '1rem'
+            gap: '1rem',
+            scrollbarWidth: 'thin',
+            msOverflowStyle: 'none',
+            '&::-webkit-scrollbar': {
+                display: 'none'
+            }
         },
         messageWrapper: (sender) => ({
             display: 'flex',
@@ -151,7 +169,12 @@ export default function App() {
                 <h4 style={{ margin: 0, color: COLORS.accent }}>Ask TutorFlow</h4>
             </div>
 
-            <div style={styles.messagesContainer}>
+            <div style={{
+                ...styles.messagesContainer,
+                '&::-webkit-scrollbar': {
+                    display: 'none'
+                }
+            }}>
                 {messages.map((message) => (
                     <div key={message.id} style={styles.messageWrapper(message.sender)}>
                         <div style={styles.message(message.sender)}>
@@ -162,6 +185,7 @@ export default function App() {
                         </div>
                     </div>
                 ))}
+                <div ref={messagesEndRef} />
             </div>
 
             <div style={styles.inputArea}>
