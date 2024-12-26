@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/" }
+  ],
+  "build": {
+    "target": "TutorFlow-Vite" 
+  }
+}
