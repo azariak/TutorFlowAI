@@ -10,11 +10,12 @@ export default function App() {
     // Style constants
     const COLORS = {
         primary: '#FFECD1',
-        secondary: '#FFE3BC',
-        accent: '#FFB74D',
+        secondary: '#78290F',
+        accent: '#001524',
         border: '#E5D5B8',
-        text: '#4A4A4A',
-        white: '#FFFFFF'
+        text: '#FFECD1',
+        white: '#FFECD1',
+        black: 'black'
     };
 
     // Sample messages
@@ -41,9 +42,9 @@ export default function App() {
             boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
         },
         header: {
-            padding: '1rem',
-            borderBottom: `1px solid ${COLORS.border}`,
-            backgroundColor: COLORS.secondary
+            padding: '0.5rem',
+            borderBottom: `0px solid ${COLORS.border}`,
+            backgroundColor: COLORS.white
         },
         messagesContainer: {
             flex: 1,
@@ -68,14 +69,14 @@ export default function App() {
         }),
         timestamp: {
             fontSize: '0.75rem',
-            color: COLORS.text,
+            color: COLORS.black,
             opacity: 0.7,
             marginTop: '0.25rem'
         },
         inputArea: {
             padding: '1rem',
-            borderTop: `1px solid ${COLORS.border}`,
-            backgroundColor: COLORS.secondary,
+            borderTop: `5px solid ${COLORS.border}`,
+            backgroundColor: COLORS.white,
             display: 'flex',
             gap: '0.5rem'
         },
@@ -83,7 +84,7 @@ export default function App() {
             flex: 1,
             padding: '0.75rem',
             borderRadius: '15px',
-            border: `1px solid ${COLORS.border}`,
+            border: `2px solid ${COLORS.border}`,
             outline: 'none',
             backgroundColor: COLORS.white
         },
@@ -103,8 +104,9 @@ export default function App() {
 
     return (
         <div style={styles.container}>
+            
             <div style={styles.header}>
-                <h3 style={{ margin: 0, color: COLORS.text }}>Ask TutorFlow</h3>
+                <h3 style={{ margin: 0, color: COLORS.text }}></h3>
             </div>
 
             <div style={styles.messagesContainer}>
