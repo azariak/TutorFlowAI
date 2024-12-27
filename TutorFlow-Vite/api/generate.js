@@ -44,7 +44,7 @@ export default async function handler(req, res) {
     // Get model with error handling
     let model;
     try {
-      model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     } catch (modelError) {
       console.error('Model creation error:', modelError);
       return res.status(500).json({ error: 'Failed to create AI model' });
