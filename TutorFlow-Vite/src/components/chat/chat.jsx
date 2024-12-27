@@ -1,13 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { throttleBasic, useLLMOutput } from "@llm-ui/react";
+
+const throttle = throttleBasic({
+  readAheadChars: 10,
+  targetBufferChars: 7,
+  adjustPercentage: 0.35,
+  frameLookBackMs: 10000,
+  windowLookBackMs: 2000,
+});
+
+const MessageContent = ({ message }) => (
+  <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
+);
 
 export default function App() {
+    const [output, setOutput] = useState("");
+    const [isStreamFinished, setIsStreamFinished] = useState(false);
+  
+    const { blockMatches } = useLLMOutput({
+      llmOutput: output,
+      blocks: [],
+      fallbackBlock: { match: () => true },
+      isStreamFinished,
+      throttle,
+    });
+    
     const [messages, setMessages] = useState([
-        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", timestamp: new Date().toLocaleTimeString([], {
-            hour: 'numeric',
-            minute: 'numeric',
-          }) }
+        { id: 1, text: "Hello! How can I assist you today?", sender: "bot", timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }) }
     ]);
     const [prompt, setPrompt] = useState("");
     const [isLoading, setIsLoading] = useState(false);
@@ -39,22 +61,21 @@ export default function App() {
     };
 
     const handleSubmit = async () => {
+        setIsStreamFinished(false);
+
         if (!prompt.trim()) return;
-    
+
         const userMessage = {
             id: messages.length + 1,
             text: prompt,
             sender: "user",
-            timestamp: new Date().toLocaleTimeString([], {
-                hour: 'numeric',
-                minute: 'numeric',
-            })
+            timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
         };
-    
+
         setMessages(prev => [...prev, userMessage]);
         setPrompt("");
         setIsLoading(true);
-    
+
         try {
             const response = await fetch('/api/generate', {
                 method: 'POST',
@@ -64,8 +85,7 @@ export default function App() {
                 },
                 body: JSON.stringify({ prompt }),
             });
-    
-            // First try to parse the response as JSON
+
             let data;
             const textResponse = await response.text();
             
@@ -76,22 +96,18 @@ export default function App() {
                 console.log('Raw response:', textResponse);
                 throw new Error('Failed to parse response from server');
             }
-    
+
             if (!data.success) {
                 throw new Error(data.error || data.message || 'Failed to generate response');
             }
-    
-            // Safely handle markdown content
+
             const botMessage = {
                 id: messages.length + 2,
-                text: data.text || '',  // Ensure text is never undefined
+                text: data.text || '',
                 sender: "bot",
-                timestamp: new Date().toLocaleTimeString([], {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                })
+                timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
             };
-    
+
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
             console.error("Error:", error);
@@ -100,46 +116,15 @@ export default function App() {
                 id: messages.length + 2,
                 text: `I apologize, but I encountered an error: ${error.message}. Please try again.`,
                 sender: "bot",
-                timestamp: new Date().toLocaleTimeString([], {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                })
+                timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
             };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
             setIsLoading(false);
+            setIsStreamFinished(true);
         }
     };
-    
-    // Update the message rendering component to safely handle markdown
-    const MessageContent = ({ message }) => {
-        if (message.sender === 'bot') {
-            return (
-                <div style={styles.markdownContainer}>
-                    <ReactMarkdown components={{
-                        // Safely handle code blocks
-                        code: ({node, inline, className, children, ...props}) => {
-                            const match = /language-(\w+)/.exec(className || '');
-                            return !inline && match ? (
-                                <pre className={className}>
-                                    <code {...props}>
-                                        {String(children).replace(/\n$/, '')}
-                                    </code>
-                                </pre>
-                            ) : (
-                                <code className={className} {...props}>
-                                    {children}
-                                </code>
-                            );
-                        }
-                    }}>
-                        {message.text || ''}
-                    </ReactMarkdown>
-                </div>
-            );
-        }
-        return message.text;
-    };
+
     const styles = {
         container: {
             position: 'fixed',
@@ -258,9 +243,7 @@ export default function App() {
                     <div key={message.id} style={styles.messageWrapper(message.sender)}>
                         <div style={styles.message(message.sender)}>
                             {message.sender === 'bot' ? (
-                                <div style={styles.markdownContainer}>
-                                    <ReactMarkdown>{message.text}</ReactMarkdown>
-                                </div>
+                                <MessageContent message={blockMatches[0]?.output || message.text} />
                             ) : (
                                 message.text
                             )}
