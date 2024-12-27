@@ -2,7 +2,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(req, res) {
-  console.log('API route hit:', req.method, req.body);
   res.setHeader('Content-Type', 'application/json');
   
   if (req.method !== 'POST') {
