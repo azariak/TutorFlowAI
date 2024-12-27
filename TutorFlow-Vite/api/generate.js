@@ -1,5 +1,8 @@
 // pages/api/generate.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -21,7 +24,7 @@ export default async function handler(req, res) {
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_API_KEY; 
 
     if (!apiKey) {
       return res.status(500).json({ 
