@@ -40,7 +40,7 @@ export default function App() {
 
     const handleSubmit = async () => {
         if (!prompt.trim()) return;
-
+    
         const userMessage = {
             id: messages.length + 1,
             text: prompt,
@@ -48,38 +48,39 @@ export default function App() {
             timestamp: new Date().toLocaleTimeString([], {
                 hour: 'numeric',
                 minute: 'numeric',
-              })
+            })
         };
-
+    
         setMessages(prev => [...prev, userMessage]);
         setPrompt("");
         setIsLoading(true);
-
+    
         try {
-            const apiKey = process.env.GEMINI_API_KEY;
-            console.log(apiKey);
-            
-            if (!apiKey) {
-                throw new Error('API key not found');
+            const response = await fetch('/api/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ prompt }),
+            });
+    
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.message || 'Failed to generate response');
             }
-
-            const genAI = new GoogleGenerativeAI(apiKey);
-            const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+    
+            const data = await response.json();
             
-            const response = await model.generateContent(prompt);
-            const botResponse = response.response.text();
-            console.log(botResponse)
-
             const botMessage = {
                 id: messages.length + 2,
-                text: botResponse,
+                text: data.response,
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
                     minute: 'numeric',
-                  })
+                })
             };
-
+    
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
             console.error("Error:", error);
@@ -90,7 +91,7 @@ export default function App() {
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
                     minute: 'numeric',
-                  })
+                })
             };
             setMessages(prev => [...prev, errorMessage]);
         } finally {
