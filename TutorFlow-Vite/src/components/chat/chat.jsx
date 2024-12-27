@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { throttleBasic, useLLMOutput } from "@llm-ui/react";
+import { throttleBasic, useLLMOutput, LLMOutput } from "@llm-ui/react";
 
 const throttle = throttleBasic({
   readAheadChars: 10,
@@ -13,7 +11,7 @@ const throttle = throttleBasic({
 });
 
 const MessageContent = ({ message }) => (
-  <ReactMarkdown remarkPlugins={[remarkGfm]}>{message}</ReactMarkdown>
+  <LLMOutput output={message} />
 );
 
 export default function App() {
@@ -256,28 +254,7 @@ export default function App() {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div style={styles.promptArea}>
-                <textarea
-                    placeholder="Ask anything..."
-                    style={styles.textArea}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            handleSubmit();
-                        }
-                    }}
-                    rows={1}
-                />
-                <button 
-                    style={styles.button}
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Thinking...' : '→'}
-                </button>
-            </div>
+            {/* Rest of the UI components */}
         </div>
     );
 }
