@@ -56,33 +56,23 @@ export default function App() {
         setIsLoading(true);
     
         try {
-            console.log('Sending request...'); // Debug log
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({ prompt }),
             });
     
-            console.log('Response status:', response.status); // Debug log
-            
-            const contentType = response.headers.get("content-type");
-            if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Received non-JSON response from server");
-            }
-    
             const data = await response.json();
-            console.log('Response data:', data); // Debug log
     
             if (!response.ok) {
-                throw new Error(data.error || data.details || 'Failed to generate response');
+                throw new Error(data.error || 'Failed to generate response');
             }
     
             const botMessage = {
                 id: messages.length + 2,
-                text: data.data, // Updated to match API response structure
+                text: data.text,
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -92,11 +82,11 @@ export default function App() {
     
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
-            console.error("Detailed client error:", error); // Debug log
+            console.error("Client Error:", error);
             
             const errorMessage = {
                 id: messages.length + 2,
-                text: `I apologize, but I encountered an error. Please try again. (Error: ${error.message})`,
+                text: `An error occurred: ${error.message}`,
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -108,7 +98,7 @@ export default function App() {
             setIsLoading(false);
         }
     };
-
+    
     const styles = {
         container: {
             position: 'fixed',
