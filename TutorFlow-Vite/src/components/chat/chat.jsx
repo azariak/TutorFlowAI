@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { throttleBasic, useLLMOutput } from "@llm-ui/react";
+import { throttleBasic, useLLMOutput, LLMOutput } from "@llm-ui/react";
 
 const throttle = throttleBasic({
   readAheadChars: 10,
