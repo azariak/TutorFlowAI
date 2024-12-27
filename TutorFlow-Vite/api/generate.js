@@ -2,7 +2,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(req, res) {
-  console.log('API route hit:', req.method, req.body);
   res.setHeader('Content-Type', 'application/json');
   
   if (req.method !== 'POST') {
@@ -22,9 +21,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // const apiKey = process.env.GEMINI_API_KEY;
-    const apiKey = AIzaSyAJ-wKmXr9racsYYYWdmNq5D4D5qcEP6wA;
-
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       return res.status(500).json({ 
         success: false,
