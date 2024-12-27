@@ -1,6 +1,9 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default async function handler(req, res) {
+  // Set CORS headers
+  res.setHeader('Content-Type', 'application/json');
+  
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
   }
@@ -22,11 +25,14 @@ export default async function handler(req, res) {
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
     
     const response = await model.generateContent(prompt);
-    const result = response.response.text();
+    const result = await response.response.text();
 
-    res.status(200).json({ response: result });
+    return res.status(200).json({ response: result });
   } catch (error) {
     console.error('Error:', error);
-    res.status(500).json({ message: error.message || 'Something went wrong' });
+    return res.status(500).json({ 
+      message: error.message || 'Something went wrong',
+      error: true 
+    });
   }
 }

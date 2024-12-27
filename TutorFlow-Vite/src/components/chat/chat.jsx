@@ -60,17 +60,17 @@ export default function App() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({ prompt }),
             });
     
+            const data = await response.json();
+    
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.message || 'Failed to generate response');
+                throw new Error(data.message || 'Failed to generate response');
             }
     
-            const data = await response.json();
-            
             const botMessage = {
                 id: messages.length + 2,
                 text: data.response,
@@ -86,7 +86,7 @@ export default function App() {
             console.error("Error:", error);
             const errorMessage = {
                 id: messages.length + 2,
-                text: error.message || "An error occurred. Please try again.",
+                text: "Sorry, I encountered an error. Please try again.",
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -98,7 +98,7 @@ export default function App() {
             setIsLoading(false);
         }
     };
-
+    
     const styles = {
         container: {
             position: 'fixed',
