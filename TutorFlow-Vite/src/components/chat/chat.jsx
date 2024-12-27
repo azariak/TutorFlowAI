@@ -60,19 +60,31 @@ export default function App() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Accept': 'application/json',
                 },
                 body: JSON.stringify({ prompt }),
             });
     
-            const data = await response.json();
-    
-            if (!response.ok) {
-                throw new Error(data.error || 'Failed to generate response');
+            // First try to parse the response as JSON
+            let data;
+            const textResponse = await response.text();
+            
+            try {
+                data = JSON.parse(textResponse);
+            } catch (parseError) {
+                console.error('JSON Parse Error:', parseError);
+                console.log('Raw response:', textResponse);
+                throw new Error('Failed to parse response from server');
             }
     
+            if (!data.success) {
+                throw new Error(data.error || data.message || 'Failed to generate response');
+            }
+    
+            // Safely handle markdown content
             const botMessage = {
                 id: messages.length + 2,
-                text: data.text,
+                text: data.text || '',  // Ensure text is never undefined
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -82,11 +94,11 @@ export default function App() {
     
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
-            console.error("Client Error:", error);
+            console.error("Error:", error);
             
             const errorMessage = {
                 id: messages.length + 2,
-                text: `An error occurred: ${error.message}`,
+                text: `I apologize, but I encountered an error: ${error.message}. Please try again.`,
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -99,6 +111,35 @@ export default function App() {
         }
     };
     
+    // Update the message rendering component to safely handle markdown
+    const MessageContent = ({ message }) => {
+        if (message.sender === 'bot') {
+            return (
+                <div style={styles.markdownContainer}>
+                    <ReactMarkdown components={{
+                        // Safely handle code blocks
+                        code: ({node, inline, className, children, ...props}) => {
+                            const match = /language-(\w+)/.exec(className || '');
+                            return !inline && match ? (
+                                <pre className={className}>
+                                    <code {...props}>
+                                        {String(children).replace(/\n$/, '')}
+                                    </code>
+                                </pre>
+                            ) : (
+                                <code className={className} {...props}>
+                                    {children}
+                                </code>
+                            );
+                        }
+                    }}>
+                        {message.text || ''}
+                    </ReactMarkdown>
+                </div>
+            );
+        }
+        return message.text;
+    };
     const styles = {
         container: {
             position: 'fixed',
