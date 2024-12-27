@@ -15,7 +15,7 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 
 #### TODO: 
 Create virtual environment, requirements.txt, auto select draw tool, rounded corner, refactor, seperate color pallete, add stuff to readme
-md, whiteboard image, width bug
+whiteboard image, width bug, api to work on vercal and npm run dev
 
 #### Color Scheme
 -  [Palette - Coolors](https://coolors.co/palette/001524-15616d-ffecd1-ff7d00-78290f)
