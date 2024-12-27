@@ -56,6 +56,7 @@ export default function App() {
         setIsLoading(true);
     
         try {
+            console.log('Sending request...'); // Debug log
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
@@ -65,15 +66,23 @@ export default function App() {
                 body: JSON.stringify({ prompt }),
             });
     
+            console.log('Response status:', response.status); // Debug log
+            
+            const contentType = response.headers.get("content-type");
+            if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("Received non-JSON response from server");
+            }
+    
             const data = await response.json();
+            console.log('Response data:', data); // Debug log
     
             if (!response.ok) {
-                throw new Error(data.message || 'Failed to generate response');
+                throw new Error(data.error || data.details || 'Failed to generate response');
             }
     
             const botMessage = {
                 id: messages.length + 2,
-                text: data.response,
+                text: data.data, // Updated to match API response structure
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -83,10 +92,11 @@ export default function App() {
     
             setMessages(prev => [...prev, botMessage]);
         } catch (error) {
-            console.error("Error:", error);
+            console.error("Detailed client error:", error); // Debug log
+            
             const errorMessage = {
                 id: messages.length + 2,
-                text: "Sorry, I encountered an error. Please try again.",
+                text: `I apologize, but I encountered an error. Please try again. (Error: ${error.message})`,
                 sender: "bot",
                 timestamp: new Date().toLocaleTimeString([], {
                     hour: 'numeric',
@@ -98,7 +108,7 @@ export default function App() {
             setIsLoading(false);
         }
     };
-    
+
     const styles = {
         container: {
             position: 'fixed',
