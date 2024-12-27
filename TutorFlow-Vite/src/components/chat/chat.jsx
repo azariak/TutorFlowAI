@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { throttleBasic, useLLMOutput, LLMOutput } from "@llm-ui/react";
 
 const throttle = throttleBasic({

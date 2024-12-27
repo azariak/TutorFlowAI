@@ -11,10 +11,16 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@llm-ui/code": "^0.13.3",
+    "@llm-ui/markdown": "^0.13.3",
+    "@llm-ui/react": "^0.13.3",
     "dotenv": "^16.4.7",
+    "html-react-parser": "^5.2.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-markdown": "^9.0.1",
+    "remark-gfm": "^4.0.0",
+    "shiki": "^1.24.4",
     "tldraw": "^3.6.1"
   },
   "devDependencies": {
