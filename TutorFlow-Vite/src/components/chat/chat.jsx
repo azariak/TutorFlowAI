@@ -57,6 +57,7 @@ export default function App() {
 
         try {
             const apiKey = process.env.GEMINI_API_KEY;
+            console.log(apiKey);
             
             if (!apiKey) {
                 throw new Error('API key not found');
