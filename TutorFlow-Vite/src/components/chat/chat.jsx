@@ -56,7 +56,7 @@ export default function App() {
         setIsLoading(true);
 
         try {
-            const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+            const apiKey = process.env.VITE_GEMINI_API_KEY;
             
             if (!apiKey) {
                 throw new Error('API key not found');
