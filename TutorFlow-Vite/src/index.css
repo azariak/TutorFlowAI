@@ -2,9 +2,16 @@ body {
   background-color: #001524;
   color: #FFECD1;
   font-family: Calibri, Arial Rounded MT Bold, Century Gothic, Verdana, Tahoma, sans-serif;
+
 }
 
 
+img {
+  -webkit-user-drag: none; /* Chrome, Safari, Opera */
+  -khtml-user-drag: none;  /* Older Safari versions */
+  -moz-user-drag: none;    /* Firefox */
+  -ms-user-drag: none;     /* Internet Explorer/Edge */
+}
 
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
