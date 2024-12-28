@@ -62,8 +62,10 @@ export default function App() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({ prompt }),
-            });
+                body: JSON.stringify({ 
+                    prompt,
+                    messages: messages 
+                }),            });
     
             // First try to parse the response as JSON
             let data;
