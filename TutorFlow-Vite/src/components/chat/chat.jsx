@@ -64,7 +64,7 @@ export default function App() {
                 },
                 body: JSON.stringify({ 
                     prompt,
-                    messages: messages 
+                    messages: messages.slice(0, -1) // Send all messages except the current one
                 }),            });
     
             // First try to parse the response as JSON
