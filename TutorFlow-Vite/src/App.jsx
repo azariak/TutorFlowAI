@@ -4,6 +4,8 @@ import Footer from './components/footer';
 import Chat from './components/chat/chat'
 import Microphone from './components/microphone'
 import './App.css';
+import { Analytics } from "@vercel/analytics/react"
+
 
 export default function App() {
     return (
@@ -17,6 +19,8 @@ export default function App() {
             <Microphone />
 
             <Footer />
+
+            <Analytics />
         </div>
     );
 }
