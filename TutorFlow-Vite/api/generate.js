@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body;
+    const { prompt, messages = [] } = req.body;
     
     if (!prompt) {
       return res.status(400).json({ 
@@ -36,7 +36,15 @@ export default async function handler(req, res) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
-    const result = await model.generateContent(prompt);
+    // Format conversation history
+    const history = messages.map(msg => ({
+      role: msg.sender === 'user' ? 'user' : 'model',
+      parts: msg.text
+    }));
+
+    // Start chat with history and send message
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessage(prompt);
     let textResult = await result.response.text();
 
     // Safely encode any special characters that might break JSON
