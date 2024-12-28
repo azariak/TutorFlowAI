@@ -15,7 +15,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt } = req.body;
+    const { prompt, messages } = req.body;
     
     if (!prompt) {
       return res.status(400).json({ 
@@ -36,7 +36,17 @@ export default async function handler(req, res) {
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
 
-    const result = await model.generateContent(prompt);
+    // Construct the context from previous messages
+    let fullPrompt = prompt;
+    if (messages && messages.length > 0) {
+      const context = messages.map(msg => 
+        `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
+      ).join('\n');
+      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}\nAssistant:`;
+    }
+
+    // Use generateContent with the full context
+    const result = await model.generateContent(fullPrompt);
     let textResult = await result.response.text();
 
     // Safely encode any special characters that might break JSON

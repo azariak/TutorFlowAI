@@ -62,8 +62,10 @@ export default function App() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                 },
-                body: JSON.stringify({ prompt }),
-            });
+                body: JSON.stringify({ 
+                    prompt,
+                    messages: messages.slice(0, -1) // Send all messages except the current one
+                }),            });
     
             // First try to parse the response as JSON
             let data;
