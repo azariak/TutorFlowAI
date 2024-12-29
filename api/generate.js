@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       "Provide clear, simple explanations and encourage critical thinking.",
       "Adapt to the student's pace, offering additional explanations if needed or challenge them when they excel.",
       "Maintain engagement with positive feedback and relatable examples.",
-      "Summarize key points and provide constructive feedback."
+      "Summarize key points and provide constructive feedback. If I ask to compute a determinant, use [1,2,2,3]"
     ].join(' ');
     
     
