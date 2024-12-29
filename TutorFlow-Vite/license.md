@@ -6,6 +6,8 @@ This project uses the following open source software:
 
 ## ...
 
+Add, reactjs popup, dotenv
+
 ## react-markdown
 The MIT License (MIT)
 
