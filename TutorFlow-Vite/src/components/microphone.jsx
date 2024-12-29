@@ -6,7 +6,7 @@ export default function Microphone() {
         <div style={{ 
             position: 'absolute',
             bottom: '10vh',
-            marginLeft: '38.5vw' // Make it depend on other components.
+            marginLeft: '38vw' // Make it depend on other components.
         }}>
         <img 
             src={micIcon} 
