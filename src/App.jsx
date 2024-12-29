@@ -6,6 +6,10 @@ import Microphone from './components/microphone'
 import './App.css';
 import { Analytics } from "@vercel/analytics/react"
 
+import ReactGA from 'react-ga';
+
+const TRACKING_ID = "G-6T856ZQMXX"; // OUR_TRACKING_ID
+ReactGA.initialize(TRACKING_ID);
 
 export default function App() {
     return (
