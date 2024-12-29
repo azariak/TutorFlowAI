@@ -85,14 +85,6 @@ const Footer = () => {
     }
   };
 
-  const dependencies = [
-    { name: 'React', url: 'https://github.com/facebook/react', license: 'MIT License' },
-    { name: 'React-Markdown', url: 'https://github.com/remarkjs/react-markdown', license: 'MIT License' },
-    { name: 'reactjs-popup', url: 'https://github.com/yjose/reactjs-popup', license: 'MIT License' },
-    { name: 'dotenv', url: 'https://github.com/motdotla/dotenv', license: 'BSD-2-Clause' },
-    { name: 'Vite', url: 'https://github.com/vitejs/vite', license: 'MIT' }
-  ];
-
   return (
     <footer>
       <div style={styles.footer}>
@@ -138,21 +130,16 @@ const Footer = () => {
               </a>
             </p>
             <div style={styles.text.attribution}>
-              Built with:
+              Built with open source software. 
               <p style={{ marginTop: '5px' }}>
-                {dependencies.map(({ name, url, license }) => (
-                  <React.Fragment key={name}>
-                    <a 
-                      href={url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={styles.link}
-                    >
-                      {name} ({license})
-                    </a>
-                    <br />
-                  </React.Fragment>
-                ))}
+                <a 
+                  href="license-report.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={styles.link}
+                >
+                  View license information
+                </a>
               </p>
             </div>
           </div>
