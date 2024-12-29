@@ -97,7 +97,7 @@ const HelpContent = () => (
         <h4>Keyboard Shortcuts</h4>
         <ul>
           <li><strong>Ctrl + Z:</strong> Undo</li>
-          <li><strong>Ctrl + Y:</strong> Redo (Coming Soon)</li> 
+          <li><strong>Ctrl + Y:</strong> Redo (Coming Soon) </li> 
           <li><strong>Spacebar:</strong> Toggle voice input</li>
           <li><strong>Esc:</strong> Clear selection</li>
         </ul>
