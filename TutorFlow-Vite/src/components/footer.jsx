@@ -156,7 +156,15 @@ export default function Footer() {
                     style={styles.link}
                     >
                     dotenv (BSD-2-Clause)
-                    </a> 
+                    </a> <br />
+                    <a 
+                      href="https://github.com/vitejs/vite" 
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={styles.link}
+                    >
+                      Vite (MIT)
+                  </a>
               </p>
             </div>
           </div>
