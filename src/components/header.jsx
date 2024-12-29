@@ -44,6 +44,9 @@ const styles = {
     padding: "40px",
     borderRadius: "12px",
     maxWidth: "600px",
+    maxHeight: "600px", 
+    overflowY: "auto", 
+    scrollbarWidth: "thin",
     position: "relative",
     textAlign: "center"
   },
