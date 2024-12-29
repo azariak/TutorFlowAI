@@ -1,6 +1,14 @@
 # TutorFlowAI
-## A project by Azaria Kelman
+## A project by [Azaria Kelman]((mailto:azaria.kelman@mail.utoronto.ca))
 Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, and a digital whiteboard to provide an interactive and personalized tutoring experience.
+
+#### Table of Contents
+1. [Introduction](#TutorFlowAI)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Contributing](#contributing)
+5. [License](#license)
+
 
 #### Rough sketch:
 ![Figma](Figma.png)
@@ -14,8 +22,24 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 - JS: @google/generative-ai, sharp, dotenv
 
 #### TODO: 
-Create virtual environment, requirements.txt, auto select draw tool, rounded corner, refactor, seperate color pallete, add stuff to readme
-whiteboard image, width bug, api to work on vercel and npm run dev, refact react-markdown to LLMUI
+Create virtual environment,  auto select draw tool, rounded corners for whiteboard, refactor css, improve readme
+whiteboard image, api to work on vercel and npm run dev, refact react-markdown to LLMUI, mobile site
 
 #### Color Scheme
 -  [Palette - Coolors](https://coolors.co/palette/001524-15616d-ffecd1-ff7d00-78290f)
+- Off-white:
+- Background:
+
+#### Installation
+- Double check on new device:
+1. Clone the repository: `git clone https://github.com/azariak/TutorFlowAI.git`
+
+2. Install dependencies: `npm install`
+
+3. Run the project: `npm run dev`
+
+
+
+#### ⭐ Support the Project
+- If you find this project helpful or interesting, please consider giving it a star on GitHub! 
+- Feel free to create issues or forks to contribute code
