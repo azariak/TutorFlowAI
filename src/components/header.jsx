@@ -4,6 +4,8 @@ import "reactjs-popup/dist/index.css";
 import downloadIcon from "../assets/icons/download-icon.png";
 import settingsIcon from "../assets/icons/settings-icon.png";
 import helpIcon from "../assets/icons/help-icon.png";
+import demoVideo from "../assets/Demos/TutorFlow-FastDemo.mp4";
+
 
 // Styles object
 const styles = {
@@ -42,6 +44,9 @@ const styles = {
     padding: "40px",
     borderRadius: "12px",
     maxWidth: "600px",
+    maxHeight: "600px", 
+    overflowY: "auto", 
+    scrollbarWidth: "thin",
     position: "relative",
     textAlign: "center"
   },
@@ -76,6 +81,18 @@ const HelpContent = () => (
     <div style={styles.content}>
   
       <div style={styles.section}>
+
+      <video 
+        width="600" 
+        height="338" 
+        controls 
+        autoPlay 
+        muted 
+        playsInline
+      >        <source src={demoVideo} type="video/mp4" />
+     </video>
+
+
         <h4>Key Features</h4>
         <ul>
           <li><strong>Whiteboard:</strong> Draw, write, and solve problems in real-time</li>
