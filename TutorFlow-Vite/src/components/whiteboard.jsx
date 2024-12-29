@@ -2,23 +2,21 @@ import { Tldraw } from 'tldraw'
 import 'tldraw/tldraw.css'
 
 export default function App() {
-
     const whiteboardWidth = 55;
     const marginLeft = 100 - whiteboardWidth;
-
     const whiteboardHeight = 77;
     const marginTop = 92 - whiteboardHeight;
     
     return (
-        <div style={{ 
-            position: 'fixed', 
-            inset: 0, 
-            width: `${whiteboardWidth}vw`, 
+        <div style={{
+            position: 'fixed',
+            inset: 0,
+            width: `${whiteboardWidth}vw`,
             height: `${whiteboardHeight}vh`,
-            marginLeft: `${marginLeft}vw`, 
+            marginLeft: `${marginLeft}vw`,
             marginTop: `${marginTop}vh`
-            }}>
-            <Tldraw inferDarkMode={true} />
+        }}>
+            <Tldraw onMount={(editor) => editor.user.updateUserPreferences({ colorScheme: 'dark' })} />
         </div>
     )
 }
