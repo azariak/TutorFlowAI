@@ -7,7 +7,7 @@ const Footer = () => {
 
   const licenseData = [
     { name: '@google/generative-ai', licenseType: 'Apache-2.0', version: '0.21.0', author: '' },
-    { name: '@vercel/analytics', licenseType: 'MPL-2.0', version: '1.4.1', author: 'n/a' },
+    { name: 'react-ga', licenseType: 'Apache License', version: '3.3.1', author: 'n/a' },
     { name: 'dotenv', licenseType: 'BSD-2-Clause', version: '16.4.7', author: 'n/a' },
     { name: 'license-report', licenseType: 'MIT', version: '6.7.1', author: 'Yaniv Kessler' },
     { name: 'react', licenseType: 'MIT', version: '18.3.1', author: 'n/a' },
