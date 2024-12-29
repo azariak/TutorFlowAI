@@ -11,6 +11,7 @@ img {
   -khtml-user-drag: none;  /* Older Safari versions */
   -moz-user-drag: none;    /* Firefox */
   -ms-user-drag: none;     /* Internet Explorer/Edge */
+  cursor: pointer;
 }
 
 /* :root {
