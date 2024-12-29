@@ -39,7 +39,8 @@ export default async function handler(req, res) {
       "Adapt to the student's pace, offering additional explanations if needed or challenge them when they excel.",
       "Maintain engagement with positive feedback and relatable examples.",
       "Summarize key points and provide constructive feedback."
-    ];
+    ].join(' ');
+    
     
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp",
