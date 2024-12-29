@@ -2,6 +2,8 @@
 ## A project by [Azaria Kelman]((mailto:azaria.kelman@mail.utoronto.ca))
 Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, and a digital whiteboard to provide an interactive and personalized tutoring experience.
 
+![Demo GIF](src\assets\TutorFlow-Demo.gif)
+
 #### Table of Contents
 1. [Introduction](#TutorFlowAI)
 2. [Installation](#installation)

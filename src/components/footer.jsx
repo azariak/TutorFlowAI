@@ -146,7 +146,7 @@ const Footer = () => {
             </a>
           </p>
           <div style={styles.text.attribution}>
-            Built with open source software. 
+            Built using open source software. 
             <p style={{ marginTop: '5px' }}>
               <span 
                 onClick={() => setActivePopup('license')}
