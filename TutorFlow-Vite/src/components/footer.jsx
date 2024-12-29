@@ -113,7 +113,7 @@ export default function Footer() {
               <p>
                 TutorFlowAI is an interactive learning platform designed to make 
                 education more accessible and engaging through AI-powered tutoring.
-                Students can interact with our AI tutor through text or voice chat,
+                Users can interact with our AI tutor through text or voice chat,
                 while the AI can see their work on the whiteboard in
                 real-time.
               </p>
