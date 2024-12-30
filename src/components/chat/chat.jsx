@@ -7,7 +7,7 @@ const ImagePreview = ({ onRemove }) => {
         <div className={styles.previewContainer}>
             <div className={styles.previewWrapper}>
                 <img 
-                    src="figma.png"
+                    src="Figma.png"
                     alt="Whiteboard preview" 
                     className={styles.previewImage}
                 />
