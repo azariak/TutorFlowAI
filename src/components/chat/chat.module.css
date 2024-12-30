@@ -219,3 +219,8 @@
 .removePreviewButton:hover {
     opacity: 1;
 }
+
+.hiddenFileInput {
+    display: none; /* Ensures the file input is fully hidden */
+  }
+  

@@ -153,7 +153,7 @@ export default function App() {
           ref={fileInputRef}
           onChange={handleImageUpload}
           accept="image/*"
-          className="hidden"
+          className={styles.hiddenFileInput}
         />
         
         {imageFile && (
