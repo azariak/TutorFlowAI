@@ -34,7 +34,7 @@ export default async function handler(req, res) {
     const chat = model.startChat({
       history: messages || [] // Use the provided history, or start fresh if none provided
     });
-
+ 
     let result;
     if (hasWhiteboard && image) {
       result = await chat.sendMessage({
