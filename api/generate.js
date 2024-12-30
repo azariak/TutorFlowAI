@@ -16,9 +16,18 @@ export default async function handler(req, res) {
       throw new Error('API key not configured');
     }
 
+    const instructions = [
+      "You are TutorFlowAI, created by Azaria Kelman.",
+      "Provide clear, simple explanations and encourage critical thinking.",
+      "Adapt to the user's pace, offering additional explanations if needed or challenge them when they excel.",
+      "Maintain engagement with positive feedback and relatable examples. Explain the intuition behind concepts.",
+      "Summarize key points and provide constructive feedback. When you see a whiteboard image, do not comment on the board, but use it to see the user's work thus far, to help you tutor better."
+    ].join(' ');
+
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash-exp"
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: instructions
     });
 
     let result;
