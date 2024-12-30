@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
-import image from "../../assets/logo.png"; 
-
 
 dotenv.config();
 
@@ -43,37 +41,22 @@ export default async function handler(req, res) {
     ].join(' ');
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    let parts = [];
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: instructions 
+    });
 
-    if (hasWhiteboard) {
-      // Using a placeholder URL - replace with your actual image URL
-      const imageResp = await fetch(image).then(response => response.arrayBuffer());
-      
-      parts.push({
-        inlineData: {
-          data: Buffer.from(imageResp).toString("base64"),
-          mimeType: "image/png",
-        },
-      });
-    }
-
-    // Add conversation history if it exists
+    // Construct the context from previous messages
     let fullPrompt = prompt;
     if (messages && messages.length > 0) {
       const context = messages.map(msg =>
         `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
       ).join('\n');
-      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}\nAssistant:`;
+      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}${hasWhiteboard ? ' [Student has shared a whiteboard image showing their work]' : ''}\nAssistant:`;
     }
 
-    parts.push(fullPrompt);
-
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
-      systemInstruction: instructions
-    });
-
-    const result = await model.generateContent(parts);
+    // Use generateContent with the full context
+    const result = await model.generateContent(fullPrompt);
     let textResult = await result.response.text();
 
     // Safely encode any special characters that might break JSON
@@ -83,6 +66,7 @@ export default async function handler(req, res) {
       .replace(/\\/g, '\\\\')
       .replace(/\"/g, '\\"');
 
+    // Send response with properly escaped markdown
     return res.status(200).json({
       success: true,
       text: textResult
