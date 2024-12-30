@@ -57,7 +57,7 @@ export default function App() {
 
   const handleSubmit = async () => {
     if (!prompt.trim() && !imageFile) return;
-
+  
     const userMessage = {
       id: messages.length + 1,
       text: prompt,
@@ -65,27 +65,37 @@ export default function App() {
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
       image: imageFile
     };
-
+  
     setMessages(prev => [...prev, userMessage]);
     setPrompt("");
     setImageFile(null);
     setIsLoading(true);
-
+  
     try {
+      // Concatenate chat history into a single string
+      const chatHistory = messages.map(message => {
+        if (message.sender === 'user') {
+          return `User: ${message.text}`;
+        } else if (message.sender === 'bot') {
+          return `Bot: ${message.text}`;
+        }
+        return "";
+      }).join("\n") + `\nUser: ${prompt}`; // Include the latest prompt
+  
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: prompt + ' ',
+          prompt: chatHistory,
           hasWhiteboard: !!imageFile,
           image: imageFile,
           messages
         })
       });
-
+  
       const data = await response.json();
       if (!data.success) throw new Error(data.error);
-
+  
       setMessages(prev => [...prev, {
         id: prev.length + 1,
         text: data.text,
@@ -104,6 +114,8 @@ export default function App() {
       setIsLoading(false);
     }
   };
+  
+   
 
   return (
     <div className={styles.container}>
