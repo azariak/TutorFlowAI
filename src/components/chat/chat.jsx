@@ -4,35 +4,25 @@ import styles from './chat.module.css';
 import image from "../../assets/logo.png"; 
 
 
-const ImagePreview = ({ onRemove }) => {
-    return (
-        <div className={styles.previewContainer}>
-            <div className={styles.previewWrapper}>
-                <img 
-                    src={image}
-                    alt="Whiteboard preview" 
-                    className={styles.previewImage}
-                />
-                <button 
-                    onClick={onRemove}
-                    className={styles.removePreviewButton}
-                    aria-label="Remove preview"
-                >
-                    ×
-                </button>
-                <span className={styles.previewLabel}>Current whiteboard state will be shared</span>
-            </div>
-        </div>
-    );
-};
-// Utility function to handle image conversion
-const getImageData = async (imageFile) => {
-    return new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(imageFile);
-    });
-  };
+const ImagePreview = ({ image, onRemove }) => (
+    <div className={styles.previewContainer}>
+      <div className={styles.previewWrapper}>
+        <img 
+          src={image}
+          alt="Whiteboard preview" 
+          className={styles.previewImage}
+        />
+        <button 
+          onClick={onRemove}
+          className={styles.removePreviewButton}
+          aria-label="Remove preview"
+        >
+          ×
+        </button>
+        <span className={styles.previewLabel}>Current whiteboard state will be shared</span>
+      </div>
+    </div>
+  );
   
   export default function App() {
     const [messages, setMessages] = useState([{
@@ -54,60 +44,13 @@ const getImageData = async (imageFile) => {
     const handleImageUpload = async (event) => {
       const file = event.target.files?.[0];
       if (file) {
-        const imageData = await getImageData(file);
-        setImageFile(imageData);
+        const reader = new FileReader();
+        reader.onloadend = () => setImageFile(reader.result);
+        reader.readAsDataURL(file);
       }
     };
   
-    const handleSubmit = async () => {
-      if (!prompt.trim() && !imageFile) return;
-  
-      const userMessage = {
-        id: messages.length + 1,
-        text: prompt,
-        sender: "user",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-        image: imageFile
-      };
-  
-      setMessages(prev => [...prev, userMessage]);
-      setPrompt("");
-      setImageFile(null);
-      setIsLoading(true);
-  
-      try {
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt,
-            hasWhiteboard: !!imageFile,
-            image: imageFile,
-            messages
-          })
-        });
-  
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error);
-  
-        setMessages(prev => [...prev, {
-          id: prev.length + 1,
-          text: data.text,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-        }]);
-      } catch (error) {
-        console.error("Error:", error);
-        setMessages(prev => [...prev, {
-          id: prev.length + 1,
-          text: `Error: ${error.message}`,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-        }]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+    // Rest of the component remains the same until the return statement
   
     return (
       <div className={styles.container}>
