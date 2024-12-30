@@ -72,21 +72,23 @@ export default function App() {
     setIsLoading(true);
   
     try {
-      // Concatenate chat history into a single string
+      // Concatenate chat history into a markdown-friendly format
       const chatHistory = messages.map(message => {
         if (message.sender === 'user') {
-          return `User: ${message.text}`;
+          return `**User:**\n${message.text}`;
         } else if (message.sender === 'bot') {
-          return `Bot: ${message.text}`;
+          return `**Bot:**\n${message.text}`;
         }
         return "";
-      }).join("\n") + `\nUser: ${prompt}`; // Include the latest prompt
+      }).join("\n\n"); // Double newlines to separate messages
+  
+      const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`; // Append latest prompt
   
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: chatHistory,
+          prompt: fullPrompt,
           hasWhiteboard: !!imageFile,
           image: imageFile,
           messages
@@ -115,7 +117,6 @@ export default function App() {
     }
   };
   
-   
 
   return (
     <div className={styles.container}>
