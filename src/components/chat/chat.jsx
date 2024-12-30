@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import styles from './chat.module.css';
+import image from "../../assets/logo.png"; 
+
 
 const ImagePreview = ({ onRemove }) => {
     return (
         <div className={styles.previewContainer}>
             <div className={styles.previewWrapper}>
                 <img 
-                    src="Figma.png"
+                    src={image}
                     alt="Whiteboard preview" 
                     className={styles.previewImage}
                 />
@@ -64,7 +66,7 @@ export default function App() {
                 hour: 'numeric',
                 minute: 'numeric',
             }),
-            image: hasWhiteboardPreview ? 'figma.png' : null
+            image: hasWhiteboardPreview ? image : null, 
         };
     
         setMessages(prev => [...prev, userMessage]);
