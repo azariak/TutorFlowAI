@@ -4,10 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default async function handler(req, res) {
-  // Enable streaming for SSE
-  res.setHeader('Content-Type', 'text/event-stream');
-  res.setHeader('Cache-Control', 'no-cache');
-  res.setHeader('Connection', 'keep-alive');
+  res.setHeader('Content-Type', 'application/json');
 
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -29,13 +26,11 @@ export default async function handler(req, res) {
       model: "gemini-pro-vision",
     });
 
-    // Initialize chat history
     const history = messages.map(msg => ({
       role: msg.sender === 'user' ? 'user' : 'model',
       parts: [{ text: msg.text }]
     }));
 
-    // Start chat with history
     const chat = model.startChat({
       history,
       generationConfig: {
@@ -43,13 +38,9 @@ export default async function handler(req, res) {
       }
     });
 
-    // Prepare message parts
-    const messageParts = [];
-    messageParts.push({ text: prompt });
+    const messageParts = [{ text: prompt }];
 
-    // Add image if present
     if (hasWhiteboard) {
-      // Convert base64 image to Uint8Array if needed
       const imageData = await fetch(req.body.image).then(r => r.arrayBuffer());
       messageParts.push({
         inlineData: {
@@ -59,21 +50,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // Send message and get streaming response
-    const result = await chat.sendMessageStream(messageParts);
+    const result = await chat.sendMessage(messageParts);
+    const textResult = await result.response.text();
 
-    // Stream the response
-    for await (const chunk of result.stream) {
-      const text = chunk.text();
-      res.write(`data: ${JSON.stringify({ text })}\n\n`);
-    }
-
-    res.write('data: [DONE]\n\n');
-    res.end();
+    return res.status(200).json({
+      success: true,
+      text: textResult
+    });
 
   } catch (error) {
     console.error('API Error:', error);
-    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
-    res.end();
+    return res.status(500).json({
+      success: false,
+      error: 'Generation failed',
+      message: error.message || 'Unknown error occurred'
+    });
   }
 }
