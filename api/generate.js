@@ -1,7 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
-import fs from 'fs';
-import path from 'path';
 
 dotenv.config();
 
@@ -43,30 +41,22 @@ export default async function handler(req, res) {
     ].join(' ');
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    
-    // If there's a whiteboard image, use multimodal content generation
-    let fullPrompt = prompt;
     let parts = [];
 
     if (hasWhiteboard) {
-      // Read the image file from public directory
-      const imagePath = path.join(process.cwd(), 'public', 'figma.png');
-      const imageData = fs.readFileSync(imagePath);
+      // Using a placeholder URL - replace with your actual image URL
+      const imageResp = await fetch('/figma.png').then(response => response.arrayBuffer());
       
-      // Convert image to base64
-      const mimeType = 'image/png';
-      const imageBase64 = imageData.toString('base64');
-
-      // Add image as part of the content
       parts.push({
         inlineData: {
-          data: imageBase64,
-          mimeType
-        }
+          data: Buffer.from(imageResp).toString("base64"),
+          mimeType: "image/png",
+        },
       });
     }
 
     // Add conversation history if it exists
+    let fullPrompt = prompt;
     if (messages && messages.length > 0) {
       const context = messages.map(msg =>
         `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
@@ -74,7 +64,6 @@ export default async function handler(req, res) {
       fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}\nAssistant:`;
     }
 
-    // Add text prompt as a part
     parts.push(fullPrompt);
 
     const model = genAI.getGenerativeModel({
@@ -82,7 +71,6 @@ export default async function handler(req, res) {
       systemInstruction: instructions
     });
 
-    // Generate content with both text and image if present
     const result = await model.generateContent(parts);
     let textResult = await result.response.text();
 
