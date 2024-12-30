@@ -57,66 +57,72 @@ export default function App() {
 
   const handleSubmit = async () => {
     if (!prompt.trim() && !currentImage) return;
-
+  
     const userMessage = {
       id: messages.length + 1,
       text: prompt || " ",
       sender: "user",
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-      image: currentImage
+      image: currentImage,
     };
-
-    setMessages(prev => [...prev, userMessage]);
+  
+    setMessages((prev) => [...prev, userMessage]);
     setPrompt("");
     setCurrentImage(null);
     setIsLoading(true);
-
-    const chatHistory = messages.map(msg => ({
-      role: msg.sender === 'bot' ? 'model' : 'user',
-      parts: [
-        ...(msg.image ? [{
-          inlineData: {
-            data: msg.image.split(',')[1],
-            mimeType: 'image/png'
-          }
-        }] : []),
-        { text: msg.text + ' ' }
-      ]
-    }));
-
+  
+    // Construct chat history
+    const chatHistory = messages.map((msg) => {
+      const messageParts = msg.image
+        ? [{ inlineData: { data: msg.image.split(',')[1], mimeType: 'image/png' } }]
+        : [{ text: msg.text }];
+  
+      return {
+        role: msg.sender === "bot" ? "model" : "user",
+        parts: messageParts,
+      };
+    });
+  
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: prompt + ' ',
-          messages: chatHistory,
+          prompt: prompt.trim(),
+          messages: [...chatHistory, { role: "user", parts: [{ text: prompt }] }],
           hasWhiteboard: !!currentImage,
-          image: currentImage
-        })
+          image: currentImage,
+        }),
       });
-
+  
       const data = await response.json();
       if (!data.success) throw new Error(data.error);
-
-      setMessages(prev => [...prev, {
-        id: prev.length + 1,
-        text: data.text,
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-      }]);
+  
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          text: data.text,
+          sender: "bot",
+          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+        },
+      ]);
     } catch (error) {
       console.error("Error:", error);
-      setMessages(prev => [...prev, {
-        id: prev.length + 1,
-        text: `Error: ${error.message}`,
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-      }]);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: prev.length + 1,
+          text: `Error: ${error.message}`,
+          sender: "bot",
+          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+        },
+      ]);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div className={styles.container}>
