@@ -22,14 +22,6 @@ const ImagePreview = ({ image, onRemove }) => (
   </div>
 );
 
-const getImageData = async (imageFile) => {
-  return new Promise((resolve) => {
-    const reader = new FileReader();
-    reader.onloadend = () => resolve(reader.result);
-    reader.readAsDataURL(imageFile);
-  });
-};
-
 export default function App() {
   const [messages, setMessages] = useState([{
     id: 1,
@@ -41,17 +33,21 @@ export default function App() {
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
-  const fileInputRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleImageUpload = async (event) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageData = await getImageData(file);
-      setImageFile(imageData);
+  const handleWhiteboardCapture = async () => {
+    try {
+      if (window.captureWhiteboardImage) {
+        const imageData = await window.captureWhiteboardImage();
+        if (imageData) {
+          setImageFile(imageData);
+        }
+      }
+    } catch (error) {
+      console.error('Error capturing whiteboard:', error);
     }
   };
 
@@ -72,7 +68,6 @@ export default function App() {
     setIsLoading(true);
   
     try {
-      // Concatenate chat history into a markdown-friendly format
       const chatHistory = messages.map(message => {
         if (message.sender === 'user') {
           return `**User:**\n${message.text}`;
@@ -80,9 +75,9 @@ export default function App() {
           return `**Bot:**\n${message.text}`;
         }
         return "";
-      }).join("\n\n"); // Double newlines to separate messages
+      }).join("\n\n");
   
-      const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`; // Append latest prompt
+      const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
   
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -116,7 +111,6 @@ export default function App() {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className={styles.container}>
@@ -148,14 +142,6 @@ export default function App() {
       </div>
 
       <div className={styles.inputContainer}>
-        <input 
-          type="file"
-          ref={fileInputRef}
-          onChange={handleImageUpload}
-          accept="image/*"
-          className={styles.hiddenFileInput}
-        />
-        
         {imageFile && (
           <ImagePreview 
             image={imageFile}
@@ -178,7 +164,7 @@ export default function App() {
             rows={1}
           />
           <button 
-            onClick={() => fileInputRef.current?.click()}
+            onClick={handleWhiteboardCapture}
             disabled={!!imageFile}
             className={styles.whiteboardButton}
             title="Add whiteboard"
