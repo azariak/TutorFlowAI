@@ -4,7 +4,10 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default async function handler(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  // Enable streaming for SSE
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
 
   if (req.method !== 'POST') {
     return res.status(405).json({
@@ -15,69 +18,62 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, messages, hasWhiteboard } = req.body;
-
-    if (!prompt) {
-      return res.status(400).json({
-        success: false,
-        error: 'Prompt is required'
-      });
-    }
-
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({
-        success: false,
-        error: 'API key not configured'
+      throw new Error('API key not configured');
+    }
+
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-pro-vision",
+    });
+
+    // Initialize chat history
+    const history = messages.map(msg => ({
+      role: msg.sender === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.text }]
+    }));
+
+    // Start chat with history
+    const chat = model.startChat({
+      history,
+      generationConfig: {
+        maxOutputTokens: 1000,
+      }
+    });
+
+    // Prepare message parts
+    const messageParts = [];
+    messageParts.push({ text: prompt });
+
+    // Add image if present
+    if (hasWhiteboard) {
+      // Convert base64 image to Uint8Array if needed
+      const imageData = await fetch(req.body.image).then(r => r.arrayBuffer());
+      messageParts.push({
+        inlineData: {
+          data: Buffer.from(imageData).toString('base64'),
+          mimeType: 'image/png'
+        }
       });
     }
 
-    const instructions = [
-      "You are TutorFlowAI, created by Azaria Kelman.",
-      "Provide clear, simple explanations and encourage critical thinking.",
-      "Adapt to the student's pace, offering additional explanations if needed or challenge them when they excel.",
-      "Maintain engagement with positive feedback and relatable examples.",
-      "Summarize key points and provide constructive feedback."
-    ].join(' ');
+    // Send message and get streaming response
+    const result = await chat.sendMessageStream(messageParts);
 
-    const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
-      model: "gemini-2.0-flash-exp",
-      systemInstruction: instructions 
-    });
-
-    // Construct the context from previous messages
-    let fullPrompt = prompt;
-    if (messages && messages.length > 0) {
-      const context = messages.map(msg =>
-        `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
-      ).join('\n');
-      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}${hasWhiteboard ? ' [User has shared a whiteboard image showing their work]' : ''}\nAssistant:`;
+    // Stream the response
+    for await (const chunk of result.stream) {
+      const text = chunk.text();
+      res.write(`data: ${JSON.stringify({ text })}\n\n`);
     }
 
-    // Use generateContent with the full context
-    const result = await model.generateContent(fullPrompt);
-    let textResult = await result.response.text();
-
-    // Safely encode any special characters that might break JSON
-    textResult = textResult
-      .replace(/\u2028/g, '\\u2028')
-      .replace(/\u2029/g, '\\u2029')
-      .replace(/\\/g, '\\\\')
-      .replace(/\"/g, '\\"');
-
-    // Send response with properly escaped markdown
-    return res.status(200).json({
-      success: true,
-      text: textResult
-    });
+    res.write('data: [DONE]\n\n');
+    res.end();
 
   } catch (error) {
     console.error('API Error:', error);
-    return res.status(500).json({
-      success: false,
-      error: 'Generation failed',
-      message: error.message || 'Unknown error occurred'
-    });
+    res.write(`data: ${JSON.stringify({ error: error.message })}\n\n`);
+    res.end();
   }
 }
