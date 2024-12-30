@@ -47,7 +47,7 @@ export default async function handler(req, res) {
 
     if (hasWhiteboard) {
       // Using a placeholder URL - replace with your actual image URL
-      const imageResp = await fetch([image]).then(response => response.arrayBuffer());
+      const imageResp = await fetch(image).then(response => response.arrayBuffer());
       
       parts.push({
         inlineData: {
