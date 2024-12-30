@@ -1,7 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import ReactMarkdown from 'react-markdown';
 import styles from './chat.module.css';
+import image from "../../assets/logo.png"; 
+
+
+const ImagePreview = ({ onRemove }) => {
+    return (
+        <div className={styles.previewContainer}>
+            <div className={styles.previewWrapper}>
+                <img 
+                    src={image}
+                    alt="Whiteboard preview" 
+                    className={styles.previewImage}
+                />
+                <button 
+                    onClick={onRemove}
+                    className={styles.removePreviewButton}
+                    aria-label="Remove preview"
+                >
+                    ×
+                </button>
+                <span className={styles.previewLabel}>Current whiteboard state will be shared</span>
+            </div>
+        </div>
+    );
+};
 
 export default function App() {
     const [messages, setMessages] = useState([
@@ -12,10 +35,11 @@ export default function App() {
             timestamp: new Date().toLocaleTimeString([], {
                 hour: 'numeric',
                 minute: 'numeric',
-            }) 
+            })
         }
     ]);
     const [prompt, setPrompt] = useState("");
+    const [hasWhiteboardPreview, setHasWhiteboardPreview] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const messagesEndRef = useRef(null);
 
@@ -27,8 +51,12 @@ export default function App() {
         scrollToBottom();
     }, [messages]);
 
+    const handleAddWhiteboard = () => {
+        setHasWhiteboardPreview(true);
+    };
+
     const handleSubmit = async () => {
-        if (!prompt.trim()) return;
+        if (!prompt.trim() && !hasWhiteboardPreview) return;
     
         const userMessage = {
             id: messages.length + 1,
@@ -37,11 +65,13 @@ export default function App() {
             timestamp: new Date().toLocaleTimeString([], {
                 hour: 'numeric',
                 minute: 'numeric',
-            })
+            }),
+            image: hasWhiteboardPreview ? image : null, 
         };
     
         setMessages(prev => [...prev, userMessage]);
         setPrompt("");
+        setHasWhiteboardPreview(false);
         setIsLoading(true);
     
         try {
@@ -49,41 +79,32 @@ export default function App() {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Accept': 'application/json',
                 },
-                body: JSON.stringify({ 
+                body: JSON.stringify({
                     prompt,
-                    messages: messages.slice(0, -1)
+                    hasWhiteboard: hasWhiteboardPreview,
+                    messages: messages
                 }),
             });
     
-            const textResponse = await response.text();
-            
-            try {
-                const data = JSON.parse(textResponse);
-                if (!data.success) {
-                    throw new Error(data.error || data.message || 'Failed to generate response');
-                }
-    
-                const botMessage = {
-                    id: messages.length + 2,
-                    text: data.text || '',
-                    sender: "bot",
-                    timestamp: new Date().toLocaleTimeString([], {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                    })
-                };
-    
-                setMessages(prev => [...prev, botMessage]);
-            } catch (parseError) {
-                console.error('JSON Parse Error:', parseError);
-                console.log('Raw response:', textResponse);
-                throw new Error('Failed to parse response from server');
+            const data = await response.json();
+            if (!data.success) {
+                throw new Error(data.error || 'Failed to generate response');
             }
+    
+            const botMessage = {
+                id: messages.length + 2,
+                text: data.text || '',
+                sender: "bot",
+                timestamp: new Date().toLocaleTimeString([], {
+                    hour: 'numeric',
+                    minute: 'numeric',
+                })
+            };
+    
+            setMessages(prev => [...prev, botMessage]);
         } catch (error) {
             console.error("Error:", error);
-            
             const errorMessage = {
                 id: messages.length + 2,
                 text: `I apologize, but I encountered an error: ${error.message}. Please try again.`,
@@ -114,7 +135,16 @@ export default function App() {
                                     <ReactMarkdown>{message.text}</ReactMarkdown>
                                 </div>
                             ) : (
-                                message.text
+                                <>
+                                    <div>{message.text}</div>
+                                    {message.image && (
+                                        <img 
+                                            src={message.image} 
+                                            alt="Whiteboard" 
+                                            className={styles.messageImage}
+                                        />
+                                    )}
+                                </>
                             )}
                         </div>
                         <div className={styles.timestamp}>
@@ -125,27 +155,40 @@ export default function App() {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className={styles.promptArea}>
-                <textarea
-                    placeholder="Ask anything..."
-                    className={styles.textArea}
-                    value={prompt}
-                    onChange={(e) => setPrompt(e.target.value)}
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                            e.preventDefault();
-                            handleSubmit();
-                        }
-                    }}
-                    rows={1}
-                />
-                <button 
-                    className={styles.button}
-                    onClick={handleSubmit}
-                    disabled={isLoading}
-                >
-                    {isLoading ? 'Thinking...' : '→'}
-                </button>
+            <div className={styles.inputContainer}>
+                {hasWhiteboardPreview && (
+                    <ImagePreview onRemove={() => setHasWhiteboardPreview(false)} />
+                )}
+                <div className={styles.promptArea}>
+                    <textarea
+                        placeholder="Ask anything..."
+                        className={styles.textArea}
+                        value={prompt}
+                        onChange={(e) => setPrompt(e.target.value)}
+                        onKeyPress={(e) => {
+                            if (e.key === 'Enter' && !e.shiftKey) {
+                                e.preventDefault();
+                                handleSubmit();
+                            }
+                        }}
+                        rows={1}
+                    />
+                    <button 
+                        className={styles.whiteboardButton}
+                        onClick={handleAddWhiteboard}
+                        disabled={hasWhiteboardPreview}
+                        title="Add whiteboard"
+                    >
+                        📋
+                    </button>
+                    <button 
+                        className={styles.button}
+                        onClick={handleSubmit}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Thinking...' : '→'}
+                    </button>
+                </div>
             </div>
         </div>
     );

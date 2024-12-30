@@ -14,12 +14,10 @@
     --spacing-sm: 0.5rem;
     --spacing-md: 0.75rem;
     --spacing-lg: 1rem;
-
+    
     /* Layout */
     --chat-width: 35vw;
     --chat-height: 77vh;
-    --chat-margin-left: 2vw;
-    --chat-margin-top: 15vh;
     --border-radius: 15px;
 }
 
@@ -28,8 +26,7 @@
     inset: 0;
     width: var(--chat-width);
     height: var(--chat-height);
-    margin-left: var(--chat-margin-left);
-    margin-top: var(--chat-margin-top);
+    margin: 15vh 0 0 2vw;
     background-color: var(--primary-bg);
     border-radius: 25px;
     display: flex;
@@ -57,7 +54,6 @@
     flex-direction: column;
     gap: var(--spacing-lg);
     scrollbar-width: thin;
-    -ms-overflow-style: none;
 }
 
 .messageWrapper {
@@ -66,13 +62,8 @@
     width: 100%;
 }
 
-.messageWrapper.user {
-    align-items: flex-end;
-}
-
-.messageWrapper.bot {
-    align-items: flex-start;
-}
+.messageWrapper.user { align-items: flex-end; }
+.messageWrapper.bot { align-items: flex-start; }
 
 .message {
     padding: var(--spacing-md);
@@ -91,6 +82,7 @@
     color: var(--message-text);
 }
 
+/* Markdown styles */
 .markdownContainer code {
     background-color: var(--code-bg);
     padding: 2px 4px;
@@ -111,9 +103,7 @@
     margin: 8px 0;
 }
 
-.markdownContainer p {
-    margin: 8px 0;
-}
+.markdownContainer p { margin: 8px 0; }
 
 .markdownContainer a {
     color: var(--message-text);
@@ -127,10 +117,14 @@
     margin-top: 0.25rem;
 }
 
-.promptArea {
+/* Input area */
+.inputContainer {
     padding: var(--spacing-lg);
-    border-top: 5px solid var(--primary-border);
+    border-top: 1px solid var(--primary-border);
     background-color: var(--primary-bg);
+}
+
+.promptArea {
     display: flex;
     gap: var(--spacing-sm);
 }
@@ -140,25 +134,88 @@
     padding: var(--spacing-md);
     border-radius: var(--border-radius);
     border: 2px solid var(--primary-border);
-    outline: none;
     background-color: var(--primary-bg);
     resize: none;
     font-family: inherit;
     font-size: inherit;
-    scrollbar-width: none;
 }
 
-.button {
-    padding: var(--spacing-md) 1.5rem;
+/* Buttons */
+.button, .whiteboardButton {
+    padding: var(--spacing-md);
     border-radius: var(--border-radius);
-    border: none;
-    background-color: var(--button-bg);
-    color: var(--message-text);
     cursor: pointer;
     transition: opacity 0.2s;
 }
 
-.button:disabled {
+.button {
+    background-color: var(--button-bg);
+    color: var(--message-text);
+    border: none;
+    padding-inline: 1.5rem;
+}
+
+.whiteboardButton {
+    border: 2px solid var(--primary-border);
+    background-color: var(--primary-bg);
+}
+
+.button:disabled,
+.whiteboardButton:disabled {
     opacity: 0.7;
     pointer-events: none;
+}
+
+/* Image preview */
+.previewContainer {
+    margin-bottom: var(--spacing-md);
+}
+
+.previewWrapper {
+    position: relative;
+    display: inline-block;
+    padding: var(--spacing-sm);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: var(--border-radius);
+}
+
+.previewImage,
+.messageImage {
+    max-width: 300px;
+    border-radius: var(--border-radius);
+    object-fit: cover;
+}
+
+.previewImage {
+    max-height: 100px;
+}
+
+.previewLabel {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--primary-text);
+    opacity: 0.7;
+    margin-top: var(--spacing-sm);
+}
+
+.removePreviewButton {
+    position: absolute;
+    top: calc(var(--spacing-sm) + 2px);
+    right: calc(var(--spacing-sm) + 2px);
+    width: 20px;
+    height: 20px;
+    background-color: var(--button-bg);
+    color: var(--message-text);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+.removePreviewButton:hover {
+    opacity: 1;
 }

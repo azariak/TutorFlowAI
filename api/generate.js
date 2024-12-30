@@ -1,4 +1,3 @@
-// pages/api/generate.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
 
@@ -6,30 +5,30 @@ dotenv.config();
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
-  
+
   if (req.method !== 'POST') {
-    return res.status(405).json({ 
+    return res.status(405).json({
       success: false,
-      error: 'Method not allowed' 
+      error: 'Method not allowed'
     });
   }
 
   try {
-    const { prompt, messages } = req.body;
-    
+    const { prompt, messages, hasWhiteboard } = req.body;
+
     if (!prompt) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
-        error: 'Prompt is required' 
+        error: 'Prompt is required'
       });
     }
 
-    const apiKey = process.env.GEMINI_API_KEY; 
+    const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
-        error: 'API key not configured' 
+        error: 'API key not configured'
       });
     }
 
@@ -40,20 +39,20 @@ export default async function handler(req, res) {
       "Maintain engagement with positive feedback and relatable examples.",
       "Summarize key points and provide constructive feedback."
     ].join(' ');
-    
-    
+
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp",
-      systemInstruction: instructions
-     });
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: instructions 
+    });
 
     // Construct the context from previous messages
     let fullPrompt = prompt;
     if (messages && messages.length > 0) {
-      const context = messages.map(msg => 
+      const context = messages.map(msg =>
         `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
       ).join('\n');
-      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}\nAssistant:`;
+      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}${hasWhiteboard ? ' [Student has shared a whiteboard image showing their work]' : ''}\nAssistant:`;
     }
 
     // Use generateContent with the full context
@@ -68,14 +67,14 @@ export default async function handler(req, res) {
       .replace(/\"/g, '\\"');
 
     // Send response with properly escaped markdown
-    return res.status(200).json({ 
+    return res.status(200).json({
       success: true,
       text: textResult
     });
 
   } catch (error) {
     console.error('API Error:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       error: 'Generation failed',
       message: error.message || 'Unknown error occurred'
