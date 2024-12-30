@@ -38,7 +38,7 @@ export default function App() {
     timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
   }]);
   const [prompt, setPrompt] = useState("");
-  const [currentImage, setCurrentImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -51,78 +51,59 @@ export default function App() {
     const file = event.target.files?.[0];
     if (file) {
       const imageData = await getImageData(file);
-      setCurrentImage(imageData);
+      setImageFile(imageData);
     }
   };
 
   const handleSubmit = async () => {
-    if (!prompt.trim() && !currentImage) return;
-  
+    if (!prompt.trim() && !imageFile) return;
+
     const userMessage = {
       id: messages.length + 1,
-      text: prompt || " ",
+      text: prompt,
       sender: "user",
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-      image: currentImage,
+      image: imageFile
     };
-  
-    setMessages((prev) => [...prev, userMessage]);
+
+    setMessages(prev => [...prev, userMessage]);
     setPrompt("");
-    setCurrentImage(null);
+    setImageFile(null);
     setIsLoading(true);
-  
-    // Construct chat history
-    const chatHistory = messages.map((msg) => {
-      const messageParts = msg.image
-        ? [{ inlineData: { data: msg.image.split(',')[1], mimeType: 'image/png' } }]
-        : [{ text: msg.text }];
-  
-      return {
-        role: msg.sender === "bot" ? "model" : "user",
-        parts: messageParts,
-      };
-    });
-  
+
     try {
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          prompt: prompt.trim(),
-          messages: [...chatHistory, { role: "user", parts: [{ text: prompt }] }],
-          hasWhiteboard: !!currentImage,
-          image: currentImage,
-        }),
+          prompt,
+          hasWhiteboard: !!imageFile,
+          image: imageFile,
+          messages
+        })
       });
-  
+
       const data = await response.json();
       if (!data.success) throw new Error(data.error);
-  
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          text: data.text,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-        },
-      ]);
+
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: data.text,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      }]);
     } catch (error) {
       console.error("Error:", error);
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: prev.length + 1,
-          text: `Error: ${error.message}`,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-        },
-      ]);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: `Error: ${error.message}`,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      }]);
     } finally {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div className={styles.container}>
@@ -162,10 +143,10 @@ export default function App() {
           className="hidden"
         />
         
-        {currentImage && (
+        {imageFile && (
           <ImagePreview 
-            image={currentImage}
-            onRemove={() => setCurrentImage(null)}
+            image={imageFile}
+            onRemove={() => setImageFile(null)}
           />
         )}
         
@@ -185,7 +166,7 @@ export default function App() {
           />
           <button 
             onClick={() => fileInputRef.current?.click()}
-            disabled={!!currentImage}
+            disabled={!!imageFile}
             className={styles.whiteboardButton}
             title="Add whiteboard"
           >
