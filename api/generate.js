@@ -52,7 +52,7 @@ export default async function handler(req, res) {
       const context = messages.map(msg =>
         `${msg.sender === 'user' ? 'User' : 'Assistant'}: ${msg.text}`
       ).join('\n');
-      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}${hasWhiteboard ? ' [Student has shared a whiteboard image showing their work]' : ''}\nAssistant:`;
+      fullPrompt = `Previous conversation:\n${context}\n\nUser: ${prompt}${hasWhiteboard ? ' [User has shared a whiteboard image showing their work]' : ''}\nAssistant:`;
     }
 
     // Use generateContent with the full context
