@@ -22,6 +22,18 @@ const ImagePreview = ({ image, onRemove }) => (
   </div>
 );
 
+// Helper function to process image data
+const getImageData = async (imageFile) => {
+  if (typeof imageFile === 'string') {
+    return imageFile; // Already base64 or URL
+  }
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(imageFile);
+  });
+};
+
 export default function App() {
   const [messages, setMessages] = useState([{
     id: 1,
@@ -33,41 +45,54 @@ export default function App() {
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const handleWhiteboardCapture = async () => {
+  // Handle both whiteboard capture and file upload
+  const handleImageInput = async (input) => {
     try {
-      if (window.captureWhiteboardImage) {
-        const imageData = await window.captureWhiteboardImage();
-        if (imageData) {
-          setImageFile(imageData);
-        }
+      let imageData;
+      if (input instanceof File) {
+        imageData = await getImageData(input);
+      } else if (typeof input === 'string') {
+        imageData = input;
+      } else if (window.captureWhiteboardImage) {
+        imageData = await window.captureWhiteboardImage();
+      }
+      
+      if (imageData) {
+        setImageFile(imageData);
       }
     } catch (error) {
-      console.error('Error capturing whiteboard:', error);
+      console.error('Error processing image:', error);
     }
   };
 
   const handleSubmit = async () => {
     if (!prompt.trim() && !imageFile) return;
-  
-    const userMessage = {
-      id: messages.length + 1,
-      text: prompt,
-      sender: "user",
-      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-      image: imageFile
-    };
-  
-    setMessages(prev => [...prev, userMessage]);
-    setPrompt("");
-    // setImageFile(null);
-    setIsLoading(true);
-  
+
+    let processedImage = imageFile;
     try {
+      if (imageFile) {
+        processedImage = await getImageData(imageFile);
+      }
+
+      const userMessage = {
+        id: messages.length + 1,
+        text: prompt,
+        sender: "user",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+        image: processedImage
+      };
+
+      setMessages(prev => [...prev, userMessage]);
+      setPrompt("");
+      setImageFile(null);
+      setIsLoading(true);
+
       const chatHistory = messages.map(message => {
         if (message.sender === 'user') {
           return `**User:**\n${message.text}`;
@@ -76,23 +101,29 @@ export default function App() {
         }
         return "";
       }).join("\n\n");
-  
+
       const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
-  
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           prompt: fullPrompt,
-          hasWhiteboard: !!imageFile,
-          image: imageFile,
-          messages
+          hasWhiteboard: !!processedImage,
+          image: processedImage,
+          messages: messages
         })
       });
-  
+
+      if (!response.ok) {
+        throw new Error(`Server responded with ${response.status}`);
+      }
+
       const data = await response.json();
-      if (!data.success) throw new Error(data.error);
-  
+      if (!data.success) {
+        throw new Error(data.error || 'Failed to process request');
+      }
+
       setMessages(prev => [...prev, {
         id: prev.length + 1,
         text: data.text,
@@ -142,6 +173,14 @@ export default function App() {
       </div>
 
       <div className={styles.inputContainer}>
+        <input 
+          type="file"
+          ref={fileInputRef}
+          onChange={(e) => handleImageInput(e.target.files?.[0])}
+          accept="image/*"
+          className={styles.hiddenFileInput}
+        />
+        
         {imageFile && (
           <ImagePreview 
             image={imageFile}
@@ -164,7 +203,7 @@ export default function App() {
             rows={1}
           />
           <button 
-            onClick={handleWhiteboardCapture}
+            onClick={() => handleImageInput()}
             disabled={!!imageFile}
             className={styles.whiteboardButton}
             title="Add whiteboard"
