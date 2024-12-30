@@ -24,8 +24,9 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 - JS: @google/generative-ai, sharp, dotenv
 
 #### TODO: 
-Create virtual environment,  auto select draw tool, rounded corners for whiteboard, refactor css, improve readme
+auto select draw tool, rounded corners for whiteboard, refactor css, improve readme
 whiteboard image, api to work on vercel and npm run dev, refact react-markdown to LLMUI, mobile site
+Adjust size of whiteboard, chat by dragging with reset to default
 
 #### Color Scheme
 -  [Palette - Coolors](https://coolors.co/palette/001524-15616d-ffecd1-ff7d00-78290f)
