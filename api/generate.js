@@ -9,11 +9,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt, messages, hasWhiteboard } = req.body;
-    if (!prompt && !hasWhiteboard) {
-      return res.status(400).json({ success: false, error: 'Prompt or image required' });
-    }
-
+    const { prompt, messages, hasWhiteboard, image } = req.body;
+    
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error('API key not configured');
@@ -21,37 +18,22 @@ export default async function handler(req, res) {
 
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({ 
-      model: hasWhiteboard ? "gemini-2.0-flash-exp" : "gemini-2.0-flash-exp",
-      generationConfig: {
-        temperature: 0.7,
-        topK: 40,
-        topP: 0.95,
-        maxOutputTokens: 2048,
-      }
+      model: hasWhiteboard ? "gemini-pro-vision" : "gemini-pro"
     });
 
     let result;
-    if (hasWhiteboard) {
-      const imageData = req.body.image;
-      if (!imageData) {
-        throw new Error('Image data missing');
-      }
-      
+    if (hasWhiteboard && image) {
       result = await model.generateContent([
         { text: prompt },
         {
           inlineData: {
-            data: imageData.replace(/^data:image\/\w+;base64,/, ''),
+            data: image.split(',')[1],
             mimeType: 'image/png'
           }
         }
       ]);
     } else {
-      result = await model.generateContent(prompt);
-    }
-
-    if (!result.response) {
-      throw new Error('No response generated');
+      result = await model.generateContent([{ text: prompt }]);
     }
 
     return res.status(200).json({
