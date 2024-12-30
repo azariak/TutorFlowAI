@@ -60,7 +60,7 @@ export default function App() {
 
     const userMessage = {
       id: messages.length + 1,
-      text: prompt,
+      text: prompt || " ",
       sender: "user",
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
       image: currentImage
@@ -74,13 +74,13 @@ export default function App() {
     const chatHistory = messages.map(msg => ({
       role: msg.sender === 'bot' ? 'model' : 'user',
       parts: [
-        { text: msg.text },
         ...(msg.image ? [{
           inlineData: {
             data: msg.image.split(',')[1],
             mimeType: 'image/png'
           }
-        }] : [])
+        }] : []),
+        { text: msg.text + ' ' }
       ]
     }));
 
