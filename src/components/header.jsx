@@ -170,7 +170,7 @@ export default function Header() {
           </a>
         </h1>
         <span style={styles.tagline}>
-          Interactive Learning Made Simple.
+          Interactive Learning Made Simple (Beta).
           <img
             src={helpIcon}
             alt="Help"
