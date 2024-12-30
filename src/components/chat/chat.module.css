@@ -175,8 +175,9 @@
     position: relative;
     display: inline-block;
     padding: var(--spacing-sm);
-    background-color: rgba(0, 0, 0, 0.05);
     border-radius: var(--border-radius);
+    background-color: #001524;
+
 }
 
 .previewImage,

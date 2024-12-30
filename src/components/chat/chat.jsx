@@ -64,7 +64,7 @@ export default function App() {
   
     setMessages(prev => [...prev, userMessage]);
     setPrompt("");
-    setImageFile(null);
+    // setImageFile(null);
     setIsLoading(true);
   
     try {
