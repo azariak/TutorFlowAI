@@ -10,8 +10,8 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, messages, hasWhiteboard, image } = req.body;
-
-    const apiKey = process.env.GEMINI_AI_KEY;
+    
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error('API key not configured');
     }
@@ -25,26 +25,15 @@ export default async function handler(req, res) {
     ].join(' ');
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
+    const model = genAI.getGenerativeModel({ 
       model: "gemini-2.0-flash-exp",
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-      }
-    });
-
-    const chat = model.startChat({
-      history: messages,
-      generationConfig: {
-        temperature: 0.7,
-        maxOutputTokens: 2048,
-      }
+      systemInstruction: instructions
     });
 
     let result;
     if (hasWhiteboard && image) {
-      result = await chat.sendMessage([
-        { text: prompt + ' ' },
+      result = await model.generateContent([
+        { text: prompt },
         {
           inlineData: {
             data: image.split(',')[1],
@@ -53,13 +42,14 @@ export default async function handler(req, res) {
         }
       ]);
     } else {
-      result = await chat.sendMessage(prompt + ' ');
+      result = await model.generateContent([{ text: prompt }]);
     }
 
     return res.status(200).json({
       success: true,
       text: result.response.text()
     });
+
   } catch (error) {
     console.error('Generation error:', error);
     return res.status(500).json({
