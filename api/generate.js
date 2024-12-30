@@ -4,66 +4,67 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export default async function handler(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-
   if (req.method !== 'POST') {
-    return res.status(405).json({
-      success: false,
-      error: 'Method not allowed'
-    });
+    return res.status(405).json({ success: false, error: 'Method not allowed' });
   }
 
   try {
     const { prompt, messages, hasWhiteboard } = req.body;
-    const apiKey = process.env.GEMINI_API_KEY;
+    if (!prompt && !hasWhiteboard) {
+      return res.status(400).json({ success: false, error: 'Prompt or image required' });
+    }
 
+    const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error('API key not configured');
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-pro-vision",
-    });
-
-    const history = messages.map(msg => ({
-      role: msg.sender === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.text }]
-    }));
-
-    const chat = model.startChat({
-      history,
+    const model = genAI.getGenerativeModel({ 
+      model: hasWhiteboard ? "gemini-2.0-flash-exp" : "gemini-2.0-flash-exp",
       generationConfig: {
-        maxOutputTokens: 1000,
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 2048,
       }
     });
 
-    const messageParts = [{ text: prompt }];
-
+    let result;
     if (hasWhiteboard) {
-      const imageData = await fetch(req.body.image).then(r => r.arrayBuffer());
-      messageParts.push({
-        inlineData: {
-          data: Buffer.from(imageData).toString('base64'),
-          mimeType: 'image/png'
+      const imageData = req.body.image;
+      if (!imageData) {
+        throw new Error('Image data missing');
+      }
+      
+      result = await model.generateContent([
+        { text: prompt },
+        {
+          inlineData: {
+            data: imageData.replace(/^data:image\/\w+;base64,/, ''),
+            mimeType: 'image/png'
+          }
         }
-      });
+      ]);
+    } else {
+      result = await model.generateContent(prompt);
     }
 
-    const result = await chat.sendMessage(messageParts);
-    const textResult = await result.response.text();
+    if (!result.response) {
+      throw new Error('No response generated');
+    }
 
     return res.status(200).json({
       success: true,
-      text: textResult
+      text: result.response.text()
     });
 
   } catch (error) {
-    console.error('API Error:', error);
+    console.error('Generation error:', error);
     return res.status(500).json({
       success: false,
       error: 'Generation failed',
-      message: error.message || 'Unknown error occurred'
+      details: error.message
     });
   }
 }
