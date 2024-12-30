@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, messages, hasWhiteboard, image } = req.body;
-    
+
     const apiKey = process.env.GEMINI_API_KEY;
     if (!apiKey) {
       throw new Error('API key not configured');
@@ -25,29 +25,39 @@ export default async function handler(req, res) {
     ].join(' ');
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ 
+    const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash-exp",
       systemInstruction: instructions
     });
 
+    // Create the chat object and initialize history
+    const chat = model.startChat({
+      history: messages || [] // Use the provided history, or start fresh if none provided
+    });
+
     let result;
     if (hasWhiteboard && image) {
-      result = await model.generateContent([
-        { text: prompt },
-        {
-          inlineData: {
-            data: image.split(',')[1],
-            mimeType: 'image/png'
+      result = await chat.sendMessage({
+        parts: [
+          { text: prompt },
+          {
+            inlineData: {
+              data: image.split(',')[1],
+              mimeType: 'image/png'
+            }
           }
-        }
-      ]);
+        ]
+      });
     } else {
-      result = await model.generateContent([{ text: prompt }]);
+      result = await chat.sendMessage({
+        parts: [{ text: prompt }]
+      });
     }
 
     return res.status(200).json({
       success: true,
-      text: result.response.text()
+      text: result.response.text(),
+      updatedHistory: chat.getHistory() // Return the updated chat history
     });
 
   } catch (error) {
