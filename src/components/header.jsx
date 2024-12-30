@@ -5,7 +5,7 @@ import downloadIcon from "../assets/icons/download-icon.png";
 import settingsIcon from "../assets/icons/settings-icon.png";
 import helpIcon from "../assets/icons/help-icon.png";
 import demoVideo from "../assets/Demos/TutorFlow-FastDemo.mp4";
-
+import logo from "../assets/logo.png";
 
 // Styles object
 const styles = {
@@ -13,20 +13,31 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
-    marginLeft: "3vw",
+    marginLeft: "0vw",
     marginRight: "5vw",
-    marginTop: "3vh",
-    fontSize: "22px",
+    height: "80px", // Fixed height for header
+    padding: "10px 0",
   },
   logo: {
     margin: 0,
+    display: "flex",
+    alignItems: "center",
+  },
+  logoImage: {
+    height: "250px", // Reduced height
+    width: "auto",
+    objectFit: "contain",
   },
   logoLink: {
     textDecoration: "none",
     color: "inherit",
+    display: "flex",
+    alignItems: "center",
   },
   tagline: {
     fontSize: "22px",
+    display: "flex",
+    alignItems: "center",
   },
   icon: {
     width: "2vw",
@@ -78,10 +89,8 @@ const styles = {
 
 // Help Content Component
 const HelpContent = () => (
-    <div style={styles.content}>
-  
-      <div style={styles.section}>
-
+  <div style={styles.content}>
+    <div style={styles.section}>
       <video 
         width="600" 
         height="338" 
@@ -89,41 +98,40 @@ const HelpContent = () => (
         autoPlay 
         muted 
         playsInline
-      >        <source src={demoVideo} type="video/mp4" />
-     </video>
+      >
+        <source src={demoVideo} type="video/mp4" />
+      </video>
 
-
-        <h4>Key Features</h4>
-        <ul>
-          <li><strong>Whiteboard:</strong> Draw, write, and solve problems in real-time</li>
-          <li><strong>Voice Chat:</strong> Speak naturally with your AI tutor for a more personal experience</li>
-          <li><strong>AI Tutor:</strong> Receive instant feedback and personalized guidance based on your whiteboard activity and questions</li>
-        </ul>
-      </div>
-  
-      <div style={styles.section}>
-        <h4>Tips for Best Results</h4>
-        <ul>
-          <li>Write clearly and legibly on the whiteboard for accurate recognition</li>
-          <li>Ask specific questions to get focused, relevant answers</li>
-          <li>Ensure your prompt includes all necessary details</li>
-        </ul>
-      </div>
-  
-      <div style={styles.section}>
-        <h4>Keyboard Shortcuts</h4>
-        <ul>
-          <li><strong>Ctrl + Z:</strong> Undo</li>
-          <li><strong>Ctrl + Shift + Z:</strong> Redo</li> 
-          <li><strong>Spacebar:</strong> Toggle voice input (coming soon)</li>
-          <li><strong>C:</strong> Toggle chat input (coming soon)</li>
-          <li><strong>?:</strong> Help menu (coming soon)</li>
-          <li><strong>Esc:</strong> Clear selection</li>
-        </ul>
-      </div>
+      <h4>Key Features</h4>
+      <ul>
+        <li><strong>Whiteboard:</strong> Draw, write, and solve problems in real-time</li>
+        <li><strong>Voice Chat:</strong> Speak naturally with your AI tutor for a more personal experience</li>
+        <li><strong>AI Tutor:</strong> Receive instant feedback and personalized guidance based on your whiteboard activity and questions</li>
+      </ul>
     </div>
-  );
-  
+
+    <div style={styles.section}>
+      <h4>Tips for Best Results</h4>
+      <ul>
+        <li>Write clearly and legibly on the whiteboard for accurate recognition</li>
+        <li>Ask specific questions to get focused, relevant answers</li>
+        <li>Ensure your prompt includes all necessary details</li>
+      </ul>
+    </div>
+
+    <div style={styles.section}>
+      <h4>Keyboard Shortcuts</h4>
+      <ul>
+        <li><strong>Ctrl + Z:</strong> Undo</li>
+        <li><strong>Ctrl + Shift + Z:</strong> Redo</li> 
+        <li><strong>Spacebar:</strong> Toggle voice input (coming soon)</li>
+        <li><strong>C:</strong> Toggle chat input (coming soon)</li>
+        <li><strong>?:</strong> Help menu (coming soon)</li>
+        <li><strong>Esc:</strong> Clear selection</li>
+      </ul>
+    </div>
+  </div>
+);
 
 // Help Popup Component
 const HelpPopup = ({ onClose }) => (
@@ -158,16 +166,11 @@ export default function Header() {
       <div style={styles.header}>
         <h1 style={styles.logo}>
           <a href="https://tutorflowai.com" style={styles.logoLink}>
-            TutorFlowAI{" "}
+            <img src={logo} alt="TutorFlowAI" style={styles.logoImage} />
           </a>
         </h1>
         <span style={styles.tagline}>
           Interactive Learning Made Simple.
-          {/* <img
-            src={downloadIcon}
-            alt="Download"
-            style={{...styles.icon, ...styles.firstIcon}}
-          /> */}
           <img
             src={helpIcon}
             alt="Help"
