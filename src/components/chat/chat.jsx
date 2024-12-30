@@ -68,6 +68,7 @@ export default function App() {
     setIsLoading(true);
   
     try {
+      // Exactly match the original format
       const chatHistory = messages.map(message => {
         if (message.sender === 'user') {
           return `**User:**\n${message.text}`;
@@ -79,14 +80,6 @@ export default function App() {
   
       const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
   
-      // Create a clean message history without images
-      const cleanMessages = messages.map(msg => ({
-        id: msg.id,
-        text: msg.text,
-        sender: msg.sender,
-        timestamp: msg.timestamp
-      }));
-  
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -94,7 +87,7 @@ export default function App() {
           prompt: fullPrompt,
           hasWhiteboard: !!imageFile,
           image: imageFile,
-          messages: cleanMessages
+          messages
         })
       });
   
@@ -118,8 +111,8 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-  };
-
+};
+  
   return (
     <div className={styles.container}>
       <div className={styles.header}>
