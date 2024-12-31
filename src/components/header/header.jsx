@@ -5,7 +5,7 @@ import { useHeaderStyles } from './styles';
 
 export default function Header() {
   const styles = useHeaderStyles();
-  
+   
   return (
     <header>
       <div style={styles.header}>
