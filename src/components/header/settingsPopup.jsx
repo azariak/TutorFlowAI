@@ -25,7 +25,7 @@ export function SettingsPopup({ isOpen, onClose }) {
         <h2 style={styles.title}>Settings</h2>
         <form onSubmit={handleSubmit}>
           <div style={styles.formGroup}>
-            <label htmlFor="apiKey">API Key:</label>
+            <label htmlFor="apiKey">Gemini API Key:</label>
             <input
               type="password"
               id="apiKey"
