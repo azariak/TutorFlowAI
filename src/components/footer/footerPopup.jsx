@@ -1,7 +1,7 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
-import AboutContent from './AboutContent';
-import LicenseContent from './LicenseContent';
+import AboutContent from './aboutContent';
+import LicenseContent from './licenseContent';
 
 export default function FooterPopup({ activePopup, setActivePopup }) {
   return (
