@@ -1,6 +1,6 @@
 import React from 'react';
 import { HeaderLogo } from './headerLogo';
-import { HeaderTagline } from './headerTagline';
+import { HeaderTagline } from './headerTagLine';
 import { useHeaderStyles } from './styles';
 
 export default function Header() {
