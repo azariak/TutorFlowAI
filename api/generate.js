@@ -10,10 +10,20 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, messages, hasWhiteboard, image } = req.body;
-    
-    const apiKey = process.env.GEMINI_API_KEY;
+
+    // Check for API key in local storage, fallback to environment variable
+    let apiKey = null;
+
+    if (typeof window !== "undefined") {
+      apiKey = localStorage.getItem('GEMINI_API_KEY');
+    }
+
     if (!apiKey) {
-      throw new Error('API key not configured');
+      apiKey = process.env.GEMINI_API_KEY;
+    }
+
+    if (!apiKey) {
+      throw new Error('API key not configured in local storage or environment variables');
     }
 
     const instructions = [
