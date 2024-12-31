@@ -3,4 +3,4 @@
 ## Released under BLANK license:
 
 # Third Party Notices
-See: `license-report.html`
+See license info in website footer or at `src\components\footer\licenseData.jsx`
