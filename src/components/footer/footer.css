@@ -1,0 +1,110 @@
+.footer {
+    position: absolute;
+    bottom: 0;
+    margin-left: 40.5vw;
+    font-size: 11px;
+  }
+  
+  .trigger {
+    cursor: pointer;
+    text-decoration: none;
+    transition: text-decoration 0.2s ease;
+  }
+  
+  .trigger.hovered {
+    text-decoration: underline;
+  }
+  
+  .modal-popup {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    max-width: 600px;
+    max-height: 90vh;
+    position: relative;
+    text-align: center;
+    overflow-y: auto;
+  }
+  
+  .close-button,
+  .back-button {
+    position: absolute;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  
+  .close-button {
+    right: 20px;
+    top: 20px;
+  }
+  
+  .back-button {
+    left: 20px;
+    top: 20px;
+  }
+  
+  .modal-title {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+  
+  .modal-content {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+  }
+  
+  .license-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+  
+  .copyright {
+    margin-bottom: 20px;
+  }
+  
+  .attribution {
+    font-size: 13px;
+    color: #888;
+    margin-top: 25px;
+  }
+  
+  .license-link {
+    margin-top: 5px;
+  }
+  
+  .link {
+    color: #888;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .table-container {
+    overflow-x: auto;
+  }
+  
+  .license-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #fff;
+  }
+  
+  .license-table th {
+    background-color: #2a2a2a;
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #333;
+  }
+  
+  .license-table td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+  }
