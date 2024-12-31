@@ -8,7 +8,7 @@ export function SettingsPopup({ isOpen, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem('apiKey', apiKey);
+    localStorage.setItem('GEMINI_API_KEY', apiKey);
     onClose();
   };
 
