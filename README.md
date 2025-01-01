@@ -30,7 +30,6 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 - See package.json
 
 #### TODO: 
-- auto select draw tool on page load
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
 - user able to add API in case rate limits hit

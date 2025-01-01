@@ -37,6 +37,7 @@ export default function Whiteboard() {
         onMount={(editorInstance) => {
           setEditor(editorInstance);
           editorInstance.user.updateUserPreferences({ colorScheme: 'dark' });
+          editorInstance.setCurrentTool('draw');
         }}
       />
     </div>
