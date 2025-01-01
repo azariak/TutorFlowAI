@@ -1,9 +1,21 @@
 .footer {
-    position: absolute;
-    bottom: 0;
-    margin-left: 40.5vw;
-    font-size: 11px;
+  position: absolute;
+  bottom: 0;
+  margin-left: 40.5vw;
+  font-size: 11px;
+  min-height: 30px;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    position: relative;
+    margin-left: 0;
+    text-align: center;
+    width: 100%;
+    margin-top: 20px;
   }
+}
   
   .trigger {
     cursor: pointer;
