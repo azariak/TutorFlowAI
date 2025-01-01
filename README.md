@@ -7,31 +7,11 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 #### Table of Contents
 1. [Introduction](#TutorFlowAI)
 2. [Installation](#installation)
-3. [Usage](#usage)
+3. [Color Scheme](#color-Scheme)
 4. [Contributing](#contributing)
-5. [License](#license)
-
 
 #### Rough sketch:
 ![Figma](Figma.png)
-
-#### Dependencies
-- TLDRaw
-- Node.js
-- Vite with React
-- Gemini API
-- Python: os, dotenv, google.generativeai, PIL
-- JS: @google/generative-ai, sharp, dotenv
-
-#### TODO: 
-auto select draw tool, rounded corners for whiteboard, refactor css, improve readme
-whiteboard image, api to work on vercel and npm run dev, refact react-markdown to LLMUI, mobile site
-Adjust size of whiteboard, chat by dragging with reset to default
-
-#### Color Scheme
--  [Palette - Coolors](https://coolors.co/palette/001524-15616d-ffecd1-ff7d00-78290f)
-- Off-white:
-- Background:
 
 #### Installation
 - Double check on new device:
@@ -41,7 +21,24 @@ Adjust size of whiteboard, chat by dragging with reset to default
 
 3. Run the project: `npm run dev`
 
+#### Dependencies
+- TLDRaw
+- Vite with React
+- Gemini API
+- Python: os, dotenv, google.generativeai
+- JS: @google/generative-ai, sharp, dotenv
+- See package.json
 
+#### TODO: 
+auto select draw tool, rounded corners for whiteboard, refactor css, improve readme
+api to work on vercel and npm run dev, refact react-markdown to LLMUI, mobile site
+Adjust size of whiteboard, chat by dragging with reset to default, microphone
+
+#### Color Scheme
+- Off-white: #FFECD1
+- Background: #001524
+- Bot message: #78290F
+- Pop-up background: #000000d9
 
 #### ⭐ Support the Project
 - If you find this project helpful or interesting, please consider giving it a star on GitHub! 
