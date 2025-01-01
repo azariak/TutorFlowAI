@@ -1,5 +1,5 @@
 import React from 'react';
-import demoVideo from '../../assets/demos/TutorFlow-FastDemo.mp4';
+import demoVideo from '../../assets/Demos/TutorFlow-FastDemo.mp4';
 import { useHeaderStyles } from './styles';
 
 export function HelpContent() { 
