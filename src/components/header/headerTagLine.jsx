@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HelpPopup } from './helpPopup';
 import { SettingsPopup } from './settingsPopup';
 import helpIcon from '../../assets/icons/help-icon.png';
@@ -11,15 +11,35 @@ export function HeaderTagline() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const styles = useHeaderStyles();
 
+  // Toggle Help Popup when '?' key is pressed
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === '?') {
+        setIsHelpOpen((prev) => !prev);
+      }
+      if (event.key === 's') {
+        setIsSettingsOpen((prev) => !prev);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
+
   return (
     <>
       <span style={styles.tagline}>
         Interactive Learning Made Simple (Beta).
-        <a href='https://github.com/azariak/TutorFlowAI' target='_blank'>        <img
-          src={githubIcon}
-          alt="Source code"
-          style={styles.githubIcon}
-        /></a>
+        <a href="https://github.com/azariak/TutorFlowAI" target="_blank">
+          <img
+            src={githubIcon}
+            alt="Source code"
+            style={styles.githubIcon}
+          />
+        </a>
         <img
           src={helpIcon}
           alt="Help"
