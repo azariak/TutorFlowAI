@@ -34,11 +34,11 @@ export function HelpContent() {
         <ul>
           <li><strong>Ctrl + Z:</strong> Undo</li>
           <li><strong>Ctrl + Shift + Z:</strong> Redo</li>
-          <li><strong>Spacebar:</strong> Toggle voice input (coming soon)</li>
-          <li><strong>C:</strong> Toggle chat input (coming soon)</li>
-          <li><strong>?:</strong> Help menu</li>
-          <li><strong>S:</strong> Settings menu</li>
           <li><strong>Esc:</strong> Clear selection</li>
+          <li><strong>C:</strong> Toggle chat input (coming soon)</li>
+          <li><strong>?:</strong> Toggle help menu</li>
+          <li><strong>S:</strong> Toggle settings menu</li>
+          <li><strong>Spacebar:</strong> Toggle voice input (coming soon)</li>
         </ul>
       </div>
     </div>
