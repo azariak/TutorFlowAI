@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Popup from 'reactjs-popup';
 import { useHeaderStyles } from './styles';
 
 export function SettingsPopup({ isOpen, onClose }) {
   const [apiKey, setApiKey] = useState('');
   const styles = useHeaderStyles();
+  
+  useEffect(() => {
+    const savedApiKey = localStorage.getItem('GEMINI_API_KEY');
+    if (savedApiKey) {
+      setApiKey(savedApiKey);
+    }
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,10 +41,7 @@ export function SettingsPopup({ isOpen, onClose }) {
               style={styles.input}
             />
           </div>
-          <button
-            type="submit"
-            style={styles.submitButton}
-          >
+          <button type="submit" style={styles.submitButton}>
             Save
           </button>
         </form>

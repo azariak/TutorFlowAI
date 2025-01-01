@@ -14,7 +14,7 @@ export default function AboutContent({ setActivePopup }) {
       </div>
       <h3 className="license-title">Licensing</h3>
       <p className="copyright">
-        © 2024 Azaria Kelman. All rights reserved.
+        © 2024 <a href="https://github.com/azariak" className="link">Azaria Kelman</a>. All rights reserved.
       </p>
       <p className="copyright">
         Contact: <a href="mailto:azaria.kelman@mail.utoronto.ca" className="link">
