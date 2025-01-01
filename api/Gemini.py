@@ -1,5 +1,6 @@
 """
 This document interacts with Gemini API to generate multimodal outputs.
+Just to play around with, not in use elsewhere in this repository.
 """
 
 import google.generativeai as genai

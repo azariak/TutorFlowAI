@@ -1,3 +1,4 @@
+// For Cloudfare testing
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
 
