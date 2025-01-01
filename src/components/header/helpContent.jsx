@@ -2,7 +2,7 @@ import React from 'react';
 import demoVideo from '../../assets/demos/TutorFlow-FastDemo.mp4';
 import { useHeaderStyles } from './styles';
 
-export function HelpContent() {
+export function HelpContent() { 
   const styles = useHeaderStyles();
 
   return (
