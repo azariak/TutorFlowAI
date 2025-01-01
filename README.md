@@ -30,10 +30,18 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 - See package.json
 
 #### TODO: 
-auto select draw tool on page load, rounded corners for whiteboard, refactor code, improve readme
-api to work on vercel, cloudfare and npm run dev, refact react-markdown to LLM-UI, optimize for mobile, consider making PWA
-Adjust size of whiteboard & chat by dragging with reset to default, realtime mic. support, light/dark mode, user able to add API once rate limits hit, deselect chat when switching to whiteboard so keyboard does not popup
-open source???
+- auto select draw tool on page load
+- refactor code, improve readme
+- api to work on vercel and cloudfare and npm run dev
+- user able to add API in case rate limits hit
+- refactor react-markdown to LLM-UI, add streaming
+- optimize header for mobile
+- consider making PWA
+- Adjust size of whiteboard & chat by dragging with reset to default
+- realtime mic. support within chat window
+- light/dark mode
+- deselect chat when switching to whiteboard so keyboard does not popup
+- open source, which license???
 
 #### Color Scheme
 - Off-white: #FFECD1
