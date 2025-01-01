@@ -36,6 +36,20 @@ export const useHeaderStyles = () => ({
     verticalAlign: "text-top",
     cursor: "pointer",
   },
+  settingsIcon: {
+    width: "2.3vw",
+    height: "2.3vw",
+    marginLeft: "0.3vw",
+    verticalAlign: "text-top",
+    cursor: "pointer",
+  },
+    githubIcon: {
+    width: "1.9vw",
+    height: "1.9vw",
+    marginLeft: "0.5vw",
+    verticalAlign: "text-top",
+    cursor: "pointer",
+  },
   popup: {
     backgroundColor: "#1a1a1a",
     color: "#ffffff",
