@@ -11,23 +11,23 @@ export function HeaderTagline() {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const styles = useHeaderStyles();
 
-  // Toggle Help Popup when '?' key is pressed
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.key === '?') {
-        setIsHelpOpen((prev) => !prev);
-      }
-      if (event.key === 's') {
-        setIsSettingsOpen((prev) => !prev);
-      }
-    };
+  // // Toggle Help Popup when '?' key is pressed
+  // useEffect(() => {
+  //   const handleKeyDown = (event) => {
+  //     if (event.key === '?') {
+  //       setIsHelpOpen((prev) => !prev);
+  //     }
+  //     if (event.key === 'F12') {
+  //       setIsSettingsOpen((prev) => !prev);
+  //     }
+  //   };
 
-    window.addEventListener('keydown', handleKeyDown);
+  //   window.addEventListener('keydown', handleKeyDown);
 
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('keydown', handleKeyDown);
+  //   };
+  // }, []);
 
   return (
     <>
