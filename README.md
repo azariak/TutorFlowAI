@@ -7,8 +7,9 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 #### Table of Contents
 1. [Introduction](#TutorFlowAI)
 2. [Installation](#installation)
-3. [Color Scheme](#color-Scheme)
-4. [Contributing](#contributing)
+3. [TODO](#todo)
+4. [Color Scheme](#color-Scheme)
+5. [Contributing](#contributing)
 
 #### Rough sketch:
 ![Figma](Figma.png)
@@ -22,12 +23,15 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 3. Run the project: `npm run dev`
 
 #### Dependencies
-- TLDRaw
-- Vite with React
-- Gemini API
-- Python: os, dotenv, google.generativeai
-- JS: @google/generative-ai, sharp, dotenv
-- See package.json
+See `package.json` for complete, updated list.
+- "@google/generative-ai": "^0.21.0",
+- "dotenv": "^16.4.7",
+- "license-report": "^6.7.1",
+- "react": "^18.3.1",
+- "react-dom": "^18.3.1",
+- "react-markdown": "^9.0.1",
+- "reactjs-popup": "^2.0.6",
+- "tldraw": "^3.6.1"
 
 #### TODO: 
 - refactor code, improve readme
@@ -50,4 +54,4 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 
 #### ⭐ Support the Project
 - If you find this project helpful or interesting, please consider giving it a star on GitHub! 
-- Feel free to create issues or forks to contribute code
+- Feel free to [create issues](https://github.com/azariak/TutorFlowAI/issues/new/choose) or forks to contribute code
