@@ -1,0 +1,197 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 80px;
+    padding: 10px 0;
+    margin-left: 0vw;
+    margin-right: 5vw;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    margin: 0;
+  }
+  
+  .logoImage {
+    height: 250px;
+    width: auto;
+    object-fit: contain;
+  }
+  
+  .logoLink {
+    text-decoration: none;
+    color: inherit;
+    display: flex;
+    align-items: center;
+  }
+  
+  .tagline {
+    font-size: 22px;
+    text-align: left;
+    display: flex;
+    align-items: center;
+  }
+  
+  .icon {
+    width: 2vw;
+    height: 2vw;
+    margin-left: 0.5vw;
+    cursor: pointer;
+  }
+  
+  .settingsIcon {
+    width: 2.3vw;
+    height: 2.3vw;
+    margin-left: 0.3vw;
+    cursor: pointer;
+  }
+  
+  .githubIcon {
+    width: 1.9vw;
+    height: 1.9vw;
+    margin-left: 0.5vw;
+    cursor: pointer;
+  }
+  
+  .popup {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    width: 600px;
+    max-width: 600px;
+    height: auto;
+    max-height: 600px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    position: relative;
+    text-align: center;
+    margin: 0 auto;
+  }
+  
+  .popupContent {
+    background: none;
+    border: none;
+    padding: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .popupOverlay {
+    background: rgba(0, 0, 0, 0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+  }
+  
+  .closeButton {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    cursor: pointer;
+    font-size: 24px;
+    color: #888;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+  
+  .title {
+    font-size: 20px;
+    margin-bottom: 25px;
+  }
+  
+  .content {
+    font-size: 15px;
+    line-height: 1.8;
+    margin-bottom: 30px;
+    text-align: left;
+  }
+  
+  .section {
+    margin-bottom: 20px;
+  }
+  
+  .formGroup {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    color: #fff;
+  }
+  
+  .submitButton {
+    padding: 8px 16px;
+    background: #444;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .header {
+      flex-direction: column;
+      height: auto;
+      align-items: center;
+      padding: 10px 20px;
+      margin-left: 0;
+      margin-right: 0;
+    }
+  
+    .logo {
+      margin: 0 0 10px 0;
+      max-height: 100px;
+      overflow: hidden;
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .logoImage {
+      height: 150px;
+      object-fit: cover;
+      object-position: center;
+    }
+  
+    .tagline {
+      font-size: 18px;
+      text-align: center;
+    }
+  
+    .icon {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+  
+    .settingsIcon {
+      width: 28px;
+      height: 28px;
+      margin-left: 4px;
+    }
+  
+    .githubIcon {
+      width: 24px;
+      height: 24px;
+      margin-left: 8px;
+    }
+  
+    .popup {
+      padding: 20px;
+      width: 90vw;
+      max-width: 90vw;
+      height: 90vh;
+      max-height: 90vh;
+    }
+  }

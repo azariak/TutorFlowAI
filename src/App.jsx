@@ -7,7 +7,9 @@ import Microphone from './components/microphone';
 export default function App() {
   return (
     <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+      <div className="header-container">
       <Header />
+      </div>
       <div className="app-container">
         <div className="chat-container">
           <Chat />

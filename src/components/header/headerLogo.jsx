@@ -1,14 +1,12 @@
 import React from 'react';
 import logo from '../../assets/brand/logo.png';
-import { useHeaderStyles } from './styles';
+import styles from './header.module.css';
 
 export function HeaderLogo() {
-  const styles = useHeaderStyles();
-  
   return (
-    <h1 style={styles.logo}>
-      <a href="https://tutorflowai.com" style={styles.logoLink}>
-        <img src={logo} alt="TutorFlowAI" style={styles.logoImage} />
+    <h1 className={styles.logo}>
+      <a href="https://tutorflowai.com" className={styles.logoLink}>
+        <img src={logo} alt="TutorFlowAI" className={styles.logoImage} />
       </a>
     </h1>
   );

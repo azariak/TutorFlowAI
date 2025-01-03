@@ -38,13 +38,12 @@ See `package.json` for complete, updated list.
 - api to work on vercel and cloudfare and npm run dev
 - user able to add API in case rate limits hit
 - refactor react-markdown to LLM-UI, add streaming
-- optimize header for mobile
+- optimize help popup for mobile
 - consider making PWA
 - Adjust size of whiteboard & chat by dragging with reset to default
 - realtime mic. support within chat window
 - light/dark mode
 - deselect chat when switching to whiteboard so keyboard does not popup
-- open source, which license???
 
 #### Color Scheme
 - Off-white: #FFECD1

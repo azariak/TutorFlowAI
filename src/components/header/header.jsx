@@ -1,14 +1,12 @@
 import React from 'react';
 import { HeaderLogo } from './headerLogo';
 import { HeaderTagline } from './headerTagLine';
-import { useHeaderStyles } from './styles';
+import styles from './header.module.css';
 
 export default function Header() {
-  const styles = useHeaderStyles();
-   
   return (
     <header>
-      <div style={styles.header}>
+      <div className={styles.header}>
         <HeaderLogo />
         <HeaderTagline />
       </div>
