@@ -4,12 +4,11 @@ import { SettingsPopup } from './settingsPopup';
 import helpIcon from '../../assets/icons/help-icon.png';
 import settingsIcon from '../../assets/icons/settings-icon.png';
 import githubIcon from '../../assets/icons/github-icon.png';
-import { useHeaderStyles } from './styles';
+import styles from './header.module.css';
 
 export function HeaderTagline() {
   const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const styles = useHeaderStyles();
 
   // // Toggle Help Popup when '?' key is pressed
   // useEffect(() => {
@@ -31,25 +30,21 @@ export function HeaderTagline() {
 
   return (
     <>
-      <span style={styles.tagline}>
+      <span className={styles.tagline}>
         Interactive Learning Made Simple (Beta).
-        <a href="https://github.com/azariak/TutorFlowAI" target="_blank">
-          <img
-            src={githubIcon}
-            alt="Source code"
-            style={styles.githubIcon}
-          />
+        <a href="https://github.com/azariak/TutorFlowAI" target="_blank" className={styles.githubLink}>
+          <img src={githubIcon} alt="Source code" className={styles.githubIcon} />
         </a>
         <img
           src={helpIcon}
           alt="Help"
-          style={styles.icon}
+          className={styles.icon}
           onClick={() => setIsHelpOpen(true)}
         />
         <img
           src={settingsIcon}
           alt="Settings"
-          style={styles.settingsIcon}
+          className={styles.settingsIcon}
           onClick={() => setIsSettingsOpen(true)}
         />
       </span>
@@ -58,3 +53,5 @@ export function HeaderTagline() {
     </>
   );
 }
+
+export default HeaderTagline;

@@ -34,6 +34,7 @@ See `package.json` for complete, updated list.
 - "tldraw": "^3.6.1"
 
 #### TODO: 
+- Fix header CSS mess
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
 - user able to add API in case rate limits hit
