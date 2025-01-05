@@ -12,7 +12,7 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 5. [Contributing](#contributing)
 
 #### Rough sketch:
-![Figma](Figma.png)
+![Screenshot](src\assets\brand\screenshot.png)
 
 #### Installation
 - Double check on new device:
@@ -38,6 +38,8 @@ See `package.json` for complete, updated list.
 
 #### TODO: 
 - Fix header CSS mess
+- Auto remove image preview after sending message
+- Add api config instructions to help menu
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
 - fallback to server when user api key fails
