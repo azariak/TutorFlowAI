@@ -40,6 +40,7 @@ See `package.json` for complete, updated list.
 - Fix header CSS mess
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
+- fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - optimize help popup for mobile
 - consider making PWA
