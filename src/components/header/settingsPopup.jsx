@@ -40,6 +40,14 @@ export function SettingsPopup({ isOpen, onClose }) {
               onChange={(e) => setApiKey(e.target.value)}
               style={styles.input}
             />
+            <p style={{
+              fontSize: '0.8rem',
+              color: '#666',
+              marginTop: '0.5rem',
+              marginBottom: 0
+            }}>
+              Your API key will be securely saved in your browser and persist across sessions.
+            </p>
           </div>
           <button type="submit" style={styles.submitButton}>
             Save

@@ -22,6 +22,9 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 
 3. Run the project: `npm run dev`
 
+4. Input your Gemini API Key in settings
+
+
 #### Dependencies
 See `package.json` for complete, updated list.
 - "@google/generative-ai": "^0.21.0",
@@ -37,7 +40,7 @@ See `package.json` for complete, updated list.
 - Fix header CSS mess
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
-- user able to add API in case rate limits hit
+- fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - optimize help popup for mobile
 - consider making PWA

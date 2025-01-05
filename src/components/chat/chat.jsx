@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import styles from './chat.module.css';
 
 const ImagePreview = ({ image, onRemove }) => (
@@ -65,77 +66,135 @@ export default function App() {
       return null;
     }
   };
-  
-  const handleSubmit = async () => {
-      if (!prompt.trim() && !imageFile) return;
-    
-      const userMessage = {
-        id: messages.length + 1,
-        text: prompt,
-        sender: "user",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
-        image: imageFile
-      };
-    
-      setMessages(prev => [...prev, userMessage]);
-      setPrompt("");
-      setImageFile(null);
-      setIsLoading(true);
-    
-      try {
-        // Convert blob URL to base64 if it exists
-        const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
-        
-        const chatHistory = messages.map(message => {
-          if (message.sender === 'user') {
-            return `**User:**\n${message.text}`;
-          } else if (message.sender === 'bot') {
-            return `**Bot:**\n${message.text}`;
-          }
-          return "";
-        }).join("\n\n");
-    
-        const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
-    
-        // Remove images from message history
-        const messagesWithoutImages = messages.map(msg => ({
-          ...msg,
-          image: undefined
-        }));
-    
-        const response = await fetch('/api/generate', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            prompt: fullPrompt,
-            hasWhiteboard: !!processedImage,
-            image: processedImage,
-            messages: messagesWithoutImages
-          })
-        });
-    
-        const data = await response.json();
-        if (!data.success) throw new Error(data.error);
-    
-        setMessages(prev => [...prev, {
-          id: prev.length + 1,
-          text: data.text,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-        }]);
-      } catch (error) {
-        console.error("Error:", error);
-        setMessages(prev => [...prev, {
-          id: prev.length + 1,
-          text: `Error: ${error.message}`,
-          sender: "bot",
-          timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
-        }]);
-      } finally {
-        setIsLoading(false);
+
+  const generateDirectResponse = async (promptText, imageData = null) => {
+    const instructions = [
+      "You are TutorFlowAI, created by Azaria Kelman to make interactive learning simple through the integration of AI and a whiteboard..",
+      "Provide clear, simple explanations and encourage critical thinking.",
+      "Adapt to the user's pace, offering additional explanations if needed or challenge them when they excel.",
+      "Maintain engagement with positive feedback and relatable examples. Explain the intuition behind concepts.",
+      "Summarize key points and provide constructive feedback.",
+      "When you see a whiteboard image, do not comment on the board, but use it to see the user's work thus far, to help you tutor better using their example.",
+      "Concisely, describe everything you see in the whiteboard. Do not add bot: to your response or add the user's response."
+    ].join(' ');
+
+    const storedApiKey = localStorage.getItem('GEMINI_API_KEY');
+    if (!storedApiKey) {
+      throw new Error('local-auth-failed');
+    }
+
+    const genAI = new GoogleGenerativeAI(storedApiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-2.0-flash-exp",
+      systemInstruction: instructions
+    });
+
+    const content = imageData 
+      ? [{ text: promptText }, { inlineData: { data: imageData.split(',')[1], mimeType: 'image/png' }}]
+      : [{ text: promptText }];
+
+    const result = await model.generateContent(content);
+    return result.response.text();
+  };
+
+  const generateServerResponse = async (promptText, imageData = null) => {
+    // Remove images from message history for the API call
+    const messagesForHistory = messages.filter(msg => !msg.text.startsWith('Error:')).map(msg => ({
+      ...msg,
+      image: undefined
+    }));
+
+    const chatHistory = messagesForHistory.map(message => {
+      if (message.sender === 'user') {
+        return `**User:**\n${message.text}`;
+      } else if (message.sender === 'bot') {
+        return `**Bot:**\n${message.text}`;
       }
+      return "";
+    }).join("\n\n");
+
+    const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${promptText}`;
+
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: fullPrompt,
+        hasWhiteboard: !!imageData,
+        image: imageData,
+        messages: messagesForHistory
+      })
+    });
+
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return data.text;
   };
   
+  const handleSubmit = async () => {
+    if (!prompt.trim() && !imageFile) return;
+
+    const userMessage = {
+      id: messages.length + 1,
+      text: prompt,
+      sender: "user",
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+      image: imageFile
+    };
+
+    setMessages(prev => [...prev, userMessage]);
+    setPrompt("");
+    setIsLoading(true);
+
+    try {
+      const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
+      
+      // Filter out error messages when building chat history
+      const validMessages = messages.filter(msg => !msg.text.startsWith('Error:'));
+      const chatHistory = validMessages.map(message => {
+        if (message.sender === 'user') {
+          return `**User:**\n${message.text}`;
+        } else if (message.sender === 'bot') {
+          return `**Bot:**\n${message.text}`;
+        }
+        return "";
+      }).join("\n\n");
+
+      const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
+
+      let response;
+      try {
+        // Try local API key first
+        response = await generateDirectResponse(fullPrompt, processedImage);
+      } catch (error) {
+        if (error.message === 'local-auth-failed') {
+          // Fall back to server if no local API key
+          response = await generateServerResponse(fullPrompt, processedImage);
+        } else {
+          throw error;
+        }
+      }
+
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: response,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      }]);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: `Error: ${error.message}`,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      }]);
+    } finally {
+      setIsLoading(false);
+      setImageFile(null);
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
