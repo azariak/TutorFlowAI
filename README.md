@@ -12,7 +12,7 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 5. [Contributing](#contributing)
 
 #### Rough sketch:
-![Screenshot](src\assets\brand\screenshot.png)
+![Screenshot](src/assets/brand/screenshot.png)
 
 #### Installation
 - Double check on new device:
