@@ -11,7 +11,7 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 4. [Color Scheme](#color-Scheme)
 5. [Contributing](#contributing)
 
-#### Rough sketch:
+#### Screenshot:
 ![Screenshot](src\assets\brand\screenshot.png)
 
 #### Installation
