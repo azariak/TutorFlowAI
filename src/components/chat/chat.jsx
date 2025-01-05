@@ -33,16 +33,7 @@ export default function App() {
   const [prompt, setPrompt] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [apiKey, setApiKey] = useState("");
   const messagesEndRef = useRef(null);
-
-  useEffect(() => {
-    // Load API key from localStorage on component mount
-    const savedApiKey = localStorage.getItem('GEMINI_API_KEY');
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-    }
-  }, []);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -76,7 +67,7 @@ export default function App() {
     }
   };
 
-  const generateAIResponse = async (promptText, imageData = null) => {
+  const generateDirectResponse = async (promptText, imageData = null) => {
     const instructions = [
       "You are TutorFlowAI, created by Azaria Kelman to make interactive learning simple through the integration of AI and a whiteboard..",
       "Provide clear, simple explanations and encourage critical thinking.",
@@ -89,7 +80,7 @@ export default function App() {
 
     const storedApiKey = localStorage.getItem('GEMINI_API_KEY');
     if (!storedApiKey) {
-      throw new Error('Please set your Gemini API key in settings');
+      throw new Error('local-auth-failed');
     }
 
     const genAI = new GoogleGenerativeAI(storedApiKey);
@@ -104,6 +95,40 @@ export default function App() {
 
     const result = await model.generateContent(content);
     return result.response.text();
+  };
+
+  const generateServerResponse = async (promptText, imageData = null) => {
+    // Remove images from message history for the API call
+    const messagesForHistory = messages.filter(msg => !msg.text.startsWith('Error:')).map(msg => ({
+      ...msg,
+      image: undefined
+    }));
+
+    const chatHistory = messagesForHistory.map(message => {
+      if (message.sender === 'user') {
+        return `**User:**\n${message.text}`;
+      } else if (message.sender === 'bot') {
+        return `**Bot:**\n${message.text}`;
+      }
+      return "";
+    }).join("\n\n");
+
+    const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${promptText}`;
+
+    const response = await fetch('/api/generate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        prompt: fullPrompt,
+        hasWhiteboard: !!imageData,
+        image: imageData,
+        messages: messagesForHistory
+      })
+    });
+
+    const data = await response.json();
+    if (!data.success) throw new Error(data.error);
+    return data.text;
   };
   
   const handleSubmit = async () => {
@@ -124,7 +149,9 @@ export default function App() {
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
       
-      const chatHistory = messages.map(message => {
+      // Filter out error messages when building chat history
+      const validMessages = messages.filter(msg => !msg.text.startsWith('Error:'));
+      const chatHistory = validMessages.map(message => {
         if (message.sender === 'user') {
           return `**User:**\n${message.text}`;
         } else if (message.sender === 'bot') {
@@ -135,7 +162,18 @@ export default function App() {
 
       const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
 
-      const response = await generateAIResponse(fullPrompt, processedImage);
+      let response;
+      try {
+        // Try local API key first
+        response = await generateDirectResponse(fullPrompt, processedImage);
+      } catch (error) {
+        if (error.message === 'local-auth-failed') {
+          // Fall back to server if no local API key
+          response = await generateServerResponse(fullPrompt, processedImage);
+        } else {
+          throw error;
+        }
+      }
 
       setMessages(prev => [...prev, {
         id: prev.length + 1,
