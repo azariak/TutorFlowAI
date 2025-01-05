@@ -50,6 +50,8 @@ See `package.json` for complete, updated list.
 - realtime mic. support within chat window
 - light/dark mode
 - deselect chat when switching to whiteboard so keyboard does not popup
+- Add analytics tag to track specific user actions
+- Use speed tests to optimize load speed
 
 #### Color Scheme
 - Off-white: #FFECD1
