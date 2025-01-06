@@ -53,6 +53,7 @@ See `package.json` for complete, updated list.
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
 - Fix mobile auto scroll bug
+- Make github link preview popup
 
 #### Color Scheme
 - Off-white: #FFECD1
