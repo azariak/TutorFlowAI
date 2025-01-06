@@ -41,6 +41,18 @@ export function HelpContent() {
           <li><strong>Spacebar:</strong> Toggle voice input (coming soon)</li>
         </ul>
       </div>
+
+      <div style={styles.section}>
+        <h4>How to Generate a Gemini API Key</h4>
+        <ol>
+          <li>Visit <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a>.</li>
+          <li>Log in with your Google account.</li>
+          <li>Navigate to "Get API Key."</li>
+          <li>Click on "Create API Key."</li>
+          <li>Copy the API key and store it securely. Avoid sharing it publicly.</li>
+          <li>Paste the API key into settings in the TutorFlowAI application to provide free usage subject to generous rate limits.</li>
+        </ol>
+      </div>
     </div>
   );
 }

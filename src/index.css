@@ -9,6 +9,12 @@ body {
   overflow: hidden; /* Prevent scrolling on desktop */
 }
 
+a {
+  color: #888;
+  text-decoration: none;
+  cursor: pointer;
+}
+
 .app-container {
   display: flex;
   flex-direction: row;

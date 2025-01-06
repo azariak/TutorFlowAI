@@ -14,18 +14,18 @@ export default function AboutContent({ setActivePopup }) {
       </div>
       <h3 className="license-title">Licensing</h3>
       <p className="copyright">
-        © 2025 <a href="https://github.com/azariak" className="link" target="_blank">Azaria Kelman. </a>
-        <a href = "https://github.com/azariak/TutorFlowAI" className="link" target="_blank">Source code</a>
+        © 2025 <a href="https://github.com/azariak" target="_blank">Azaria Kelman. </a>
+        <a href = "https://github.com/azariak/TutorFlowAI" target="_blank">Source code</a>
       </p>
       <p className="copyright">
-        Contact: <a href="mailto:azaria.kelman@mail.utoronto.ca" className="link">
+        Contact: <a href="mailto:azaria.kelman@mail.utoronto.ca">
           azaria.kelman@mail.utoronto.ca
         </a>
       </p>
       <div className="attribution">
         Built using open source software. 
         <p className="license-link">
-          <span onClick={() => setActivePopup('license')} className="link">
+          <span onClick={() => setActivePopup('license')} className="popupLink">
             View license information
           </span>
         </p>
