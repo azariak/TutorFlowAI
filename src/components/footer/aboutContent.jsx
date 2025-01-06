@@ -15,10 +15,10 @@ export default function AboutContent({ setActivePopup }) {
       <h3 className="license-title">Licensing</h3>
       <p className="copyright">
         © 2025 <a href="https://github.com/azariak" target="_blank">Azaria Kelman. </a>
-        <a href = "https://github.com/azariak/TutorFlowAI" target="_blank">Source code</a>
+        <a href = "https://github.com/azariak/TutorFlowAI" target="_blank">Available under AGPL-3.0 license.</a>
       </p>
       <p className="copyright">
-        Contact: <a href="mailto:azaria.kelman@mail.utoronto.ca">
+        Contact: <a href="mailto:azaria.kelman@mail.utoronto.ca?subject=TutorFlowAI%20-%20">
           azaria.kelman@mail.utoronto.ca
         </a>
       </p>
