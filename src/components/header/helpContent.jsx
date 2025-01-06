@@ -50,7 +50,7 @@ export function HelpContent() {
           <li>Navigate to "Get API Key."</li>
           <li>Click on "Create API Key."</li>
           <li>Copy the API key and store it securely. Avoid sharing it publicly.</li>
-          <li>Paste the API key into settings in the TutorFlowAI application to provide free usage subject to generous rate limits.</li>
+          <li>Paste the API key into the TutorFlowAI settings menu to receive free usage subject to generous rate limits.</li>
         </ol>
       </div>
     </div>
