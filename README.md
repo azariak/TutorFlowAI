@@ -15,7 +15,6 @@ Integrates real-time audio, a Large Language Model (LLM), a chatbot interface, a
 ![Screenshot](src/assets/brand/screenshot.png)
 
 #### Installation
-- Double check on new device:
 1. Clone the repository: `git clone https://github.com/azariak/TutorFlowAI.git`
 
 2. Install dependencies: `npm install`
@@ -54,6 +53,7 @@ See `package.json` for complete, updated list.
 - Use speed tests to optimize load speed
 - Fix mobile auto scroll bug
 - Make github link preview popup
+- Verify installation guide
 
 #### Color Scheme
 - Off-white: #FFECD1
@@ -63,4 +63,4 @@ See `package.json` for complete, updated list.
 
 #### ⭐ Support the Project
 - If you find this project helpful or interesting, please consider giving it a star on GitHub! 
-- Feel free to [create issues](https://github.com/azariak/TutorFlowAI/issues/new/choose) or forks to contribute code
+- Feel free to [create issues](https://github.com/azariak/TutorFlowAI/issues/new/choose) or [pull requests](https://github.com/azariak/TutorFlowAI/pulls) to contribute to the source code
