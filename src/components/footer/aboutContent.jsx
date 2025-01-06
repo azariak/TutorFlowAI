@@ -14,7 +14,7 @@ export default function AboutContent({ setActivePopup }) {
       </div>
       <h3 className="license-title">Licensing</h3>
       <p className="copyright">
-        © 2025 <a href="https://github.com/azariak" className="link">Azaria Kelman. </a>
+        © 2025 <a href="https://github.com/azariak" className="link" target="_blank">Azaria Kelman. </a>
         <a href = "https://github.com/azariak/TutorFlowAI" className="link" target="_blank">Source code</a>
       </p>
       <p className="copyright">
