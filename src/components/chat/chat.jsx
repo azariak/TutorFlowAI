@@ -130,9 +130,10 @@ export default function App() {
     return data.text;
   };
   
+
   const handleSubmit = async () => {
     if (!prompt.trim() && !imageFile) return;
-
+  
     const userMessage = {
       id: messages.length + 1,
       text: prompt,
@@ -140,12 +141,12 @@ export default function App() {
       timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
       image: imageFile
     };
-
+  
     setMessages(prev => [...prev, userMessage]);
     setPrompt("");
-    setImageFile(null); // Auto-remove image immediately after sending
+    setImageFile(null);
     setIsLoading(true);
-
+  
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
       
@@ -158,20 +159,26 @@ export default function App() {
         }
         return "";
       }).join("\n\n");
-
+  
       const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
-
+  
       let response;
       try {
         response = await generateDirectResponse(fullPrompt, processedImage);
       } catch (error) {
         if (error.message === 'local-auth-failed') {
           response = await generateServerResponse(fullPrompt, processedImage);
+        } else if (error.message.includes('429') || error.message.includes('quota')) {
+          throw new Error(
+            "API quota exceeded. Please either:\n\n" +
+            "1. Follow the API key setup instructions at the bottom of the help menu\n" +
+            "2. Wait a few minutes and try again"
+          );
         } else {
           throw error;
         }
       }
-
+  
       setMessages(prev => [...prev, {
         id: prev.length + 1,
         text: response,
@@ -182,14 +189,15 @@ export default function App() {
       console.error("Error:", error);
       setMessages(prev => [...prev, {
         id: prev.length + 1,
-        text: `Error: ${error.message}`,
+        text: `${error.message}`,
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+        isError: true
       }]);
     } finally {
       setIsLoading(false);
     }
-  };
+  };  
 
   return (
     <div className={styles.container}>
