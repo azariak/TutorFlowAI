@@ -54,6 +54,7 @@ See `package.json` for complete, updated list.
 - Fix mobile auto scroll bug
 - Make github link preview popup
 - Verify installation guide
+- Refactor such that chat.jsx relies on generate.js to follow SRP
 
 #### Color Scheme
 - Off-white: #FFECD1

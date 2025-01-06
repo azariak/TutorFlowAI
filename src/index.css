@@ -28,7 +28,6 @@ a {
   width: 35vw;
   height: 100%; /* Changed to 100% to fill container */
   min-height: 500px; /* Prevent collapsing */
-
 }
 
 .whiteboard-container {
