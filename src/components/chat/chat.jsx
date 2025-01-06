@@ -98,7 +98,6 @@ export default function App() {
   };
 
   const generateServerResponse = async (promptText, imageData = null) => {
-    // Remove images from message history for the API call
     const messagesForHistory = messages.filter(msg => !msg.text.startsWith('Error:')).map(msg => ({
       ...msg,
       image: undefined
@@ -144,12 +143,12 @@ export default function App() {
 
     setMessages(prev => [...prev, userMessage]);
     setPrompt("");
+    setImageFile(null); // Auto-remove image immediately after sending
     setIsLoading(true);
 
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
       
-      // Filter out error messages when building chat history
       const validMessages = messages.filter(msg => !msg.text.startsWith('Error:'));
       const chatHistory = validMessages.map(message => {
         if (message.sender === 'user') {
@@ -164,11 +163,9 @@ export default function App() {
 
       let response;
       try {
-        // Try local API key first
         response = await generateDirectResponse(fullPrompt, processedImage);
       } catch (error) {
         if (error.message === 'local-auth-failed') {
-          // Fall back to server if no local API key
           response = await generateServerResponse(fullPrompt, processedImage);
         } else {
           throw error;
@@ -191,7 +188,6 @@ export default function App() {
       }]);
     } finally {
       setIsLoading(false);
-      setImageFile(null);
     }
   };
 

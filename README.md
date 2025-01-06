@@ -38,7 +38,7 @@ See `package.json` for complete, updated list.
 
 #### TODO: 
 - Fix header CSS mess
-- Auto remove image preview after sending message
+- Fix autoscroll after images sent
 - Add api config instructions to help menu
 - refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
