@@ -1,0 +1,8 @@
+{
+    "name": "TutorFlowAI",
+    "theme_color": "#ffecd1",
+    "background_color": "#001524",
+    "display": "standalone",
+    "scope": "/"
+    
+  }
