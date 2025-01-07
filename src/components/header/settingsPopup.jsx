@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Popup from 'reactjs-popup';
-import { useHeaderStyles } from './styles';
+import styles from './header.module.css';
 
 export function SettingsPopup({ isOpen, onClose }) {
   const [apiKey, setApiKey] = useState('');
-  const styles = useHeaderStyles();
-  
+
   useEffect(() => {
     const savedApiKey = localStorage.getItem('GEMINI_API_KEY');
     if (savedApiKey) {
@@ -24,21 +23,31 @@ export function SettingsPopup({ isOpen, onClose }) {
       open={isOpen}
       onClose={onClose}
       modal
-      overlayStyle={styles.popupOverlay}
-      contentStyle={styles.popupContent}
+      nested
+      className={styles.popupOverlay}
+      contentStyle={{ 
+        background: 'none', 
+        border: 'none', 
+        padding: 0,
+        width: '30%',
+        height: 'auto',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      }}
     >
-      <div style={styles.popup}>
-        <button style={styles.closeButton} onClick={onClose}>×</button>
-        <h2 style={styles.title}>Settings</h2>
+      <div className={styles.popup} style={{ height: 'auto', maxHeight: '80vh' }}>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <h2 className={styles.title}>Settings</h2>
         <form onSubmit={handleSubmit}>
-          <div style={styles.formGroup}>
+          <div className={styles.formGroup} style={{ padding: '20px' }}>
             <label htmlFor="apiKey">Gemini API Key:</label>
             <input
               type="password"
               id="apiKey"
               value={apiKey}
               onChange={(e) => setApiKey(e.target.value)}
-              style={styles.input}
+              className={styles.input}
             />
             <p style={{
               fontSize: '0.8rem',
@@ -49,7 +58,7 @@ export function SettingsPopup({ isOpen, onClose }) {
               Your API key will be securely saved in your browser and persist across sessions.
             </p>
           </div>
-          <button type="submit" style={styles.submitButton}>
+          <button type="submit" className={styles.submitButton}>
             Save
           </button>
         </form>

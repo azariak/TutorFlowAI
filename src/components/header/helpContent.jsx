@@ -1,14 +1,12 @@
 import React from 'react';
 import demoVideo from '../../assets/Demos/TutorFlow-FastDemo.mp4';
-import { useHeaderStyles } from './styles';
+import styles from './header.module.css';
 
 export function HelpContent() { 
-  const styles = useHeaderStyles();
-
-  return (
-    <div style={styles.content}>
-      <div style={styles.section}>
-        <div style={styles.videoContainer}>
+  return (    
+    <div className={styles.content}>
+      <div className={styles.section}>
+        <div className={styles.videoContainer}>
           <video 
             style={styles.video}
             controls 
@@ -28,7 +26,7 @@ export function HelpContent() {
         </ul>
       </div>
 
-      <div style={styles.section}>
+      <div className={styles.section}>
         <h4>Tips for Best Results</h4>
         <ul>
           <li>Write clearly and legibly on the whiteboard for accurate recognition</li>
@@ -37,7 +35,7 @@ export function HelpContent() {
         </ul>
       </div>
 
-      <div style={styles.section}>
+      <div className={styles.section}>
         <h4>Keyboard Shortcuts</h4>
         <ul>
           <li><strong>Ctrl + Z:</strong> Undo</li>
@@ -50,7 +48,7 @@ export function HelpContent() {
         </ul>
       </div>
 
-      <div style={styles.section}>
+      <div className={styles.section}>
         <h4>How to Generate a Gemini API Key</h4>
         <ol>
           <li>Visit <a href="https://aistudio.google.com" target="_blank" rel="noopener noreferrer">aistudio.google.com</a>.</li>
