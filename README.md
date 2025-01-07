@@ -36,7 +36,7 @@ See `package.json` for complete, updated list.
 - "tldraw": "^3.6.1"
 
 #### TODO: 
-- Refactor settingsPopup such that it depends on header.module.css, safely delete styles.js
+- × or x for closing popup?
 - Fix autoscroll after images sent
 - Add api config instructions to help menu
 - refactor code, improve readme
