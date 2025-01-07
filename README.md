@@ -43,7 +43,7 @@ See `package.json` for complete, updated list.
 - api to work on vercel and cloudfare and npm run dev
 - fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
-- optimize popups for mobile
+- optimize settings popup for mobile
 - consider making PWA
 - Adjust size of whiteboard & chat by dragging with reset to default
 - realtime mic. support within chat window
