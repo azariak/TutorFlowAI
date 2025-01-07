@@ -55,6 +55,7 @@ See `package.json` for complete, updated list.
 - Make github link preview popup
 - Verify installation guide
 - Refactor such that chat.jsx relies on generate.js to follow SRP
+- Merge popup css from header/footer css
 
 #### Color Scheme
 - Off-white: #FFECD1

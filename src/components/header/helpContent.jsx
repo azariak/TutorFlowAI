@@ -8,9 +8,17 @@ export function HelpContent() {
   return (
     <div style={styles.content}>
       <div style={styles.section}>
-        <video width="600" height="338" controls autoPlay muted playsInline>
-          <source src={demoVideo} type="video/mp4" />
-        </video>
+        <div style={styles.videoContainer}>
+          <video 
+            style={styles.video}
+            controls 
+            autoPlay 
+            muted 
+            playsInline
+          >
+            <source src={demoVideo} type="video/mp4" />
+          </video>
+        </div>
 
         <h4>Key Features</h4>
         <ul>

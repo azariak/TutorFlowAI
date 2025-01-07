@@ -62,6 +62,17 @@ export const useHeaderStyles = () => ({
       position: "relative",
       textAlign: "center"
     },
+    videoContainer: {
+      width: '100%',
+      maxWidth: '100%',
+      marginBottom: '20px',
+    },
+    video: {
+      width: '100%',
+      height: 'auto',
+      maxWidth: '100%',
+      display: 'block',
+    },
     closeButton: {
       position: "absolute",
       right: "20px",

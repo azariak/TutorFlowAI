@@ -71,6 +71,19 @@
     text-align: center;
     margin: 0 auto;
   }
+  @media (max-width: 768px) {
+    .popup {
+      position: relative;
+      margin: 20px auto; /* Center the modal with some margin */
+      padding: 20px; /* Reduce padding for smaller screens */
+      max-width: 90%; /* Make the modal almost full-width */
+      max-height: 80vh; /* Adjust height to ensure it fits within the viewport */
+      text-align: center;
+      overflow-y: auto;
+      border-radius: 8px; /* Slightly reduce border-radius for a cleaner look */
+      min-width: 300px;
+    }
+  }
   
   .popupContent {
     background: none;

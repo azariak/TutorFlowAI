@@ -1,20 +1,18 @@
 import React from 'react';
 import Popup from 'reactjs-popup';
 import { HelpContent } from './helpContent';
-import { useHeaderStyles } from './styles';
-import "reactjs-popup/dist/index.css";
+import styles from './header.module.css';
+import 'reactjs-popup/dist/index.css';
 
 export function HelpPopup({ isOpen, onClose }) {
-  const styles = useHeaderStyles();
-  
   const overlayStyle = { background: 'rgba(0, 0, 0, 0.85)' };
   const contentStyle = { 
     background: 'none', 
     border: 'none', 
-    padding: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
+    padding: 0, 
+    display: 'flex', 
+    justifyContent: 'center', 
+    alignItems: 'center' 
   };
 
   return (
@@ -25,9 +23,9 @@ export function HelpPopup({ isOpen, onClose }) {
       overlayStyle={overlayStyle}
       contentStyle={contentStyle}
     >
-      <div style={styles.popup}>
-        <button style={styles.closeButton} onClick={onClose}>×</button>
-        <h2 style={styles.title}>How to Use TutorFlowAI</h2>
+      <div className={styles.popup}>
+        <button className={styles.closeButton} onClick={onClose}>×</button>
+        <h2 className={styles.title}>How to Use TutorFlowAI</h2>
         <HelpContent />
       </div>
     </Popup>
