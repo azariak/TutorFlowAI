@@ -1,13 +1,21 @@
-// May fail to display iframe due to github content security policy
+// Abandoned for now, see https://stackoverflow.com/questions/28338017/is-there-a-way-to-embed-github-code-into-an-iframe
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Popup from 'reactjs-popup';
 import { useHeaderStyles } from './styles';
 
-const Iframe = ({ src, height, width }) => {
+const Iframe = ({ content }) => {
   return (
     <div>
-      <iframe src={src} height={height} width={width}/>
+      <iframe 
+        srcDoc={content}
+        style={{
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          backgroundColor: '#fff'
+        }}
+      />
     </div>
   );
 };
@@ -15,6 +23,36 @@ const Iframe = ({ src, height, width }) => {
 export function GitHubPopup({ isOpen, onClose }) {
   const styles = useHeaderStyles();
   const repoUrl = "https://github.com/azariaK/TutorFlowAI";
+  const [content, setContent] = useState('Loading...');
+
+  useEffect(() => {
+    if (isOpen) {
+      fetch('https://api.github.com/repos/azariaK/TutorFlowAI/contents/src/app.jsx')
+        .then(response => response.json())
+        .then(data => {
+          const decodedContent = atob(data.content);
+          setContent(`
+            <html>
+              <head>
+                <style>
+                  body {
+                    padding: 20px;
+                    font-family: monospace;
+                    white-space: pre;
+                    background: #1a1a1a;
+                    color: #ffffff;
+                  }
+                </style>
+              </head>
+              <body>${decodedContent}</body>
+            </html>
+          `);
+        })
+        .catch(error => {
+          setContent('Error loading content. Please use the link above to view on GitHub.');
+        });
+    }
+  }, [isOpen]);
 
   return (
     <Popup
@@ -80,11 +118,7 @@ export function GitHubPopup({ isOpen, onClose }) {
           overflow: 'hidden',
           borderRadius: '8px'
         }}>
-          <Iframe 
-            src={repoUrl} 
-            height="100%" 
-            width="100%"
-          />
+          <Iframe content={content} />
         </div>
       </div>
     </Popup>
