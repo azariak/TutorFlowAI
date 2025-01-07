@@ -208,3 +208,16 @@
       max-height: 90vh;
     }
   }
+
+  .videoContainer {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+  }
+
+  video {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+  }
