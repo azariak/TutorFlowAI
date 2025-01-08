@@ -53,8 +53,6 @@ See `package.json` for complete, updated list.
 - Merge popup css from header/footer css
 - refactor code, improve readme
 - Import color scheme in various CSS from one central file, to allow easier color theming
-- X to close help menu must maintain position on scroll
-
 
 #### Color Scheme
 - Off-white: #FFECD1
