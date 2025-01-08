@@ -36,11 +36,12 @@ See `package.json` for complete, updated list.
 - "tldraw": "^3.6.1"
 
 #### TODO: 
+- Bug: Autoscroll in chat does not work for tall whiteboard images
 - api to work on vercel and cloudfare and npm run dev
 - fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - consider making PWA
-- Adjust size of whiteboard & chat by dragging with reset to default
+- Resize tool for mobile?
 - realtime mic. support within chat window
 - light/dark mode
 - deselect chat when switching to whiteboard so keyboard does not popup
