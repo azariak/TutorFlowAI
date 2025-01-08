@@ -74,45 +74,58 @@ const ResizeHandle = ({ containerSelector, defaultWidth = '35vw' }) => {
 
   return (
     <div
-      onMouseDown={handleDragStart}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+    onMouseDown={handleDragStart}
+    onMouseEnter={() => setIsHovered(true)}
+    onMouseLeave={() => setIsHovered(false)}
+    style={{
+      width: '4px',
+      margin: '0 -12px',
+      cursor: 'col-resize',
+      background: isHovered
+        ? 'linear-gradient(to right, rgba(255, 236, 209, 0.15), rgba(255, 236, 209, 0.3), rgba(255, 236, 209, 0.15))'
+        : 'linear-gradient(to right, rgba(255, 236, 209, 0.05), rgba(255, 236, 209, 0.1), rgba(255, 236, 209, 0.05))',
+      position: 'relative',
+      zIndex: 10,
+      userSelect: 'none',
+      touchAction: 'none',
+      transition: 'all 0.3s ease',
+    }}
+  >
+    <button
+      onClick={resetWidth}
       style={{
-        width: '4px',
-        margin: '0 -12px', // Margin around resize, also gap between whiteboard and chat 
-        cursor: 'col-resize',
-        background: isHovered 
-          ? 'linear-gradient(to right, rgba(255, 236, 209, 0.15), rgba(255, 236, 209, 0.3), rgba(255, 236, 209, 0.15))'
-          : 'linear-gradient(to right, rgba(255, 236, 209, 0.05), rgba(255, 236, 209, 0.1), rgba(255, 236, 209, 0.05))',
-        position: 'relative',
-        zIndex: 10,
-        userSelect: 'none',
-        touchAction: 'none',
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '16px',
+        height: '16px',
+        border: 'none',
+        borderRadius: '50%',
+        background: isHovered
+          ? 'rgba(255, 236, 209, 0.3)'
+          : 'rgba(255, 236, 209, 0.15)',
+        cursor: 'pointer',
+        padding: 0,
         transition: 'all 0.3s ease',
+        opacity: isHovered ? 1 : 0.5, // Default visibility for button
       }}
+      title="Reset to default size"
     >
-      <button
-        onClick={resetWidth}
+      <span
         style={{
-          position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: '16px',
-          height: '16px',
-          border: 'none',
-          borderRadius: '50%',
-          background: isHovered 
-            ? 'rgba(255, 236, 209, 0.3)'
-            : 'rgba(255, 236, 209, 0.15)',
-          cursor: 'pointer',
-          padding: 0,
-          transition: 'all 0.3s ease',
-          opacity: isHovered ? 1 : 0.5,
+          display: 'block',
+          fontSize: '18px',
+          color: '#FFECD1', // Offwhite
+          opacity: isHovered ? 0.5 : 0, // Full visibility on hover
+          transition: 'opacity 0.3s ease', // Smooth fade-in/fade-out
         }}
-        title="Reset to default size"
-      />
-    </div>
+      >
+        ↷
+      </span>
+    </button>
+  </div>
+  
   );
 };
 
