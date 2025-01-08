@@ -35,8 +35,12 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
 
-  useEffect(() => {
+  const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
   }, [messages]);
 
   const handleWhiteboardCapture = async () => {
@@ -129,7 +133,6 @@ export default function App() {
     if (!data.success) throw new Error(data.error);
     return data.text;
   };
-  
 
   const handleSubmit = async () => {
     if (!prompt.trim() && !imageFile) return;
@@ -146,6 +149,9 @@ export default function App() {
     setPrompt("");
     setImageFile(null);
     setIsLoading(true);
+    
+    // Immediately scroll to bottom after adding user message
+    setTimeout(scrollToBottom, 0);
   
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;

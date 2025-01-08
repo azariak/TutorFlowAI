@@ -36,10 +36,6 @@ See `package.json` for complete, updated list.
 - "tldraw": "^3.6.1"
 
 #### TODO: 
-- × or x for closing popup?
-- Fix autoscroll after images sent
-- Add api config instructions to help menu
-- refactor code, improve readme
 - api to work on vercel and cloudfare and npm run dev
 - fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
@@ -52,10 +48,12 @@ See `package.json` for complete, updated list.
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
 - Fix mobile auto scroll bug
-- Make github link preview popup
+- Fix ability to scroll on whiteboard (or provide alternative up/chat button or smtg similar)
 - Verify installation guide
 - Refactor such that chat.jsx relies on generate.js to follow SRP
 - Merge popup css from header/footer css
+- refactor code, improve readme
+
 
 #### Color Scheme
 - Off-white: #FFECD1
