@@ -43,7 +43,6 @@ See `package.json` for complete, updated list.
 - consider making PWA
 - Resize tool for mobile?
 - realtime mic. support within chat window
-- light/dark mode
 - deselect chat when switching to whiteboard so keyboard does not popup
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
@@ -53,6 +52,7 @@ See `package.json` for complete, updated list.
 - Refactor such that chat.jsx relies on generate.js to follow SRP
 - Merge popup css from header/footer css
 - refactor code, improve readme
+- Import color scheme in various CSS from one central file, to allow easier color theming
 
 
 #### Color Scheme
