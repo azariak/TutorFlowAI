@@ -119,6 +119,7 @@ const ResizeHandle = ({ containerSelector, defaultWidth = '35vw' }) => {
           color: '#FFECD1', // Offwhite
           opacity: isHovered ? 0.5 : 0, // Full visibility on hover
           transition: 'opacity 0.3s ease', // Smooth fade-in/fade-out
+          lineHeight: '18px', // Match the font size for centering
         }}
       >
         ↷
