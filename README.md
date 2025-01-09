@@ -36,22 +36,20 @@ See `package.json` for complete, updated list.
 - "tldraw": "^3.6.1"
 
 #### TODO: 
-- Bug: Autoscroll in chat does not work for tall whiteboard images
+- Touchscreen support for drag to resize
+- Bug: Autoscroll in chat does not always work for whiteboard images
 - api to work on vercel and cloudfare and npm run dev
 - fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - consider making PWA
-- Resize tool for mobile?
 - realtime mic. support within chat window
 - deselect chat when switching to whiteboard so keyboard does not popup
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
-- Fix mobile auto scroll bug
+- Fix mobile auto scroll bug (maybe caused by CSS size discrepancies)
 - Fix ability to scroll on whiteboard (or provide alternative up/chat button or smtg similar)
-- Verify installation guide
 - Refactor such that chat.jsx relies on generate.js to follow SRP
 - Merge popup css from header/footer css
-- refactor code, improve readme
 - Import color scheme in various CSS from one central file, to allow easier color theming
 
 #### Color Scheme
