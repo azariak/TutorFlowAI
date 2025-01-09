@@ -51,6 +51,7 @@ See `package.json` for complete, updated list.
 - Refactor such that chat.jsx relies on generate.js to follow SRP
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming
+- Fix `Unexpected end of JSON input` error to notify the user to configure their API key
 
 #### Color Scheme
 - Off-white: #FFECD1
