@@ -48,10 +48,11 @@ See `package.json` for complete, updated list.
 - Use speed tests to optimize load speed
 - Fix mobile auto scroll bug (maybe caused by CSS size discrepancies)
 - Fix ability to scroll on whiteboard (or provide alternative up/chat button or smtg similar)
-- Refactor such that chat.jsx relies on generate.js to follow SRP
+- Refactor such that chat.jsx relies on generate.js even for localStorage API key to follow SRP and avoid duplicate code
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key
+- Ability to reclick whiteboard button to remove the whiteboard image
 
 #### Color Scheme
 - Off-white: #FFECD1
