@@ -45,6 +45,12 @@ export default function App() {
 
   const handleWhiteboardCapture = async () => {
     try {
+      // If there's already an image, clicking the button again removes it
+      if (imageFile) {
+        setImageFile(null);
+        return;
+      }
+
       if (window.captureWhiteboardImage) {
         const imageData = await window.captureWhiteboardImage();
         if (imageData) {
@@ -150,7 +156,6 @@ export default function App() {
     setImageFile(null);
     setIsLoading(true);
     
-    // Immediately scroll to bottom after adding user message
     setTimeout(scrollToBottom, 0);
   
     try {
@@ -258,9 +263,8 @@ export default function App() {
           />
           <button 
             onClick={handleWhiteboardCapture}
-            disabled={!!imageFile}
             className={styles.whiteboardButton}
-            title="Add whiteboard"
+            title={imageFile ? "Remove whiteboard" : "Add whiteboard"}
           >
             📋
           </button>

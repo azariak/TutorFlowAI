@@ -52,7 +52,6 @@ See `package.json` for complete, updated list.
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key
-- Ability to reclick whiteboard button to remove the whiteboard image
 
 #### Color Scheme
 - Off-white: #FFECD1
