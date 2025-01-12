@@ -99,10 +99,18 @@ export default function Chat() {
       // Try with local API key first
       const localApiKey = localStorage.getItem('GEMINI_API_KEY');
       if (localApiKey) {
-        return await generateResponse(promptText, imageData, localApiKey);
+        try {
+          return await generateResponse(promptText, imageData, localApiKey);
+        } catch (error) {
+          // If local key fails, clear it and try server
+          if (error.message.includes('Invalid API key')) {
+            localStorage.removeItem('GEMINI_API_KEY');
+          }
+          // Continue to server attempt
+        }
       }
-
-      // Fall back to server API
+  
+      // Try server API
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -112,9 +120,19 @@ export default function Chat() {
           image: imageData
         })
       });
-
+  
       const data = await response.json();
-      if (!data.success) throw new Error(data.error);
+      
+      if (!data.success) {
+        // If server indicates we need a client key, throw specific error
+        if (data.requiresClientKey) {
+          throw new Error(
+            "API key required. Please follow the API key setup instructions at the bottom of the help menu to continue."
+          );
+        }
+        throw new Error(data.error || 'Failed to generate response');
+      }
+      
       return data.text;
     } catch (error) {
       if (error.message.includes('429') || error.message.includes('quota')) {

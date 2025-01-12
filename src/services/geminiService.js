@@ -29,6 +29,14 @@ export async function generateResponse(prompt, imageData = null, apiKey) {
       ]
     : [{ text: prompt }];
 
-  const result = await model.generateContent(content);
-  return result.response.text();
+  try {
+    const result = await model.generateContent(content);
+    return result.response.text();
+  } catch (error) {
+    // Handle specific API errors more gracefully
+    if (error.message.includes('API key not valid')) {
+      throw new Error('Invalid API key');
+    }
+    throw error; // Re-throw other errors
+  }
 }
