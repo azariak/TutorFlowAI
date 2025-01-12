@@ -10,15 +10,14 @@ export default async function handler(req, res) {
 
   try {
     const { prompt, hasWhiteboard, image } = req.body;
-    
-    // Try to get API key from environment first, then fallback to client
     const apiKey = process.env.GEMINI_API_KEY;
-    
+
     if (!apiKey) {
       return res.status(500).json({
         success: false,
-        error: 'No API key configured on server',
-        requiresClientKey: true
+        error: "API quota exceeded. Please either:\n\n" +
+              "1. Follow the API key setup instructions at the bottom of the help menu\n" +
+              "2. Wait a few minutes and try again"
       });
     }
 
@@ -32,9 +31,7 @@ export default async function handler(req, res) {
     console.error('Generation error:', error);
     return res.status(500).json({
       success: false,
-      error: 'Generation failed',
-      details: error.message,
-      requiresClientKey: error.message.includes('API key not configured')
+      error: error.message || 'Generation failed'
     });
   }
 }
