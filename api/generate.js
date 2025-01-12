@@ -15,7 +15,10 @@ export default async function handler(req, res) {
     const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
-      throw new Error('API key not configured in request or environment variables');
+      return res.status(500).json({ 
+        success: false, 
+        error: 'API key not configured in request or environment variables'
+      });
     }
 
     const instructions = [
@@ -49,9 +52,11 @@ export default async function handler(req, res) {
       result = await model.generateContent([{ text: prompt }]);
     }
 
+    const responseText = await result.response.text();
+
     return res.status(200).json({
       success: true,
-      text: result.response.text()
+      text: responseText
     });
   } catch (error) {
     console.error('Generation error:', error);

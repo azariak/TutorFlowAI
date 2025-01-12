@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateResponse } from '../../services/geminiService';
 import styles from './chat.module.css';
 
 const ImagePreview = ({ image, onRemove }) => (
@@ -23,7 +23,7 @@ const ImagePreview = ({ image, onRemove }) => (
   </div>
 );
 
-export default function App() {
+export default function Chat() {
   const [messages, setMessages] = useState([{
     id: 1,
     text: "Hello! How can I assist you today?",
@@ -45,7 +45,6 @@ export default function App() {
 
   const handleWhiteboardCapture = async () => {
     try {
-      // If there's already an image, clicking the button again removes it
       if (imageFile) {
         setImageFile(null);
         return;
@@ -77,43 +76,13 @@ export default function App() {
     }
   };
 
-  const generateDirectResponse = async (promptText, imageData = null) => {
-    const instructions = [
-      "You are TutorFlowAI, created by Azaria Kelman to make interactive learning simple through the integration of AI and a whiteboard.",
-      "Provide clear, simple explanations and encourage critical thinking.",
-      "Adapt to the user's pace, offering additional explanations if needed or challenge them when they excel.",
-      "Maintain engagement with positive feedback and relatable examples. Explain the intuition behind concepts.",
-      "Summarize key points and provide constructive feedback.",
-      "When you see a whiteboard image, do not comment on the board, but use it to see the user's work thus far, to help you tutor better using their example.",
-      "Concisely, describe everything you see in the whiteboard. Do not add bot: to your response or add the user's response."
-    ].join(' ');
-
-    const storedApiKey = localStorage.getItem('GEMINI_API_KEY');
-    if (!storedApiKey) {
-      throw new Error('local-auth-failed');
-    }
-
-    const genAI = new GoogleGenerativeAI(storedApiKey);
-    const model = genAI.getGenerativeModel({
-      model: "gemini-2.0-flash-exp",
-      systemInstruction: instructions
-    });
-
-    const content = imageData 
-      ? [{ text: promptText }, { inlineData: { data: imageData.split(',')[1], mimeType: 'image/png' }}]
-      : [{ text: promptText }];
-
-    const result = await model.generateContent(content);
-    return result.response.text();
-  };
-
-  const generateServerResponse = async (promptText, imageData = null) => {
-    const messagesForHistory = messages.filter(msg => !msg.text.startsWith('Error:')).map(msg => ({
+  const formatChatHistory = (messagesList, currentPrompt) => {
+    const validMessages = messagesList.filter(msg => !msg.text.startsWith('Error:')).map(msg => ({
       ...msg,
       image: undefined
     }));
 
-    const chatHistory = messagesForHistory.map(message => {
+    const chatHistory = validMessages.map(message => {
       if (message.sender === 'user') {
         return `**User:**\n${message.text}`;
       } else if (message.sender === 'bot') {
@@ -122,22 +91,49 @@ export default function App() {
       return "";
     }).join("\n\n");
 
-    const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${promptText}`;
+    return chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${currentPrompt}`;
+  };
 
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        prompt: fullPrompt,
-        hasWhiteboard: !!imageData,
-        image: imageData,
-        messages: messagesForHistory
-      })
-    });
-
-    const data = await response.json();
-    if (!data.success) throw new Error(data.error);
-    return data.text;
+  const handleGenerateResponse = async (promptText, imageData) => {
+    try {
+      // Try with local API key first
+      const localApiKey = localStorage.getItem('GEMINI_API_KEY');
+      if (localApiKey) {
+        try {
+          return await generateResponse(promptText, imageData, localApiKey);
+        } catch (error) {
+          // If local key fails, clear it and continue to server attempt
+          if (error.message.includes('Invalid API key')) {
+            localStorage.removeItem('GEMINI_API_KEY');
+          }
+        }
+      }
+  
+      // Fall back to server API
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: promptText,
+          hasWhiteboard: !!imageData,
+          image: imageData
+        })
+      });
+  
+      const data = await response.json();
+      if (!data.success) throw new Error(data.error);
+      return data.text;
+  
+    } catch (error) {
+      if (error.message.includes('429') || error.message.includes('quota')) {
+        throw new Error(
+          "API quota exceeded. Please either:\n\n" +
+          "1. Follow the API key setup instructions at the bottom of the help menu\n" +
+          "2. Wait a few minutes and try again"
+        );
+      }
+      throw error;
+    }
   };
 
   const handleSubmit = async () => {
@@ -160,35 +156,8 @@ export default function App() {
   
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
-      
-      const validMessages = messages.filter(msg => !msg.text.startsWith('Error:'));
-      const chatHistory = validMessages.map(message => {
-        if (message.sender === 'user') {
-          return `**User:**\n${message.text}`;
-        } else if (message.sender === 'bot') {
-          return `**Bot:**\n${message.text}`;
-        }
-        return "";
-      }).join("\n\n");
-  
-      const fullPrompt = chatHistory + (chatHistory ? "\n\n" : "") + `**User:**\n${prompt}`;
-  
-      let response;
-      try {
-        response = await generateDirectResponse(fullPrompt, processedImage);
-      } catch (error) {
-        if (error.message === 'local-auth-failed') {
-          response = await generateServerResponse(fullPrompt, processedImage);
-        } else if (error.message.includes('429') || error.message.includes('quota')) {
-          throw new Error(
-            "API quota exceeded. Please either:\n\n" +
-            "1. Follow the API key setup instructions at the bottom of the help menu\n" +
-            "2. Wait a few minutes and try again"
-          );
-        } else {
-          throw error;
-        }
-      }
+      const fullPrompt = formatChatHistory(messages, prompt);
+      const response = await handleGenerateResponse(fullPrompt, processedImage);
   
       setMessages(prev => [...prev, {
         id: prev.length + 1,
