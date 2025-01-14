@@ -54,7 +54,7 @@ See `package.json` for complete, updated list.
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling
 - Merge common elemts of generate.js and geminiService.JS
 - The AI chat should be able to help users learn to use the app. Add to system message, and indicate this in help menu.
-- Eliminate autoscroll for messages in the chat, keep for images
+- Eliminate autoscroll for messages in the chat when the message is too big for the chat box, keep for images and short messages. Basically max out the autoscroll to the size of chat window
 
 #### Color Scheme
 - Off-white: #FFECD1
