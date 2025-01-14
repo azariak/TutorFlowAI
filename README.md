@@ -51,7 +51,10 @@ See `package.json` for complete, updated list.
 - Refactor such that chat.jsx relies on generate.js even for localStorage API key to follow SRP and avoid duplicate code
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
-- Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails
+- Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling
+- Merge common elemts of generate.js and geminiService.JS
+- The AI chat should be able to help users learn to use the app. Add to system message, and indicate this in help menu.
+- Remember user preference for resize of whiteboard/chat
 
 #### Color Scheme
 - Off-white: #FFECD1

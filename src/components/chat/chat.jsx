@@ -34,14 +34,52 @@ export default function Chat() {
   const [imageFile, setImageFile] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
+  const messagesContainerRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+ // ...previous imports and ImagePreview component remain the same...
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+ const scrollToMessage = (isUserMessage = false, hasImage = false) => {
+  if (!messagesContainerRef.current) return;
+
+  const container = messagesContainerRef.current;
+  
+  if (isUserMessage) {
+    // For all user messages (text or image), use smooth scrolling
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: hasImage ? "smooth" : "auto"
+    });
+    return;
+  }
+
+  const messages = container.getElementsByClassName(styles.messageWrapper);
+  const lastBotMessage = Array.from(messages).findLast(el => 
+    el.classList.contains(styles.bot)
+  );
+
+  if (lastBotMessage) {
+    const containerTop = container.getBoundingClientRect().top;
+    const messageTop = lastBotMessage.getBoundingClientRect().top;
+    const scrollAdjustment = messageTop - containerTop;
+    
+    container.scrollBy({
+      top: scrollAdjustment,
+      behavior: "smooth"
+    });
+  }
+};
+
+useEffect(() => {
+  if (messages.length === 0) return;
+  
+  const lastMessage = messages[messages.length - 1];
+  const hasImage = !!lastMessage.image;
+  
+  // Add a small delay to ensure the DOM has updated, longer delay for images
+  setTimeout(() => {
+    scrollToMessage(lastMessage.sender === 'user', hasImage);
+  }, hasImage ? 0 : 100);
+}, [messages]);
 
   const handleWhiteboardCapture = async () => {
     try {
@@ -151,8 +189,6 @@ export default function Chat() {
     setPrompt("");
     setImageFile(null);
     setIsLoading(true);
-    
-    setTimeout(scrollToBottom, 0);
   
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
@@ -177,7 +213,7 @@ export default function Chat() {
     } finally {
       setIsLoading(false);
     }
-  };  
+  };
 
   return (
     <div className={styles.container}>
@@ -185,7 +221,7 @@ export default function Chat() {
         <h4>Ask TutorFlow</h4>
       </div>
 
-      <div className={styles.messagesContainer}>
+      <div className={styles.messagesContainer} ref={messagesContainerRef}>
         {messages.map(message => (
           <div key={message.id} className={`${styles.messageWrapper} ${styles[message.sender]}`}>
             <div className={`${styles.message} ${styles[message.sender]}`}>
