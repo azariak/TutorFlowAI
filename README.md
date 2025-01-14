@@ -53,6 +53,7 @@ See `package.json` for complete, updated list.
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling
 - Merge common elemts of generate.js and geminiService.JS
+- The AI chat should be able to help users learn to use the app. Add to system message, and indicate this in help menu.
 
 #### Color Scheme
 - Off-white: #FFECD1
