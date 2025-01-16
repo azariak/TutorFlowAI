@@ -1,6 +1,4 @@
-/* chat.module.css */
 :root {
-    /* Colors */
     --primary-bg: #FFECD1;
     --primary-border: #E5D5B8;
     --primary-text: #001524;
@@ -9,13 +7,9 @@
     --message-text: #FFECD1;
     --timestamp: black;
     --code-bg: rgba(0, 0, 0, 0.1);
-
-    /* Spacing */
     --spacing-sm: 0.5rem;
     --spacing-md: 0.75rem;
     --spacing-lg: 1rem;
-    
-    /* Layout */
     --chat-width: 35vw;
     --chat-height: 77vh;
     --border-radius: 15px;
@@ -30,8 +24,8 @@
     flex-direction: column;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
+    position: relative;
+}
 
 .header {
     padding: var(--spacing-lg);
@@ -45,6 +39,7 @@
 }
 
 .messagesContainer {
+    position: relative;
     flex: 1;
     overflow: auto;
     padding: var(--spacing-lg);
@@ -52,7 +47,7 @@
     flex-direction: column;
     gap: var(--spacing-lg);
     scrollbar-width: thin;
-}
+  }
 
 .messageWrapper {
     display: flex;
@@ -80,7 +75,6 @@
     color: var(--message-text);
 }
 
-/* Markdown styles */
 .markdownContainer code {
     background-color: var(--code-bg);
     padding: 2px 4px;
@@ -115,7 +109,6 @@
     margin-top: 0.25rem;
 }
 
-/* Input area */
 .inputContainer {
     padding: var(--spacing-lg);
     border-top: 1px solid var(--primary-border);
@@ -138,7 +131,6 @@
     font-size: inherit;
 }
 
-/* Buttons */
 .button, .whiteboardButton {
     padding: var(--spacing-md);
     border-radius: var(--border-radius);
@@ -164,7 +156,6 @@
     pointer-events: none;
 }
 
-/* Image preview */
 .previewContainer {
     margin-bottom: var(--spacing-md);
 }
@@ -175,7 +166,6 @@
     padding: var(--spacing-sm);
     border-radius: var(--border-radius);
     background-color: #001524;
-
 }
 
 .previewImage,
@@ -220,6 +210,30 @@
 }
 
 .hiddenFileInput {
-    display: none; /* Ensures the file input is fully hidden */
+    display: none;
+}
+.scrollButton {
+    position: absolute;  /* Changed from fixed */
+    bottom: 90px;       /* Align with input area */
+    right: 25px;        /* Position it just left of the whiteboard button */
+    width: 35px;
+    height: 35px;
+    background-color: var(--button-bg);  /* This matches the send button color */
+    color: var(--message-text);
+    border: none;
+    border-radius: var(--border-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s, visibility 0.2s;
+    font-size: 18px;
+    z-index: 100;
   }
   
+  .scrollButton.visible {
+    opacity: 1;
+    visibility: visible;
+  }

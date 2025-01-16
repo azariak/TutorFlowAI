@@ -3,6 +3,64 @@ import ReactMarkdown from 'react-markdown';
 import { generateResponse } from '../../services/geminiService';
 import styles from './chat.module.css';
 
+const ScrollButton = ({ messagesContainerRef }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+
+    const handleScroll = () => {
+      // Simplified visibility check
+      const { scrollTop, scrollHeight, clientHeight } = container;
+      const scrolledFromBottom = scrollHeight - scrollTop - clientHeight;
+      console.log('Scrolled from bottom:', scrolledFromBottom); // Debug log
+      setIsVisible(scrolledFromBottom > 20);
+    };
+
+    // Initial check
+    handleScroll();
+
+    // Add scroll listener
+    container.addEventListener('scroll', handleScroll);
+    
+    // Check visibility whenever messages might update
+    const checkVisibility = setInterval(handleScroll, 1000);
+
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearInterval(checkVisibility);
+    };
+  }, [messagesContainerRef]);
+
+  const scrollToBottom = () => {
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'smooth'
+    });
+  };
+
+  // Add a style prop to force visibility during testing
+  return (
+    <button
+      onClick={scrollToBottom}
+      className={`${styles.scrollButton} ${isVisible ? styles.visible : ''}`}
+      aria-label="Scroll to bottom"
+      style={{ 
+        // Temporary debug styles
+        backgroundColor: '#001524',  // Make it very visible for testing
+        opacity: isVisible ? 1 : 0,
+        visibility: isVisible ? 'visible' : 'hidden'
+      }}
+    >
+      ↓
+    </button>
+  );
+};
+
 const ImagePreview = ({ image, onRemove }) => (
   <div className={styles.previewContainer}>
     <div className={styles.previewWrapper}>
@@ -36,50 +94,46 @@ export default function Chat() {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
 
- // ...previous imports and ImagePreview component remain the same...
+  const scrollToMessage = (isUserMessage = false, hasImage = false) => {
+    if (!messagesContainerRef.current) return;
 
- const scrollToMessage = (isUserMessage = false, hasImage = false) => {
-  if (!messagesContainerRef.current) return;
-
-  const container = messagesContainerRef.current;
-  
-  if (isUserMessage) {
-    // For all user messages (text or image), use smooth scrolling
-    container.scrollTo({
-      top: container.scrollHeight,
-      behavior: hasImage ? "smooth" : "auto"
-    });
-    return;
-  }
-
-  const messages = container.getElementsByClassName(styles.messageWrapper);
-  const lastBotMessage = Array.from(messages).findLast(el => 
-    el.classList.contains(styles.bot)
-  );
-
-  if (lastBotMessage) {
-    const containerTop = container.getBoundingClientRect().top;
-    const messageTop = lastBotMessage.getBoundingClientRect().top;
-    const scrollAdjustment = messageTop - containerTop;
+    const container = messagesContainerRef.current;
     
-    container.scrollBy({
-      top: scrollAdjustment,
-      behavior: "smooth"
-    });
-  }
-};
+    if (isUserMessage) {
+      container.scrollTo({
+        top: container.scrollHeight,
+        behavior: hasImage ? "smooth" : "auto"
+      });
+      return;
+    }
 
-useEffect(() => {
-  if (messages.length === 0) return;
-  
-  const lastMessage = messages[messages.length - 1];
-  const hasImage = !!lastMessage.image;
-  
-  // Add a small delay to ensure the DOM has updated, longer delay for images
-  setTimeout(() => {
-    scrollToMessage(lastMessage.sender === 'user', hasImage);
-  }, hasImage ? 0 : 100);
-}, [messages]);
+    const messages = container.getElementsByClassName(styles.messageWrapper);
+    const lastBotMessage = Array.from(messages).findLast(el => 
+      el.classList.contains(styles.bot)
+    );
+
+    if (lastBotMessage) {
+      const containerTop = container.getBoundingClientRect().top;
+      const messageTop = lastBotMessage.getBoundingClientRect().top;
+      const scrollAdjustment = messageTop - containerTop;
+      
+      container.scrollBy({
+        top: scrollAdjustment,
+        behavior: "smooth"
+      });
+    }
+  };
+
+  useEffect(() => {
+    if (messages.length === 0) return;
+    
+    const lastMessage = messages[messages.length - 1];
+    const hasImage = !!lastMessage.image;
+    
+    setTimeout(() => {
+      scrollToMessage(lastMessage.sender === 'user', hasImage);
+    }, hasImage ? 0 : 100);
+  }, [messages]);
 
   const handleWhiteboardCapture = async () => {
     try {
@@ -134,20 +188,17 @@ useEffect(() => {
 
   const handleGenerateResponse = async (promptText, imageData) => {
     try {
-      // Try with local API key first
       const localApiKey = localStorage.getItem('GEMINI_API_KEY');
       if (localApiKey) {
         try {
           return await generateResponse(promptText, imageData, localApiKey);
         } catch (error) {
-          // If local key fails, clear it and continue to server attempt
           if (error.message.includes('Invalid API key')) {
             localStorage.removeItem('GEMINI_API_KEY');
           }
         }
       }
   
-      // Fall back to server API
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -221,7 +272,11 @@ useEffect(() => {
         <h4>Ask TutorFlow</h4>
       </div>
 
-      <div className={styles.messagesContainer} ref={messagesContainerRef}>
+      <div 
+  className={styles.messagesContainer} 
+  ref={messagesContainerRef}
+  style={{ position: 'relative', overflow: 'auto' }}
+>
         {messages.map(message => (
           <div key={message.id} className={`${styles.messageWrapper} ${styles[message.sender]}`}>
             <div className={`${styles.message} ${styles[message.sender]}`}>
@@ -245,43 +300,44 @@ useEffect(() => {
       </div>
 
       <div className={styles.inputContainer}>
-        {imageFile && (
-          <ImagePreview 
-            image={imageFile}
-            onRemove={() => setImageFile(null)}
-          />
-        )}
-        
-        <div className={styles.promptArea}>
-          <textarea
-            placeholder="Ask anything..."
-            className={styles.textArea}
-            value={prompt}
-            onChange={e => setPrompt(e.target.value)}
-            onKeyPress={e => {
-              if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                handleSubmit();
-              }
-            }}
-            rows={1}
-          />
-          <button 
-            onClick={handleWhiteboardCapture}
-            className={styles.whiteboardButton}
-            title={imageFile ? "Remove whiteboard" : "Add whiteboard"}
-          >
-            📋
-          </button>
-          <button 
-            onClick={handleSubmit}
-            disabled={isLoading}
-            className={styles.button}
-          >
-            {isLoading ? 'Thinking...' : '→'}
-          </button>
-        </div>
-      </div>
+  {imageFile && (
+    <ImagePreview 
+      image={imageFile}
+      onRemove={() => setImageFile(null)}
+    />
+  )}
+  
+  <div className={styles.promptArea}>
+    <textarea
+      placeholder="Ask anything..."
+      className={styles.textArea}
+      value={prompt}
+      onChange={e => setPrompt(e.target.value)}
+      onKeyPress={e => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          handleSubmit();
+        }
+      }}
+      rows={1}
+    />
+    <ScrollButton messagesContainerRef={messagesContainerRef} />
+    <button 
+      onClick={handleWhiteboardCapture}
+      className={styles.whiteboardButton}
+      title={imageFile ? "Remove whiteboard" : "Add whiteboard"}
+    >
+      📋
+    </button>
+    <button 
+      onClick={handleSubmit}
+      disabled={isLoading}
+      className={styles.button}
+    >
+      {isLoading ? 'Thinking...' : '→'}
+    </button>
+  </div>
+</div>
     </div>
   );
 }
