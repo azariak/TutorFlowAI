@@ -16,7 +16,7 @@ export default function App() {
         <div className="chat-container">
           <Chat />
         </div>
-        <ResizeHandle containerSelector=".chat-container" defaultWidth="35vw" />
+        <ResizeHandle containerSelector=".chat-container" defaultWidth="40vw" />
         <div className="whiteboard-container">
           <Whiteboard />
         </div>

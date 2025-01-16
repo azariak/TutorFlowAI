@@ -24,12 +24,6 @@ a {
   gap: 2vw;
 }
 
-.chat-container {
-  width: 35vw;
-  height: 100%; /* Changed to 100% to fill container */
-  min-height: 500px; /* Prevent collapsing */
-}
-
 .whiteboard-container {
   flex: 1;
   height: 100%; /* Changed to 100% to fill container */
