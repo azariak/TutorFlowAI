@@ -57,6 +57,7 @@ See `package.json` for complete, updated list.
 - Remember user preference for resize of whiteboard/chat
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
+- Autopopup for settings when API server and local api fail
 
 #### Color Scheme
 - Off-white: #FFECD1
