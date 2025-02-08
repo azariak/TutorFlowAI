@@ -271,7 +271,7 @@ useEffect(() => {
             className={styles.whiteboardButton}
             title={imageFile ? "Remove whiteboard" : "Add whiteboard"}
           >
-            📋
+            🖼️
           </button>
           <button 
             onClick={handleSubmit}
