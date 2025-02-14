@@ -35,8 +35,8 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-
- // ...previous imports and ImagePreview component remain the same...
+  const [isInCall, setIsInCall] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
 
  const scrollToMessage = (isUserMessage = false, hasImage = false) => {
   if (!messagesContainerRef.current) return;
