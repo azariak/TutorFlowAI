@@ -269,9 +269,16 @@ useEffect(() => {
           <button 
             onClick={handleWhiteboardCapture}
             className={styles.whiteboardButton}
-            title={imageFile ? "Remove whiteboard" : "Add whiteboard"}
+            title={imageFile ? "Remove whiteboard" : "Attach whiteboard"}
           >
             🖼️
+          </button>
+          <button 
+            onClick={() => {}}
+            className={styles.whiteboardButton}
+            title="Join call with TutorFlow"
+          >
+            📞
           </button>
           <button 
             onClick={handleSubmit}
