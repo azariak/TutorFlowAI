@@ -273,6 +273,13 @@ useEffect(() => {
           >
             🖼️
           </button>
+          {/* <button
+            onClick={() => {}} 
+            className={styles.whiteboardButton}
+            title="Join a call with TutorFlow"
+          >
+            📞
+          </button> */}
           <button 
             onClick={handleSubmit}
             disabled={isLoading}
