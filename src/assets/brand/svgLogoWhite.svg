@@ -1,0 +1,49 @@
+<svg viewBox="-20 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Chat bubble group - adjusted vertical position -->
+  <g transform="translate(20, 20) scale(0.8)">
+    <!-- Main chat bubble with natural bottom curve -->
+    <path
+       d="M 60 60
+         L 140 60
+         Q 150 60, 150 70
+         L 150 120
+         C 150 140, 115 135, 100 138
+         C 85 135, 50 140, 50 120
+         L 50 70
+         Q 50 60, 60 60
+         Z"
+       fill="#FFECD1"
+    />
+    <!-- Natural flowing chat tail -->
+    <path
+       d="M 90 138 
+          C 85 138, 80 145, 75 155
+          C 80 148, 85 142, 95 138"
+       fill="#FFECD1"
+    />
+    <!-- Center line for book pages -->
+    <path
+       d="M 100 75 L 100 135"
+       stroke="#001524"
+       stroke-width="2"
+       stroke-linecap="round"
+       opacity="0.8"
+    />
+    <!-- Book page lines -->
+    <path
+       d="M 70 85 L 95 85
+         M 105 85 L 130 85
+         M 70 100 L 95 100
+         M 105 100 L 130 100
+         M 70 115 L 95 115
+         M 105 115 L 130 115"
+       stroke="#001524"
+       stroke-width="2"
+       stroke-linecap="round"
+       opacity="0.8"
+    />
+  </g>
+    
+  <!-- Text "TutorFlowAI" -->
+  <text x="160" y="120" fill="#FFECD1" font-family="Calibri" font-size="72" font-weight="400">TutorFlowAI</text>
+</svg>
