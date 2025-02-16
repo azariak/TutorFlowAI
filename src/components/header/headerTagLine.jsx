@@ -31,7 +31,7 @@ export function HeaderTagline() {
   return (
     <>
       <span className={styles.tagline}>
-        Interactive Learning Made Simple (Beta).
+        Learn Anything with Ease (Beta).
         <a href="https://github.com/azariak/TutorFlowAI" target="_blank" className={styles.githubLink}>
           <img src={githubIcon} alt="Source code" className={styles.githubIcon} />
         </a>

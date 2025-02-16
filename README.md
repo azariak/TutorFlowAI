@@ -60,6 +60,7 @@ See `package.json` for complete, updated list.
 - Add support Desmos, Google Drive, Notion etc. input?
 - Add 'examples' to chat
 - Allow user to save their current workspace
+- Landing page? More branding?
 
 #### Color Scheme
 - Off-white: #FFECD1
