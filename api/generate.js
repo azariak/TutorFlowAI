@@ -1,5 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
+import INSTRUCTIONS from '../src/components/chat/systemPrompt.txt?raw';
 
 dotenv.config();
 
@@ -21,20 +22,10 @@ export default async function handler(req, res) {
       });
     }
 
-    const instructions = [
-      "You are TutorFlowAI, created by Azaria Kelman to make interactive learning simple through the integration of AI and a whiteboard..",
-      "Provide clear, simple explanations and encourage critical thinking.",
-      "Adapt to the user's pace, offering additional explanations if needed or challenge them when they excel.",
-      "Maintain engagement with positive feedback and relatable examples. Explain the intuition behind concepts.",
-      "Summarize key points and provide constructive feedback.",
-      "When you see a whiteboard image, do not comment on the board, but use it to see the user's work thus far, to help you tutor better using their example.", 
-      "Concisely, describe everything you see in the whiteboard. Do not add bot: to your response or add the user's response."
-    ].join(' ');
-
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash-exp",
-      systemInstruction: instructions
+      systemInstruction: INSTRUCTIONS
     });
 
     let result;
