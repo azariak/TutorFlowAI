@@ -140,13 +140,12 @@ export default function Chat() {
         try {
           return await generateResponse(promptText, imageData, localApiKey);
         } catch (error) {
-          // If local key fails, clear it and continue to server attempt
           if (error.message.includes('Invalid API key')) {
             localStorage.removeItem('GEMINI_API_KEY');
           }
         }
       }
-  
+
       // Fall back to server API
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -157,17 +156,23 @@ export default function Chat() {
           image: imageData
         })
       });
-  
+
+      if (!response.ok) {
+        throw new Error(
+          "Please add your API key in settings to continue using TutorFlow.\n\n" +
+          "You can find instructions for getting an API key in the help menu."
+        );
+      }
+
       const data = await response.json();
       if (!data.success) throw new Error(data.error);
       return data.text;
-  
+
     } catch (error) {
       if (error.message.includes('429') || error.message.includes('quota')) {
         throw new Error(
-          "API quota exceeded. Please either:\n\n" +
-          "1. Follow the API key setup instructions at the bottom of the help menu\n" +
-          "2. Wait a few minutes and try again"
+          "Please add your API key in settings to continue using TutorFlow.\n\n" +
+          "You can find instructions for getting an API key in the help menu."
         );
       }
       throw error;
