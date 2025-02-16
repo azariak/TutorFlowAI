@@ -62,6 +62,7 @@ See `package.json` for complete, updated list.
 - Allow user to save their current workspace
 - Landing page? More branding?
 - Update autoquestions use a dozen, and make it random which to use, make them autosend
+- Limit input chrachter amount for messages, settings
 
 #### Color Scheme
 - Off-white: #FFECD1
