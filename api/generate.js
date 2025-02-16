@@ -1,8 +1,14 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
-import INSTRUCTIONS from '../src/components/chat/systemPrompt.txt?raw';
+import fs from 'fs';
+import path from 'path';
 
 dotenv.config();
+
+const INSTRUCTIONS = fs.readFileSync(
+  path.join(process.cwd(), 'src/components/chat/systemPrompt.txt'),
+  'utf-8'
+);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
