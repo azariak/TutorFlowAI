@@ -61,6 +61,7 @@ See `package.json` for complete, updated list.
 - Add 'examples' to chat
 - Allow user to save their current workspace
 - Landing page? More branding?
+- Update autoquestions, make them autosend
 
 #### Color Scheme
 - Off-white: #FFECD1
