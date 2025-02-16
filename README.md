@@ -58,6 +58,7 @@ See `package.json` for complete, updated list.
 - Create "lessons" to help people learn particular topics
 - Add style control to settings
 - Add support Desmos, Google Drive, Notion etc. input?
+- Add 'examples' to chat
 
 #### Color Scheme
 - Off-white: #FFECD1
