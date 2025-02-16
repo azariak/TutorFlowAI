@@ -215,9 +215,41 @@ export default function Chat() {
     }
   };
 
-  const handleSuggestionSelect = (text) => {
-    setPrompt(text);
+  const handleSuggestionSelect = async (text) => {
     setShowSuggestions(false);
+    
+    const userMessage = {
+      id: messages.length + 1,
+      text: text,
+      sender: "user",
+      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+    };
+  
+    setMessages(prev => [...prev, userMessage]);
+    setIsLoading(true);
+  
+    try {
+      const fullPrompt = formatChatHistory(messages, text);
+      const response = await handleGenerateResponse(fullPrompt, null);
+  
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: response,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      }]);
+    } catch (error) {
+      console.error("Error:", error);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: `${error.message}`,
+        sender: "bot",
+        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
+        isError: true
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -265,7 +297,7 @@ export default function Chat() {
         )}
         
         <div className={styles.promptArea} style={{ position: 'relative' }}>
-          {showSuggestions && (
+          {showSuggestions && messages.length === 1 && (
             <SuggestedQuestions
               onSelect={handleSuggestionSelect}
               onClose={() => setShowSuggestions(false)}

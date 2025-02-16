@@ -61,8 +61,7 @@ See `package.json` for complete, updated list.
 - Add 'examples' to chat
 - Allow user to save their current workspace
 - Landing page? More branding?
-- Update autoquestions use a dozen, and make it random which to use, make them autosend
-- Limit input chrachter amount for messages, settings
+- Limit input character amount for messages, settings
 
 #### Color Scheme
 - Off-white: #FFECD1
