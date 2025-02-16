@@ -224,6 +224,13 @@ export default function Chat() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h4>Ask TutorFlow</h4>
+        <button
+          onClick={() => {}} 
+          className={styles.whiteboardButton}
+          title="Join a call with TutorFlow (Not available yet)"
+        >
+          📞
+        </button>
       </div>
 
       <div className={styles.messagesContainer} ref={messagesContainerRef}>
@@ -284,13 +291,6 @@ export default function Chat() {
           >
             🖼️
           </button>
-          {/* <button
-            onClick={() => {}} 
-            className={styles.whiteboardButton}
-            title="Join a call with TutorFlow"
-          >
-            📞
-          </button> */}
           <button 
             onClick={handleSubmit}
             disabled={isLoading}
