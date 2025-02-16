@@ -62,6 +62,7 @@ See `package.json` for complete, updated list.
 - Allow user to save their current workspace
 - Landing page? More branding?
 - Limit input character amount for messages, settings
+- Fix license data authors
 
 #### Color Scheme
 - Off-white: #FFECD1

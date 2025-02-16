@@ -3,6 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import { generateResponse } from '../../services/geminiService';
 import styles from './chat.module.css';
 import SuggestedQuestions from './SuggestedQuestions';
+import remarkMath from 'remark-math'
+import rehypeKatex from 'rehype-katex'
+import 'katex/dist/katex.min.css'
 
 const ImagePreview = ({ image, onRemove }) => (
   <div className={styles.previewContainer}>
@@ -276,7 +279,12 @@ export default function Chat() {
             <div className={`${styles.message} ${styles[message.sender]}`}>
               {message.sender === 'bot' ? (
                 <div className={styles.markdownContainer}>
-                  <ReactMarkdown>{message.text}</ReactMarkdown>
+                  <ReactMarkdown
+                    remarkPlugins={[remarkMath]}
+                    rehypePlugins={[rehypeKatex]}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
                 </div>
               ) : (
                 <>
