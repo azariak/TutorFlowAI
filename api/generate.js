@@ -1,6 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import dotenv from 'dotenv';
-import INSTRUCTIONS from '/src/components/chat/systemPrompt.txt?raw';
+import INSTRUCTIONS from '../src/components/chat/systemPrompt.txt?raw';
 
 dotenv.config();
 
