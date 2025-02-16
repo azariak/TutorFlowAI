@@ -56,6 +56,8 @@ See `package.json` for complete, updated list.
 - Remember user preference for resize of whiteboard/chat
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
+- Add style control to settings
+- Add support Desmos, Google Drive, Notion etc. input?
 
 #### Color Scheme
 - Off-white: #FFECD1
