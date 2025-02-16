@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { generateResponse } from '../../services/geminiService';
 import styles from './chat.module.css';
-import SuggestedQuestions from './SuggestedQuestions';
 
 const ImagePreview = ({ image, onRemove }) => (
   <div className={styles.previewContainer}>
@@ -36,50 +35,51 @@ export default function Chat() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
-  const [showSuggestions, setShowSuggestions] = useState(true);
 
-  const scrollToMessage = (isUserMessage = false, hasImage = false) => {
-    if (!messagesContainerRef.current) return;
+ // ...previous imports and ImagePreview component remain the same...
 
-    const container = messagesContainerRef.current;
+ const scrollToMessage = (isUserMessage = false, hasImage = false) => {
+  if (!messagesContainerRef.current) return;
+
+  const container = messagesContainerRef.current;
+  
+  if (isUserMessage) {
+    // For all user messages (text or image), use smooth scrolling
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: hasImage ? "smooth" : "auto"
+    });
+    return;
+  }
+
+  const messages = container.getElementsByClassName(styles.messageWrapper);
+  const lastBotMessage = Array.from(messages).findLast(el => 
+    el.classList.contains(styles.bot)
+  );
+
+  if (lastBotMessage) {
+    const containerTop = container.getBoundingClientRect().top;
+    const messageTop = lastBotMessage.getBoundingClientRect().top;
+    const scrollAdjustment = messageTop - containerTop;
     
-    if (isUserMessage) {
-      // For all user messages (text or image), use smooth scrolling
-      container.scrollTo({
-        top: container.scrollHeight,
-        behavior: hasImage ? "smooth" : "auto"
-      });
-      return;
-    }
+    container.scrollBy({
+      top: scrollAdjustment,
+      behavior: "smooth"
+    });
+  }
+};
 
-    const messages = container.getElementsByClassName(styles.messageWrapper);
-    const lastBotMessage = Array.from(messages).findLast(el => 
-      el.classList.contains(styles.bot)
-    );
-
-    if (lastBotMessage) {
-      const containerTop = container.getBoundingClientRect().top;
-      const messageTop = lastBotMessage.getBoundingClientRect().top;
-      const scrollAdjustment = messageTop - containerTop;
-      
-      container.scrollBy({
-        top: scrollAdjustment,
-        behavior: "smooth"
-      });
-    }
-  };
-
-  useEffect(() => {
-    if (messages.length === 0) return;
-    
-    const lastMessage = messages[messages.length - 1];
-    const hasImage = !!lastMessage.image;
-    
-    // Add a small delay to ensure the DOM has updated, longer delay for images
-    setTimeout(() => {
-      scrollToMessage(lastMessage.sender === 'user', hasImage);
-    }, hasImage ? 0 : 100);
-  }, [messages]);
+useEffect(() => {
+  if (messages.length === 0) return;
+  
+  const lastMessage = messages[messages.length - 1];
+  const hasImage = !!lastMessage.image;
+  
+  // Add a small delay to ensure the DOM has updated, longer delay for images
+  setTimeout(() => {
+    scrollToMessage(lastMessage.sender === 'user', hasImage);
+  }, hasImage ? 0 : 100);
+}, [messages]);
 
   const handleWhiteboardCapture = async () => {
     try {
@@ -215,11 +215,6 @@ export default function Chat() {
     }
   };
 
-  const handleSuggestionSelect = (text) => {
-    setPrompt(text);
-    setShowSuggestions(false);
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -257,13 +252,7 @@ export default function Chat() {
           />
         )}
         
-        <div className={styles.promptArea} style={{ position: 'relative' }}>
-          {showSuggestions && (
-            <SuggestedQuestions
-              onSelect={handleSuggestionSelect}
-              onClose={() => setShowSuggestions(false)}
-            />
-          )}
+        <div className={styles.promptArea}>
           <textarea
             placeholder="Ask anything..."
             className={styles.textArea}
