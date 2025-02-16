@@ -42,22 +42,20 @@ See `package.json` for complete, updated list.
 - fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - consider making PWA
-- realtime mic. support within chat window
-- deselect chat when switching to whiteboard so keyboard does not popup
+- realtime streaming with audio, whiteboard input, and voice output
+- deselect chat when switching to whiteboard so keyboard does not popup when using touchscreen 
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
-- Fix mobile auto scroll bug (maybe caused by CSS size discrepancies)
-- Fix ability to scroll on whiteboard (or provide alternative up/chat button or smtg similar)
+- Fix ability to scroll on whiteboard while using mobile(or provide alternative up/chat button or smtg similar)
 - Refactor such that chat.jsx relies on generate.js even for localStorage API key to follow SRP and avoid duplicate code
+- Merge common elemts of generate.js and geminiService.JS
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
-- Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling
-- Merge common elemts of generate.js and geminiService.JS
+- Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling overall
 - The AI chat should be able to help users learn to use the app. Add to system message, and indicate this in help menu.
 - Remember user preference for resize of whiteboard/chat
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
-- Autopopup for settings when API server and local api fail
 
 #### Color Scheme
 - Off-white: #FFECD1
