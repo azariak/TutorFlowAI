@@ -94,6 +94,7 @@ export default function Chat() {
         const imageData = await window.captureWhiteboardImage();
         if (imageData) {
           setImageFile(imageData);
+          setShowSuggestions(false);
         }
       }
     } catch (error) {
