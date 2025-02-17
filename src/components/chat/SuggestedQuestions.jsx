@@ -21,7 +21,7 @@ const SuggestedQuestions = ({ onSelect, onClose }) => {
     },
     {
       icon: '⚛️',
-      text: 'What are quantum superposition and entanglement?'
+      text: 'Explain quantum superposition and entanglement?'
     },
     {
       icon: '💻',
