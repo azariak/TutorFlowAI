@@ -32,6 +32,7 @@ export default function LicenseContent({ setActivePopup }) {
             ))}
           </tbody>
         </table>
+        <p className="attribution">I apologize for any errors or omissions. </p>
       </div>
     </>
   );
