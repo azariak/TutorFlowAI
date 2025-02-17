@@ -1,7 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
 
 const ResizeHandle = ({ containerSelector, defaultWidth = '35vw' }) => {
-  const [width, setWidth] = useState(defaultWidth);
+  const [width, setWidth] = useState(() => {
+    const savedWidth = localStorage.getItem('resizeHandleWidth');
+    return savedWidth || defaultWidth;
+  });
   const [isMobile, setIsMobile] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const isDragging = useRef(false);
@@ -22,6 +25,12 @@ const ResizeHandle = ({ containerSelector, defaultWidth = '35vw' }) => {
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
   }, [containerSelector, width]);
+
+  useEffect(() => {
+    if (!isMobile) {
+      localStorage.setItem('resizeHandleWidth', width);
+    }
+  }, [width, isMobile]);
 
   const handleDragStart = (e) => {
     if (isMobile) return;

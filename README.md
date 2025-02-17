@@ -52,7 +52,6 @@ See `package.json` for complete, updated list.
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling overall
-- Remember user preference for resize of whiteboard/chat
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
 - Add style control to settings
