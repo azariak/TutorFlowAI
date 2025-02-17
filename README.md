@@ -61,8 +61,7 @@ See `package.json` for complete, updated list.
 - Landing page? More branding?
 - Limit input character amount for messages
 - Switch license data authors to repo links
-- Fix emoji brightness on modals
-- Suggestions must be removed or move up when image embedded
+- Fix suggested questions on modals
 
 #### Color Scheme
 - Off-white: #FFECD1
