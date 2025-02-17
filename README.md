@@ -46,7 +46,6 @@ See `package.json` for complete, updated list.
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
 - Fix ability to scroll on whiteboard while using mobile(or provide alternative up/chat button or smtg similar)
-- Refactor such that chat.jsx relies on generate.js even for localStorage API key to follow SRP and avoid duplicate code
 - Merge common elemts of generate.js and geminiService.JS
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
