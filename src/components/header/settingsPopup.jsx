@@ -46,6 +46,7 @@ export function SettingsPopup({ isOpen, onClose }) {
               type="password"
               id="apiKey"
               value={apiKey}
+              maxLength={50}
               onChange={(e) => setApiKey(e.target.value)}
               className={styles.input}
             />

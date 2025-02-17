@@ -58,10 +58,9 @@ See `package.json` for complete, updated list.
 - Create "lessons" to help people learn particular topics
 - Add style control to settings
 - Add support Desmos, Google Drive, Notion etc. input?
-- Add 'examples' to chat
 - Allow user to save their current workspace
 - Landing page? More branding?
-- Limit input character amount for messages, settings
+- Limit input character amount for messages
 - Switch license data authors to repo links
 - Fix emoji brightness on modals
 - Suggestions must be removed or move up when image embedded
