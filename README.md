@@ -53,7 +53,6 @@ See `package.json` for complete, updated list.
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling overall
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
-- Add style control to settings
 - Add support Desmos, Google Drive, Notion etc. input?
 - Allow user to save their current workspace
 - Landing page? More branding?
