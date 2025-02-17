@@ -4,18 +4,30 @@ import styles from './header.module.css';
 
 export function SettingsPopup({ isOpen, onClose }) {
   const [apiKey, setApiKey] = useState('');
+  const [verbosity, setVerbosity] = useState(50);
+  const [styleComments, setStyleComments] = useState('');
 
   useEffect(() => {
     const savedApiKey = localStorage.getItem('GEMINI_API_KEY');
-    if (savedApiKey) {
-      setApiKey(savedApiKey);
-    }
+    const savedVerbosity = localStorage.getItem('VERBOSITY') || '50';
+    const savedStyleComments = localStorage.getItem('STYLE_COMMENTS') || '';
+    
+    if (savedApiKey) setApiKey(savedApiKey);
+    setVerbosity(parseInt(savedVerbosity));
+    setStyleComments(savedStyleComments);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     localStorage.setItem('GEMINI_API_KEY', apiKey);
+    localStorage.setItem('VERBOSITY', verbosity.toString());
+    localStorage.setItem('STYLE_COMMENTS', styleComments);
     onClose();
+  };
+
+  const handleReset = () => {
+    setVerbosity(50);
+    setStyleComments('');
   };
 
   return (
@@ -54,10 +66,43 @@ export function SettingsPopup({ isOpen, onClose }) {
               fontSize: '0.8rem',
               color: '#666',
               marginTop: '0.5rem',
-              marginBottom: 0
+              marginBottom: '2rem'
             }}>
-              Your API key will be securely saved in your browser and persist across sessions.
+              Your API key will be securely saved in your browser and persist across sessions. 
             </p>
+
+            <div className={styles.sliderContainer}>
+              <label htmlFor="verbosity"> Verbosity  {verbosity}%</label>
+              <div className={styles.sliderControls}>
+                <input
+                  type="range"
+                  id="verbosity"
+                  min="0"
+                  max="100"
+                  value={verbosity}
+                  onChange={(e) => setVerbosity(parseInt(e.target.value))}
+                  className={styles.slider}
+                />
+                <button 
+                  type="button" 
+                  onClick={handleReset}
+                  className={styles.resetButton}
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
+
+            <label htmlFor="styleComments">Style Preferences</label>
+            <textarea
+              id="styleComments"
+              value={styleComments}
+              maxLength={1000}
+              onChange={(e) => setStyleComments(e.target.value)}
+              className={styles.input}
+              placeholder="Enter you preferences for the AI response (max 1000 characters)"
+              style={{ minHeight: '100px', resize: 'vertical' }}
+            />
           </div>
           <button type="submit" className={styles.submitButton}>
             Save

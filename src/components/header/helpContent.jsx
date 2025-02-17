@@ -32,6 +32,7 @@ export function HelpContent() {
           <li>Write clearly and legibly on the whiteboard for accurate recognition</li>
           <li>Ask specific questions to get focused, relevant answers</li>
           <li>Ensure your prompt includes all necessary details</li>
+          <li>Adjust your response preferences in settings</li>
           <li>Drag to resize the whiteboard and chat</li>
         </ul>
       </div>

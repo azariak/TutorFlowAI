@@ -159,11 +159,25 @@
   }
   
   .submitButton {
-    padding: 8px 16px;
-    background: #444;
-    border: none;
+    padding: 10px 20px;
+    background: #2a2a2a;
+    border: 1px solid #444;
     color: #fff;
     cursor: pointer;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    width: auto;
+    margin-top: 20px;
+  }
+  
+  .submitButton:hover {
+    background: #444;
+    border-color: #555;
+  }
+  
+  .submitButton:active {
+    transform: translateY(1px);
   }
   
   @media (max-width: 768px) {
@@ -235,4 +249,91 @@
     height: auto;
     max-width: 100%;
     display: block;
+  }
+
+  .input[type="range"] {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    background: #2a2a2a;
+    outline: none;
+    margin: 8px 0;
+  }
+
+  .input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #444;
+    cursor: pointer;
+  }
+
+  .input[type="range"]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #444;
+    cursor: pointer;
+  }
+
+  textarea.input {
+    font-family: inherit;
+    line-height: 1.4;
+    resize: vertical;
+  }
+
+  .sliderContainer {
+    margin-bottom: 1rem;
+  }
+
+  .slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 4px;
+    border-radius: 2px;
+    background: #444;
+    outline: none;
+    margin: 8px 0;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid #444;
+  }
+
+  .slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid #444;
+  }
+
+  .resetButton {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 4px 0;
+    margin-top: 4px;
+    text-decoration: underline;
+    text-align: right;
+    display: block;
+    margin-left: auto;
+    width: auto;
+  }
+
+  .resetButton:hover {
+    color: #888;
   }

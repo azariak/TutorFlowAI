@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { prompt, messages, hasWhiteboard, image, clientApiKey } = req.body;
+    const { prompt, messages, hasWhiteboard, image, clientApiKey, verbosity, styleComments } = req.body;
 
     // Use client API key if provided in request, otherwise use server env
     const apiKey = clientApiKey || process.env.GEMINI_API_KEY;
@@ -28,10 +28,19 @@ export default async function handler(req, res) {
       });
     }
 
+    // Build system instructions with preferences
+    let systemInstructions = INSTRUCTIONS;
+    if (verbosity && verbosity !== '50') {
+      systemInstructions += `\n\nPlease adjust your response verbosity to ${verbosity}% of normal length.`;
+    }
+    if (styleComments) {
+      systemInstructions += `\n\nAdditional style preferences: ${styleComments}`;
+    }
+
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: "gemini-2.0-flash-exp",
-      systemInstruction: INSTRUCTIONS
+      systemInstruction: systemInstructions
     });
 
     let result;

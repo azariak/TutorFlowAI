@@ -7,10 +7,23 @@ export async function generateResponse(prompt, imageData = null, apiKey) {
     throw new Error('API key not configured');
   }
 
+  // Get saved preferences
+  const verbosity = localStorage.getItem('VERBOSITY') || '50';
+  const styleComments = localStorage.getItem('STYLE_COMMENTS') || '';
+
+  // Build system instructions with preferences
+  let systemInstructions = INSTRUCTIONS;
+  if (verbosity !== '50') {
+    systemInstructions += `\n\nPlease adjust your response verbosity to ${verbosity}% of normal length.`;
+  }
+  if (styleComments) {
+    systemInstructions += `\n\nAdditional style preferences: ${styleComments}`;
+  }
+
   const genAI = new GoogleGenerativeAI(apiKey);
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash-exp",
-    systemInstruction: INSTRUCTIONS
+    systemInstruction: systemInstructions
   });
 
   const content = imageData 
