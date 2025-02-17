@@ -6,7 +6,7 @@ export default function AboutContent({ setActivePopup }) {
       <h2 className="modal-title">About TutorFlowAI</h2>
       <div className="modal-content">
         <p>
-          At TutorFlow, we’re reimagining education with the power of AI. 
+          {/* At TutorFlow, we’re reimagining education with the power of AI.  */}
           Our platform combines advanced tutoring models with real-time text and voice communication, 
           making learning more interactive and personalized. 
           The AI continuously monitors whiteboard activity, offering insights and feedback tailored to each user's needs. 
