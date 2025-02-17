@@ -65,6 +65,7 @@ See `package.json` for complete, updated list.
 - Switch license data authors to repo links
 - Fix emoji brightness on modals
 - Suggestions must be removed or move up when image embedded
+- Remove timestamps?
 
 #### Color Scheme
 - Off-white: #FFECD1
