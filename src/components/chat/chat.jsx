@@ -31,8 +31,7 @@ export default function Chat() {
   const [messages, setMessages] = useState([{
     id: 1,
     text: "Hello! How can I assist you today?",
-    sender: "bot",
-    timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+    sender: "bot"
   }]);
   const [prompt, setPrompt] = useState("");
   const [imageFile, setImageFile] = useState(null);
@@ -189,7 +188,6 @@ export default function Chat() {
       id: messages.length + 1,
       text: prompt,
       sender: "user",
-      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
       image: imageFile
     };
   
@@ -206,8 +204,7 @@ export default function Chat() {
       setMessages(prev => [...prev, {
         id: prev.length + 1,
         text: response,
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+        sender: "bot"
       }]);
     } catch (error) {
       console.error("Error:", error);
@@ -215,7 +212,6 @@ export default function Chat() {
         id: prev.length + 1,
         text: `${error.message}`,
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
         isError: true
       }]);
     } finally {
@@ -229,8 +225,7 @@ export default function Chat() {
     const userMessage = {
       id: messages.length + 1,
       text: text,
-      sender: "user",
-      timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+      sender: "user"
     };
   
     setMessages(prev => [...prev, userMessage]);
@@ -243,8 +238,7 @@ export default function Chat() {
       setMessages(prev => [...prev, {
         id: prev.length + 1,
         text: response,
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' })
+        sender: "bot"
       }]);
     } catch (error) {
       console.error("Error:", error);
@@ -252,7 +246,6 @@ export default function Chat() {
         id: prev.length + 1,
         text: `${error.message}`,
         sender: "bot",
-        timestamp: new Date().toLocaleTimeString([], { hour: 'numeric', minute: 'numeric' }),
         isError: true
       }]);
     } finally {
@@ -295,7 +288,6 @@ export default function Chat() {
                 </>
               )}
             </div>
-            <div className={styles.timestamp}>{message.timestamp}</div>
           </div>
         ))}
         <div ref={messagesEndRef} />
