@@ -62,7 +62,7 @@ See `package.json` for complete, updated list.
 - Allow user to save their current workspace
 - Landing page? More branding?
 - Limit input character amount for messages, settings
-- Fix license data authors
+- Switch license data authors to repo links
 - Fix emoji brightness on modals
 - Suggestions must be removed or move up when image embedded
 
