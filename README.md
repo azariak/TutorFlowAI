@@ -46,13 +46,13 @@ See `package.json` for complete, updated list.
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
 - Fix ability to scroll on whiteboard while using mobile(or provide alternative up/chat button or smtg similar)
-- Merge common elemts of generate.js and geminiService.JS
+- Merge generate.js and geminiService.JS
 - Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
 - Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling overall
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
-- Add support Desmos, Google Drive, Notion etc. input?
+- Add input support Desmos, Google Drive, Notion etc.?
 - Allow user to save their current workspace
 - Landing page? More branding?
 - Limit input character amount for messages
