@@ -64,6 +64,7 @@ See `package.json` for complete, updated list.
 - Limit input character amount for messages, settings
 - Fix license data authors
 - Fix emoji brightness on modals
+- Suggestions must be removed or move up when image embedded
 
 #### Color Scheme
 - Off-white: #FFECD1
