@@ -39,7 +39,6 @@ See `package.json` for complete, updated list.
 - Touchscreen support for drag to resize
 - Bug: Autoscroll in chat does not always work for whiteboard images
 - api to work on vercel and cloudfare and npm run dev
-- fallback to server when user api key fails
 - refactor react-markdown to LLM-UI, add streaming
 - consider making PWA
 - realtime streaming with audio, whiteboard input, and voice output
