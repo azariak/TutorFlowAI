@@ -63,6 +63,7 @@ See `package.json` for complete, updated list.
 - Landing page? More branding?
 - Limit input character amount for messages, settings
 - Fix license data authors
+- Fix emoji brightness on modals
 
 #### Color Scheme
 - Off-white: #FFECD1
