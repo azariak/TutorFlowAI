@@ -14,7 +14,7 @@ export default function AboutContent({ setActivePopup }) {
         </p>
       </div>
       <p className="copyright">
-        © 2025 <a href="https://www.azariak.com/" target="_blank">Azaria Kelman. </a>
+        Copyrgiht © 2025 <a href="https://www.azariak.com/" target="_blank">Azaria Kelman</a>
       </p>
       <p className="copyright">
         <a href="mailto:azaria.kelman@mail.utoronto.ca?subject=TutorFlowAI%20-%20">
