@@ -18,16 +18,18 @@ export default function LicenseContent({ setActivePopup }) {
               <th>Name</th>
               <th>License Type</th>
               <th>Version</th>
-              <th>Author</th>
             </tr>
           </thead>
           <tbody>
             {licenseData.map((item, index) => (
               <tr key={index}>
-                <td>{item.name}</td>
+                <td>
+                  <a href={item.url} target="_blank" rel="noopener noreferrer">
+                    {item.name}
+                  </a>
+                </td>
                 <td>{item.licenseType}</td>
                 <td>{item.version}</td>
-                <td>{item.author || 'N/A'}</td>
               </tr>
             ))}
           </tbody>

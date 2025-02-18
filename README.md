@@ -56,7 +56,7 @@ See `package.json` for complete, updated list.
 - Allow user to save their current workspace
 - Landing page? More branding?
 - Limit input character amount for messages
-- Switch license data authors to repo links
+- Change size of license modal?
 - Fix suggested questions on modals
 
 #### Color Scheme
