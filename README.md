@@ -40,16 +40,15 @@ See `package.json` for complete, updated list.
 - Bug: Autoscroll in chat does not always work for whiteboard images
 - api to work on vercel and cloudfare and npm run dev
 - refactor react-markdown to LLM-UI, add streaming
-- consider making PWA
+- Create PWA
 - realtime streaming with audio, whiteboard input, and voice output
 - deselect chat when switching to whiteboard so keyboard does not popup when using touchscreen 
 - Add analytics tag to track specific user actions
 - Use speed tests to optimize load speed
 - Fix ability to scroll on whiteboard while using mobile(or provide alternative up/chat button or smtg similar)
 - Merge generate.js and geminiService.JS
-- Merge popup css from header/footer css
 - Import color scheme in various CSS from one central file, to allow easier color theming with changing themes from settings
-- Fix `Unexpected end of JSON input` error to notify the user to configure their API key, test API call fails, better error handling overall
+- Better error handling for API fails
 - Allow user to create a branch of chat for non-linear conversations
 - Create "lessons" to help people learn particular topics
 - Add input support Desmos, Google Drive, Notion etc.?
