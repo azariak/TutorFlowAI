@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     // Build system instructions with preferences
     let systemInstructions = INSTRUCTIONS;
     if (verbosity && verbosity !== '50') {
-      systemInstructions += `\n\nPlease adjust your response verbosity to ${verbosity}% of normal length.`;
+      systemInstructions += `\n\nPlease adjust your response verbosity as per user preference to ${verbosity}%. 50% is normal length.`;
     }
     if (styleComments) {
       systemInstructions += `\n\nAdditional style preferences: ${styleComments}`;
