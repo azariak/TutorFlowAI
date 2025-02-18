@@ -39,6 +39,9 @@ export default function Chat() {
   const messagesEndRef = useRef(null);
   const messagesContainerRef = useRef(null);
   const [showSuggestions, setShowSuggestions] = useState(true);
+  const [isInCall, setIsInCall] = useState(false);
+  const [callDuration, setCallDuration] = useState(0);
+  const [callInterval, setCallInterval] = useState(null);
 
   const scrollToMessage = (isUserMessage = false, hasImage = false) => {
     if (!messagesContainerRef.current) return;
@@ -308,18 +311,67 @@ export default function Chat() {
     return () => observer.disconnect();
   }, [messages]); // Added messages as dependency
 
+  const handleCallToggle = () => {
+    if (isInCall) {
+      clearInterval(callInterval);
+      setCallInterval(null);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        text: `Call ended after ${formatDuration(callDuration)} minutes`,
+        sender: "bot"
+      }]);
+      setCallDuration(0);
+    } else {
+      const interval = setInterval(() => {
+        setCallDuration(prev => prev + 1);
+      }, 1000);
+      setCallInterval(interval);
+    }
+    setIsInCall(!isInCall);
+  };
+
+  const formatDuration = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  useEffect(() => {
+    return () => {
+      if (callInterval) {
+        clearInterval(callInterval);
+      }
+    };
+  }, [callInterval]);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <h4>Ask TutorFlow</h4>
         <button
-          onClick={() => {}} 
-          className={styles.whiteboardButton}
-          title="Join a call with TutorFlow (Not available yet)"
+          onClick={handleCallToggle}
+          className={`${styles.whiteboardButton} ${isInCall ? styles.active : ''}`}
+          title={isInCall ? "End call" : "Start call with TutorFlow"}
         >
-          📞
+          {isInCall ? '📞' : '📞'}
         </button>
       </div>
+      
+      {isInCall && (
+        <div className={styles.callBar}>
+          <div className={styles.callInfo}>
+            <span className={styles.callStatus}>In call</span>
+            <span className={styles.callTimer}>{formatDuration(callDuration)}</span>
+          </div>
+          <button
+            onClick={handleCallToggle}
+            className={styles.hangupButton}
+            title="End call"
+          >
+            End
+          </button>
+        </div>
+      )}
 
       <div className={styles.messagesContainer} ref={messagesContainerRef}>
         {messages.map(message => (

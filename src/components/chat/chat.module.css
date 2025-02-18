@@ -226,3 +226,77 @@
     display: none; /* Ensures the file input is fully hidden */
   }
   
+.callBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background-color: var(--primary-bg);
+  border-bottom: 1px solid var(--primary-border);
+  height: 50px;
+}
+
+.callInfo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--primary-text);
+}
+
+.callStatus {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.callStatus::before {
+  content: "";
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--message-bot);
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+
+.callTimer {
+  font-family: monospace;
+  font-size: 14px;
+  opacity: 0.9;
+  color: var(--primary-text);
+}
+
+.hangupButton {
+  background-color: var(--message-bot);
+  color: var(--message-text);
+  border: none;
+  padding: 8px 16px;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.hangupButton:hover {
+  opacity: 0.9;
+}
+
+.whiteboardButton.active {
+  background-color: var(--message-bot);
+  color: var(--message-text);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+  
