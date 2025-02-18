@@ -58,6 +58,7 @@ See `package.json` for complete, updated list.
 - Limit input character amount for messages
 - Change size of license modal?
 - Fix suggested questions on modals
+- Update help video, readme screenshot
 
 #### Color Scheme
 - Off-white: #FFECD1
