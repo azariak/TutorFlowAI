@@ -7,10 +7,10 @@ export default function AboutContent({ setActivePopup }) {
       <div className="modal-content">
         <p>
           {/* At TutorFlow, we’re reimagining education with the power of AI.  */}
-          Our platform combines advanced tutoring models with real-time text and voice communication, 
-          making learning more interactive and personalized. 
-          The AI continuously monitors whiteboard activity, offering insights and feedback tailored to each user's needs. 
-          Our mission is to create an intuitive, enjoyable, and efficient learning experience for everyone.
+        TutorFlow provides interactive tutoring that combines real-time voice communication, AI-powered feedback, and a digital whiteboard.
+        Our chatbot interface help users grasp concepts more effectively with personalized, real-time insights. 
+        As users engage with the whiteboard, the AI observes activity and provides helpful suggestions to deepen understanding. 
+        Our mission is to create an intuitive, enjoyable, and efficient learning experience for everyone.
         </p>
       </div>
       <p className="copyright">
