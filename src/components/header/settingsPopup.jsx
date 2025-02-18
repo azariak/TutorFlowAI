@@ -53,24 +53,6 @@ export function SettingsPopup({ isOpen, onClose }) {
         <h2 className={styles.title}>Settings</h2>
         <form onSubmit={handleSubmit}>
           <div className={styles.formGroup} style={{ padding: '20px' }}>
-            <label htmlFor="apiKey">Gemini API Key:</label>
-            <input
-              type="password"
-              id="apiKey"
-              value={apiKey}
-              maxLength={50}
-              onChange={(e) => setApiKey(e.target.value)}
-              className={styles.input}
-            />
-            <p style={{
-              fontSize: '0.8rem',
-              color: '#666',
-              marginTop: '0.5rem',
-              marginBottom: '2rem'
-            }}>
-              Your API key will be securely saved in your browser and persist across sessions. 
-            </p>
-
             <div className={styles.sliderContainer}>
               <label htmlFor="verbosity"> Verbosity  {verbosity}%</label>
               <div className={styles.sliderControls}>
@@ -103,6 +85,24 @@ export function SettingsPopup({ isOpen, onClose }) {
               placeholder="Enter you preferences for the AI response (max 1000 characters)"
               style={{ minHeight: '100px', resize: 'vertical' }}
             />
+          <label htmlFor="apiKey">Gemini API Key</label>
+            <input
+              type="password"
+              id="apiKey"
+              value={apiKey}
+              maxLength={50}
+              onChange={(e) => setApiKey(e.target.value)}
+              className={styles.input}
+            />
+            <p style={{
+              fontSize: '0.8rem',
+              color: '#666',
+              marginTop: '-0.75rem',
+              marginBottom: '2rem'
+            }}>
+              Your API key will be securely saved in your browser and persist across sessions. 
+            </p>
+
           </div>
           <button type="submit" className={styles.submitButton}>
             Save
