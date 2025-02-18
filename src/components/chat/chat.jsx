@@ -360,7 +360,7 @@ export default function Chat() {
       {isInCall && (
         <div className={styles.callBar}>
           <div className={styles.callInfo}>
-            <span className={styles.callStatus}>In call</span>
+            <span className={styles.callStatus}>In call (coming soon)</span>
             <span className={styles.callTimer}>{formatDuration(callDuration)}</span>
           </div>
           <button
