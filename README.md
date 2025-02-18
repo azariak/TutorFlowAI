@@ -55,8 +55,6 @@ See `package.json` for complete, updated list.
 - Add input support Desmos, Google Drive, Notion etc.?
 - Allow user to save their current workspace
 - Landing page? More branding?
-- Limit input character amount for messages
-- Change size of license modal?
 - Fix suggested questions on modals
 - Update help video, readme screenshot
 

@@ -299,4 +299,15 @@
     opacity: 1;
   }
 }
+
+.charCounter {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  font-size: 0.8rem;
+  margin-bottom: 4px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+}
   

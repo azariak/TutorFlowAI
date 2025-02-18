@@ -7,6 +7,8 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css'
 
+const MAX_CHARS = 40000;
+
 const ImagePreview = ({ image, onRemove }) => (
   <div className={styles.previewContainer}>
     <div className={styles.previewWrapper}>
@@ -188,9 +190,12 @@ export default function Chat() {
   const handleSubmit = async () => {
     if (!prompt.trim() && !imageFile) return;
   
+    // Truncate prompt if it exceeds MAX_CHARS
+    const truncatedPrompt = prompt.slice(0, MAX_CHARS);
+  
     const userMessage = {
       id: messages.length + 1,
-      text: prompt,
+      text: truncatedPrompt,
       sender: "user",
       image: imageFile
     };
@@ -202,7 +207,7 @@ export default function Chat() {
   
     try {
       const processedImage = imageFile ? await blobUrlToBase64(imageFile) : null;
-      const fullPrompt = formatChatHistory(messages, prompt);
+      const fullPrompt = formatChatHistory(messages, truncatedPrompt);
       const response = await handleGenerateResponse(fullPrompt, processedImage);
   
       setMessages(prev => [...prev, {
@@ -419,7 +424,12 @@ export default function Chat() {
             placeholder="Ask anything..."
             className={styles.textArea}
             value={prompt}
-            onChange={e => setPrompt(e.target.value)}
+            onChange={e => {
+              const newText = e.target.value;
+              if (newText.length <= MAX_CHARS) {
+                setPrompt(newText);
+              }
+            }}
             onKeyPress={e => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -427,6 +437,7 @@ export default function Chat() {
               }
             }}
             rows={1}
+            maxLength={MAX_CHARS}
           />
           <button 
             onClick={handleWhiteboardCapture}
