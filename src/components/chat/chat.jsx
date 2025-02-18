@@ -254,6 +254,60 @@ export default function Chat() {
     }
   };
 
+  // Add effect to listen for popup events
+  useEffect(() => {
+    const handlePopupOpen = () => setShowSuggestions(false);
+    const handlePopupClose = () => {
+      // Only show suggestions if we're at the initial message
+      if (messages.length === 1) {
+        setShowSuggestions(true);
+      }
+    };
+    
+    // Create a MutationObserver to watch for popup elements
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        // Check for removed nodes (popup closing)
+        for (const node of mutation.removedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const isPopup = 
+              node.hasAttribute('role') && node.getAttribute('role') === 'dialog' ||
+              node.classList.contains('popup') ||
+              Array.from(node.classList).some(cls => cls.includes('popup'));
+            
+            if (isPopup) {
+              handlePopupClose();
+              break;
+            }
+          }
+        }
+        
+        // Check for added nodes (popup opening)
+        for (const node of mutation.addedNodes) {
+          if (node.nodeType === Node.ELEMENT_NODE) {
+            const isPopup = 
+              node.hasAttribute('role') && node.getAttribute('role') === 'dialog' ||
+              node.classList.contains('popup') ||
+              Array.from(node.classList).some(cls => cls.includes('popup'));
+            
+            if (isPopup) {
+              handlePopupOpen();
+              break;
+            }
+          }
+        }
+      }
+    });
+
+    // Start observing the document body for added/removed nodes
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+    
+    return () => observer.disconnect();
+  }, [messages]); // Added messages as dependency
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
