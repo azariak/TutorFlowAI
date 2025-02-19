@@ -86,8 +86,6 @@
   }
   
   .popupContent {
-    background: none;
-    border: none;
     padding: 0;
     /* width: 100%; */
     display: flex;
@@ -97,10 +95,6 @@
   
   .popupOverlay {
     background: rgba(0, 0, 0, 0.85);
-    /* display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0; */
   }
   
   .closeButton {
@@ -332,7 +326,6 @@
     text-align: right;
     display: block;
     margin-left: auto;
-    width: auto;
   }
 
   .resetButton:hover {
